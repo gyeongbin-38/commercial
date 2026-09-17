@@ -10,7 +10,7 @@ mkdirSync(out, { recursive: true });
 mkdirSync(tmp, { recursive: true });
 
 const sites = [
-  { id: "orbit", path: "/" },
+  { id: "plugview", path: "https://plugview-beannnn.vercel.app/" },
   { id: "moapoint", path: "/moapoint" },
   { id: "fieldstone", path: "/fieldstone" },
   { id: "marlowe", path: "/marlowe" },
@@ -32,7 +32,10 @@ for (const site of sites) {
     recordVideo: { dir: tmp, size: { width: 1280, height: 800 } },
   });
   const page = await context.newPage();
-  await page.goto(`${base}${site.path}`, { waitUntil: "networkidle" });
+  const url = site.path.startsWith("http")
+    ? site.path
+    : `${base}${site.path}`;
+  await page.goto(url, { waitUntil: "networkidle" });
   await page.waitForTimeout(1200);
   // Slow scroll through the page like a reader.
   await page.evaluate(async () => {

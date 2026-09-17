@@ -13,12 +13,12 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Gyeongbin Bak — Landing pages, designed and built",
+  title: "Gyeongbin Bak, Landing pages, designed and built",
   description:
     "One-person studio for conversion-focused landing pages. Design and Next.js development in a single hand. Selected concept work, fixed-price packages.",
   openGraph: {
     type: "website",
-    title: "Gyeongbin Bak — Landing pages, designed and built",
+    title: "Gyeongbin Bak, Landing pages, designed and built",
     description:
       "One-person studio for conversion-focused landing pages. Design and Next.js development in a single hand.",
     url: "/work",

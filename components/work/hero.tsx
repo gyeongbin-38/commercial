@@ -21,7 +21,7 @@ export function WorkHero() {
         <Reveal delay={0.16}>
           <div className="mt-7 flex max-w-[38rem] flex-col gap-5">
             <p className="wk-lead">
-              I&apos;m {STUDIO.name} — an AI applications major in Seoul. No
+              I&apos;m {STUDIO.name}, an AI applications major in Seoul. No
               designer-to-developer handoff: concept, responsive build, forms,
               SEO and deploy come from the same place.
             </p>
@@ -60,7 +60,7 @@ export function WorkHero() {
             </WkMagnetic>
           </div>
           <p className="mt-6 text-[0.8125rem] font-medium text-[var(--wk-muted)]">
-            Seoul, KST · remote worldwide · replies within 24h · 5–10 days to
+            Seoul, KST, remote worldwide, replies within 24h, 5-10 days to
             launch
           </p>
         </Reveal>

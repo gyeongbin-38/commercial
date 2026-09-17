@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Orbit: Simple Client Operations for Small Teams";
+export const alt = "Plugview: See it live. Ship it fast.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -15,7 +15,7 @@ export default function OpengraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#000000",
+          background: "#1d1d21",
           color: "#ffffff",
           fontFamily: "sans-serif",
         }}
@@ -43,7 +43,7 @@ export default function OpengraphImage() {
             letterSpacing: "-0.02em",
           }}
         >
-          Orbit
+          Plugview
         </div>
         <div
           style={{
@@ -54,7 +54,7 @@ export default function OpengraphImage() {
             letterSpacing: "-0.01em",
           }}
         >
-          Keep every client moving forward.
+          See it live. Ship it fast.
         </div>
       </div>
     ),

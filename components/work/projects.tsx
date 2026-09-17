@@ -14,7 +14,7 @@ export function WorkProjects() {
               Four landing systems, end to end
             </h2>
             <p className="wk-lead max-w-[26rem] text-[0.9375rem]">
-              Self-directed concept projects — every brand is fictional and
+              Self-directed concept projects. Every brand is fictional and
               disclosed as such on the site. Each one is a full design system:
               tokens, type scale, motion rules, responsive QA.
             </p>

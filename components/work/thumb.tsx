@@ -48,22 +48,24 @@ export function WorkThumb({
     >
       <img
         src={screenshot}
-        alt={`${name} — live site hero`}
+        alt={`${name}: live site hero`}
         className="wk-thumb"
         loading="lazy"
       />
-      <video
-        ref={videoRef}
-        className="wk-thumb-video"
-        style={{ opacity: playing ? 1 : 0 }}
-        muted
-        loop
-        playsInline
-        preload="none"
-        src={video}
-        aria-hidden="true"
-        tabIndex={-1}
-      />
+      {video ? (
+        <video
+          ref={videoRef}
+          className="wk-thumb-video"
+          style={{ opacity: playing ? 1 : 0 }}
+          muted
+          loop
+          playsInline
+          preload="none"
+          src={video}
+          aria-hidden="true"
+          tabIndex={-1}
+        />
+      ) : null}
       <span className="absolute right-4 top-4 rounded-[var(--wk-r-sm)] border border-black/15 bg-white/85 px-2.5 py-1 text-[0.6875rem] font-bold tracking-wide text-black/70">
         {lang}
       </span>

@@ -30,7 +30,7 @@ export function WorkChip({ offset = 0 }: { offset?: number }) {
       rel="noopener"
       className="wk-chip"
       title={current.name}
-      aria-label={`${current.name} — open live demo`}
+      aria-label={`${current.name}: open live demo`}
     >
       {SHOTS.map((s, j) => (
         <img

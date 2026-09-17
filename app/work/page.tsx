@@ -12,7 +12,7 @@ import { WorkFooter } from "@/components/work/footer";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  name: "Gyeongbin Bak — Landing page studio",
+  name: "Gyeongbin Bak, Landing page studio",
   description:
     "One-person studio for conversion-focused landing pages: design and Next.js development in a single hand.",
   sameAs: ["https://github.com/gyeongbin-38/"],

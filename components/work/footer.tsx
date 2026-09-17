@@ -14,7 +14,7 @@ export function WorkFooter() {
             Tell me what the page needs to do.
           </h2>
           <p className="max-w-[30rem] text-[1rem] leading-relaxed text-[var(--wk-dark-muted)]">
-            Send a two-line brief — product, audience, goal — and get a fixed
+            Send a two-line brief: product, audience, goal, and get a fixed
             quote and a start date back within 24 hours.
           </p>
           <div className="flex flex-wrap gap-3">

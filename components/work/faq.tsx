@@ -15,7 +15,7 @@ export function WorkFaq() {
             <div>
               <h2 className="wk-h2">Asked before you ask</h2>
               <p className="wk-lead mt-4 max-w-[22rem] text-[0.9375rem]">
-                Anything else — send it over email. Replies go out within 24
+                Anything else? Send it over email. Replies go out within 24
                 hours.
               </p>
             </div>

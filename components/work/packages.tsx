@@ -39,7 +39,7 @@ export function WorkPackages() {
               ))}
             </span>
             <p className="text-[0.875rem] font-medium text-[var(--wk-dark-muted)]">
-              First 5 client slots — I&apos;m building my client list, so early
+              First 5 client slots. I&apos;m building my client list, so early
               partners get the founding rate. Regular prices shown struck
               through; they go into effect after the slots fill.
             </p>
