@@ -1,5 +1,0 @@
-chore: scaffold Next.js 16 + Tailwind v4 + Orbit design doc
-
-create-next-app baseline (TS, App Router, Tailwind v4, ESLint) plus
-motion, zod, lucide-react. DESIGN.md codifies the Apple-derived token
-system adapted for Orbit before any UI is built.
