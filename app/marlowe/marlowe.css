@@ -1,0 +1,308 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+ * MARLOWE RACING design system - measured from a motorsport driver-hub
+ * reference. Flat volt (#d2ff00) on a dark olive field (#3b3c38),
+ * heavy condensed display type (Anton standing in for the commercial
+ * Brier cut), extrabold micro-caps for UI text, and one easing: ease.
+ *
+ * Radius grammar (one system, used everywhere):
+ *   2px  = micro details (badges inside rows)
+ *   6px  = small controls (chips, inputs on dark)
+ *   14px = cards / media tiles
+ *   39px = large blocks and all buttons (pill)
+ * Spacing rides an 11px base grid.
+ * ------------------------------------------------------------------ */
+
+:root {
+  --mar-bg: #3b3c38;
+  --mar-bg-deep: #282c20;
+  --mar-card: #43443e;
+  --mar-card-flat: #34352f;
+  --mar-volt: #d2ff00;
+  --mar-volt-dim: #b9dc00;
+  --mar-text: #f4f4ed;
+  --mar-text-dim: #b9bab0;
+  --mar-on-volt: #282c20;
+  --mar-line: rgba(244, 244, 237, 0.16);
+  --mar-line-soft: rgba(244, 244, 237, 0.09);
+
+  --mar-r-micro: 2px;
+  --mar-r-sm: 6px;
+  --mar-r-lg: 14px;
+  --mar-r-xl: 39px;
+
+  --mar-ease: ease;
+  --mar-dur: 300ms;
+}
+
+.mar-body {
+  background: var(--mar-bg);
+  color: var(--mar-text);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mar-container {
+  width: min(100% - 2rem, 90rem);
+  margin-inline: auto;
+}
+@media (min-width: 768px) {
+  .mar-container {
+    width: min(100% - 5.5rem, 90rem);
+  }
+}
+
+::selection {
+  background: var(--mar-volt);
+  color: var(--mar-on-volt);
+}
+
+.mar-body :focus-visible {
+  outline: 2px solid var(--mar-volt);
+  outline-offset: 3px;
+  border-radius: var(--mar-r-micro);
+}
+
+/* ---------- type ---------- */
+
+.mar-display {
+  font-family: var(--font-mar-display), "Arial Narrow", Impact, sans-serif;
+  text-transform: uppercase;
+  line-height: 0.85;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+}
+
+.mar-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.mar-lead {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--mar-text-dim);
+}
+
+/* ---------- controls ---------- */
+
+.mar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding-inline: 1.625rem;
+  border-radius: var(--mar-r-xl);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background-color var(--mar-dur) var(--mar-ease),
+    color var(--mar-dur) var(--mar-ease),
+    border-color var(--mar-dur) var(--mar-ease),
+    transform var(--mar-dur) var(--mar-ease);
+}
+.mar-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.mar-btn-volt {
+  background: var(--mar-volt);
+  color: var(--mar-on-volt);
+}
+.mar-btn-volt:hover {
+  background: var(--mar-volt-dim);
+}
+
+.mar-btn-ghost {
+  border: 1px solid var(--mar-line);
+  background: transparent;
+  color: var(--mar-text);
+}
+.mar-btn-ghost:hover {
+  border-color: var(--mar-volt);
+  color: var(--mar-volt);
+}
+
+.mar-btn-dark {
+  background: var(--mar-bg-deep);
+  color: var(--mar-volt);
+}
+.mar-btn-dark:hover {
+  background: #1e2118;
+}
+
+/* ---------- surfaces ---------- */
+
+.mar-card {
+  background: var(--mar-card);
+  border-radius: var(--mar-r-lg);
+  overflow: hidden;
+}
+
+.mar-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2rem;
+  padding-inline: 0.875rem;
+  border-radius: var(--mar-r-xl);
+  border: 1px solid var(--mar-line);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mar-text);
+  white-space: nowrap;
+}
+
+/* Checker strip - the one decorative pattern, used for racing cues */
+.mar-checker {
+  background-image: repeating-conic-gradient(
+    var(--mar-bg-deep) 0% 25%,
+    var(--mar-volt) 0% 50%
+  );
+  background-size: 22px 22px;
+}
+
+/* ---------- motion ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .mar-rise {
+    animation: mar-rise 640ms var(--mar-ease) both;
+  }
+
+  .mar-img-hover img {
+    transition: transform 700ms var(--mar-ease);
+  }
+  .mar-img-hover:hover img {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes mar-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mar-btn,
+  .mar-rise,
+  .mar-img-hover img {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Hide scrollbars on horizontal media rail */
+.mar-rail {
+  scrollbar-width: none;
+}
+.mar-rail::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- character layer ---------- */
+
+/* Kinetic headline: letters rise in per-line, clipped by parent overflow */
+@media (prefers-reduced-motion: no-preference) {
+  .mar-letter {
+    display: inline-block;
+    transform: translateY(115%);
+    animation: mar-letter-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--i) * 45ms);
+  }
+}
+@keyframes mar-letter-in {
+  to {
+    transform: none;
+  }
+}
+
+/* Giant outlined number used as background graphic */
+.mar-outline {
+  -webkit-text-stroke: 1.5px var(--mar-volt);
+  color: transparent;
+  opacity: 0.32;
+}
+
+/* Cursor spotlight on cards: volt rim + soft glow at --mx/--my */
+.mar-spot {
+  position: relative;
+}
+.mar-spot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(210, 255, 0, 0.13),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--mar-dur) var(--mar-ease);
+}
+.mar-spot:hover::after {
+  opacity: 1;
+}
+.mar-spot:hover {
+  box-shadow: inset 0 0 0 1px rgba(210, 255, 0, 0.4);
+}
+
+/* Live-timing bars: three sector pulses next to the countdown label */
+.mar-live {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 12px;
+}
+.mar-live span {
+  width: 3px;
+  height: 4px;
+  background: var(--mar-volt);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mar-live span {
+    animation: mar-live 1.1s ease-in-out infinite;
+  }
+  .mar-live span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .mar-live span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+}
+@keyframes mar-live {
+  0%,
+  100% {
+    height: 4px;
+  }
+  50% {
+    height: 12px;
+  }
+}
+
+/* Film grain, poster-print layer. Fixed, never on scrolling containers */
+.mar-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}

@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local tools (QA/demo helpers, not part of the app)
+cloudflared.exe
+shots-tunnel/
+shots-vercel/
+shots-fieldstone/
+shots-marlowe/
+shots-moapoint/
+shots-work/
+tmp-videos/
+
+.vercel

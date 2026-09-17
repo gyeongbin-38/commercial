@@ -1,0 +1,5 @@
+cloudflared.exe
+shots/
+shots-tunnel/
+scripts/
+.gitmsg*

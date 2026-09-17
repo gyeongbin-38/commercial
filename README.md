@@ -1,4 +1,36 @@
-# Orbit — commercial landing page
+# Orbit + MOA POINT + Fieldstone — commercial landing pages
+
+Four marketing sites plus a portfolio index in one Next.js app, each with
+its own root layout and design system:
+
+- **`/work` — portfolio index** (`app/work/`). Studio page that presents
+  the four landing systems below with packages, process and contact CTAs
+  for freelance/client work. Copy data in `lib/work-data.ts`.
+- **`/` — Orbit** (this README below). Fictional B2B SaaS, English,
+  Apple-derived tokens documented in [`DESIGN.md`](DESIGN.md).
+- **`/moapoint` — 모아포인트 (MOA POINT)** (`app/moapoint/`). Korean
+  consumer membership landing for a fictional brand — monochrome navy,
+  Pretendard, white cards on `#f0f3f5` — documented in
+  [`DESIGN-MOAPOINT.md`](DESIGN-MOAPOINT.md). Components live in
+  `components/moapoint/`, copy data in `lib/moapoint-data.ts`.
+  All partner names, member data and figures are invented demo data.
+- **`/fieldstone` — Fieldstone Ventures** (`app/fieldstone/`). English
+  landing for a fictional entrepreneurial-ecosystem brand — Cormorant
+  Garamond display over DM Sans, evergreen `#3a7d6a` primary with
+  deep-pine `#15332b` decision CTAs — documented in
+  [`DESIGN-FIELDSTONE.md`](DESIGN-FIELDSTONE.md). Components live in
+  `components/fieldstone/`, copy data in `lib/fieldstone-data.ts`. All
+  founders, companies and figures are invented demo data.
+
+Orbit routes sit in the `app/(orbit)` route group; `app/moapoint/` and
+`app/fieldstone/` are separate root layouts (`lang="ko"` local
+Pretendard, `lang="en"` Google fonts). `robots.ts`, `sitemap.ts`,
+`actions.ts` and `api/` stay shared at `app/` root;
+`app/global-not-found.tsx` (behind `experimental.globalNotFound`)
+serves unmatched URLs for all sites. Navigating between sites is a
+full page load by design.
+
+---
 
 A complete marketing site for **Orbit**, a fictional client-operations
 workspace for freelancers, studios, consultants and small agencies.

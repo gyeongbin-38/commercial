@@ -11,7 +11,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
-    ...["/privacy", "/terms", "/security"].map((path) => ({
+    {
+      url: `${siteUrl}/moapoint`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/fieldstone`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/marlowe`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/work`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    },
+    ...["/privacy", "/terms", "/security", "/moapoint/privacy", "/moapoint/terms", "/fieldstone/privacy", "/fieldstone/terms", "/marlowe/privacy", "/marlowe/terms"].map((path) => ({
       url: `${siteUrl}${path}`,
       lastModified: now,
       changeFrequency: "yearly" as const,

@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+ * FIELDSTONE VENTURES design system — editorial-institutional tone.
+ * Condensed-Garamond display over DM Sans; evergreen primary with a
+ * deep pine reserved for decision CTAs. Tokens per DESIGN-FIELDSTONE.md.
+ * ------------------------------------------------------------------ */
+
+:root {
+  --fs-green: #3a7d6a;
+  --fs-green-deep: #2c6152;
+  --fs-pine: #15332b;
+  --fs-pine-deep: #0e2620;
+  --fs-ink: #222121;
+  --fs-muted: #5d635f;
+  --fs-line: #d8ddd9;
+  --fs-line-soft: #e6eae7;
+  --fs-bg: #ffffff;
+  --fs-tint: #eef4f1;
+  --fs-card: #ffffff;
+
+  --fs-shadow: rgba(21, 51, 43, 0.08) 0px 2px 12px 0px;
+
+  --fs-r-sm: 2px;
+  --fs-r-md: 8px;
+  --fs-r-lg: 20px;
+  --fs-r-pill: 9999px;
+
+  --fs-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --fs-dur: 300ms;
+}
+
+.fs-body {
+  background: var(--fs-bg);
+  color: var(--fs-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.fs-container {
+  width: min(100% - 2.5rem, 72rem);
+  margin-inline: auto;
+}
+
+/* ---------- type ---------- */
+
+.fs-serif {
+  font-family: var(--font-f-serif), Georgia, "Times New Roman", serif;
+}
+
+.fs-display {
+  font-family: var(--font-f-serif), Georgia, "Times New Roman", serif;
+  font-size: clamp(2.6rem, 5.4vw, 5rem);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+}
+
+.fs-h2 {
+  font-family: var(--font-f-serif), Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 3.6vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.005em;
+}
+
+.fs-h3 {
+  font-family: var(--font-f-serif), Georgia, "Times New Roman", serif;
+  font-size: 1.375rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.fs-eyebrow {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fs-green-deep);
+}
+
+.fs-lead {
+  font-size: 1.1875rem;
+  line-height: 1.5;
+  color: var(--fs-muted);
+  font-weight: 400;
+}
+
+/* ---------- surfaces ---------- */
+
+.fs-card {
+  background: var(--fs-card);
+  border: 1px solid var(--fs-line-soft);
+  border-radius: var(--fs-r-lg);
+  box-shadow: var(--fs-shadow);
+}
+
+.fs-card-flat {
+  background: var(--fs-card);
+  border: 1px solid var(--fs-line);
+  border-radius: var(--fs-r-lg);
+}
+
+.fs-panel {
+  background: var(--fs-pine);
+  color: #fff;
+  border-radius: var(--fs-r-lg);
+}
+
+/* ---------- controls ---------- */
+
+.fs-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding-inline: 1.625rem;
+  border-radius: var(--fs-r-md);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background-color var(--fs-dur) var(--fs-ease),
+    color var(--fs-dur) var(--fs-ease),
+    border-color var(--fs-dur) var(--fs-ease),
+    transform var(--fs-dur) var(--fs-ease);
+}
+
+.fs-btn:active {
+  transform: translateY(1px);
+}
+
+.fs-btn-accent {
+  background: var(--fs-pine);
+  color: #fff;
+}
+.fs-btn-accent:hover {
+  background: var(--fs-pine-deep);
+}
+
+.fs-btn-primary {
+  background: var(--fs-green);
+  color: #fff;
+}
+.fs-btn-primary:hover {
+  background: var(--fs-green-deep);
+}
+
+.fs-btn-ghost {
+  border: 1px solid var(--fs-green);
+  background: transparent;
+  color: var(--fs-green-deep);
+}
+.fs-btn-ghost:hover {
+  background: rgba(58, 125, 106, 0.08);
+}
+
+.fs-btn-light {
+  background: #fff;
+  color: var(--fs-pine);
+}
+.fs-btn-light:hover {
+  background: #e4eee9;
+}
+
+.fs-btn-outline-light {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  background: transparent;
+}
+.fs-btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.fs-link {
+  color: var(--fs-green-deep);
+  font-weight: 600;
+  text-decoration: none;
+}
+.fs-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- stats ---------- */
+
+.fs-stat-num {
+  font-family: var(--font-f-serif), Georgia, "Times New Roman", serif;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--fs-pine);
+}
+
+.fs-stat-num-light {
+  color: #fff;
+}
+
+/* ---------- motion ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .fs-fade-in {
+    animation: fs-rise 560ms var(--fs-ease) both;
+  }
+}
+
+@keyframes fs-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fs-btn,
+  .fs-fade-in {
+    transition: none;
+    animation: none;
+  }
+}
