@@ -1,26 +1,294 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Orbit design tokens. See DESIGN.md (source of truth).
+ * Derived from the Apple-design-analysis system: one accent, neutral
+ * surfaces, tight SF-style type (Inter as the documented substitute),
+ * pill actions, hairlines over shadows, a single product shadow.
+ */
+@theme {
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+
+  /* Surfaces */
+  --color-canvas: #ffffff;
+  --color-parchment: #f5f5f7;
+  --color-pearl: #fafafc;
+  --color-tile-1: #272729;
+  --color-tile-2: #2a2a2c;
+  --color-tile-3: #252527;
+  --color-void: #000000;
+  --color-chip: #d2d2d7;
+  --color-divider: #f0f0f0;
+  --color-hairline: #e0e0e0;
+
+  /* Text */
+  --color-ink: #1d1d1f;
+  --color-ink-80: #333333;
+  --color-ink-48: #7a7a7a;
+  --color-on-dark: #ffffff;
+  --color-muted-dark: #cccccc;
+
+  /* The single interactive accent */
+  --color-action: #0066cc;
+  --color-action-focus: #0071e3;
+  --color-action-dark: #2997ff;
+
+  /* Functional status hues (product UI state only, never decorative) */
+  --color-state-warn: #b45309;
+  --color-state-ok: #047857;
+
+  /* Type scale */
+  --text-display: 3.5rem;
+  --text-display--line-height: 1.07;
+  --text-display--letter-spacing: -0.015em;
+  --text-display--font-weight: 600;
+  --text-display-lg: 2.5rem;
+  --text-display-lg--line-height: 1.1;
+  --text-display-lg--letter-spacing: -0.01em;
+  --text-display-lg--font-weight: 600;
+  --text-display-md: 2.125rem;
+  --text-display-md--line-height: 1.25;
+  --text-display-md--letter-spacing: -0.015em;
+  --text-display-md--font-weight: 600;
+  --text-lead: 1.75rem;
+  --text-lead--line-height: 1.14;
+  --text-lead--letter-spacing: 0.007em;
+  --text-lead--font-weight: 400;
+  --text-lead-airy: 1.5rem;
+  --text-lead-airy--line-height: 1.5;
+  --text-lead-airy--font-weight: 300;
+  --text-tagline: 1.3125rem;
+  --text-tagline--line-height: 1.19;
+  --text-tagline--letter-spacing: 0.011em;
+  --text-tagline--font-weight: 600;
+  --text-body-strong: 1.0625rem;
+  --text-body-strong--line-height: 1.24;
+  --text-body-strong--letter-spacing: -0.015em;
+  --text-body-strong--font-weight: 600;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.47;
+  --text-body--letter-spacing: -0.011em;
+  --text-dense: 1.0625rem;
+  --text-dense--line-height: 2.05;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.43;
+  --text-caption--letter-spacing: -0.01em;
+  --text-caption-strong: 0.875rem;
+  --text-caption-strong--line-height: 1.29;
+  --text-caption-strong--letter-spacing: -0.01em;
+  --text-caption-strong--font-weight: 600;
+  --text-button-lg: 1.125rem;
+  --text-button-lg--line-height: 1;
+  --text-button-lg--font-weight: 300;
+  --text-utility: 0.875rem;
+  --text-utility--line-height: 1.29;
+  --text-utility--letter-spacing: -0.01em;
+  --text-fine: 0.75rem;
+  --text-fine--line-height: 1.35;
+  --text-fine--letter-spacing: -0.01em;
+  --text-nav: 0.75rem;
+  --text-nav--line-height: 1;
+  --text-nav--letter-spacing: -0.01em;
+
+  /* Radius grammar */
+  --radius-xs: 5px;
+  --radius-sm: 8px;
+  --radius-md: 11px;
+  --radius-lg: 18px;
+
+  /* The single product shadow (app renders only) */
+  --shadow-product: 3px 5px 30px 0 rgba(0, 0, 0, 0.22);
+
+  /* Structural breakpoints from the reference system */
+  --breakpoint-nav: 834px;
+  --breakpoint-xs: 480px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Base */
+html {
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(0, 102, 204, 0.16);
+}
+
+/* Visible focus everywhere it matters */
+:focus-visible {
+  outline: 2px solid var(--color-action-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@layer components {
+  /* Button grammar: pill = action, sm = utility, md = pearl capsule */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 9999px;
+    font-size: 17px;
+    line-height: 1;
+    letter-spacing: -0.011em;
+    padding: 12px 22px;
+    cursor: pointer;
+    transition:
+      transform 0.15s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+    white-space: nowrap;
+  }
+  .btn:active {
+    transform: scale(0.95);
+  }
+  .btn-primary {
+    background: var(--color-action);
+    color: var(--color-on-dark);
+  }
+  .btn-primary:hover {
+    background: var(--color-action-focus);
+  }
+  .btn-ghost {
+    border: 1px solid var(--color-action);
+    color: var(--color-action);
+    background: transparent;
+  }
+  .btn-ghost:hover {
+    background: rgba(0, 102, 204, 0.06);
+  }
+  .btn-ghost-dark {
+    border: 1px solid var(--color-action-dark);
+    color: var(--color-action-dark);
+    background: transparent;
+  }
+  .btn-ghost-dark:hover {
+    background: rgba(41, 151, 255, 0.1);
+  }
+  .btn-dark-utility {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-ink);
+    color: var(--color-on-dark);
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    border-radius: 8px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.2s ease;
+    white-space: nowrap;
+  }
+  .btn-dark-utility:active {
+    transform: scale(0.95);
+  }
+  .btn-pearl {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-pearl);
+    color: var(--color-ink-80);
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    border-radius: 11px;
+    padding: 8px 14px;
+    border: 1px solid var(--color-divider);
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.2s ease;
+    white-space: nowrap;
+  }
+  .btn-pearl:active {
+    transform: scale(0.95);
+  }
+
+  /* Inline text links */
+  .link {
+    color: var(--color-action);
+    text-decoration: none;
+  }
+  .link:hover {
+    text-decoration: underline;
+  }
+  .link-dark {
+    color: var(--color-action-dark);
+    text-decoration: none;
+  }
+  .link-dark:hover {
+    text-decoration: underline;
+  }
+
+  /* Full-bleed tile rhythm */
+  .tile {
+    padding-block: 80px;
+  }
+  @media (max-width: 1023px) {
+    .tile {
+      padding-block: 56px;
+    }
+  }
+  @media (max-width: 639px) {
+    .tile {
+      padding-block: 44px;
+    }
+  }
+
+  /* Card / app-window chrome */
+  .card {
+    background: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+  }
+  .app-window {
+    background: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-product);
+    overflow: hidden;
+  }
+
+  /* App-UI interior chips */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 9999px;
+    border: 1px solid var(--color-hairline);
+    background: var(--color-pearl);
+    color: var(--color-ink-80);
+    font-size: 12px;
+    letter-spacing: -0.01em;
+    padding: 3px 10px;
+    white-space: nowrap;
+  }
+
+  /* Frosted sticky surface */
+  .frosted {
+    background: rgba(245, 245, 247, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+}
+
+/* Tabular figures inside product UI */
+.tnum {
+  font-variant-numeric: tabular-nums;
 }
