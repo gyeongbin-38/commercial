@@ -10,7 +10,7 @@ mkdirSync(out, { recursive: true });
 mkdirSync(tmp, { recursive: true });
 
 const sites = [
-  { id: "plugview", path: "https://plugview-beannnn.vercel.app/" },
+  { id: "plugview", path: "/" },
   { id: "moapoint", path: "/moapoint" },
   { id: "fieldstone", path: "/fieldstone" },
   { id: "marlowe", path: "/marlowe" },
