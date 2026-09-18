@@ -47,7 +47,6 @@ export function HeroCollage() {
       className="relative h-[300px] w-full select-none min-[900px]:h-[460px]"
       onPointerMove={onMove}
       onPointerLeave={onLeave}
-      aria-hidden="true"
     >
       {LAYERS.map((l) => (
         <CollageLayer key={l.i} layer={l} sx={sx} sy={sy} />
@@ -70,7 +69,11 @@ function CollageLayer({
   const y = useTransform(sy, (v) => v * layer.depth * 0.7);
 
   return (
-    <motion.div
+    <motion.a
+      href={p.href}
+      target="_blank"
+      rel="noopener"
+      aria-label={`${p.name} live site`}
       className="wk-collage-card"
       style={{
         left: layer.x,
@@ -87,12 +90,12 @@ function CollageLayer({
       >
         <img
           src={p.screenshot}
-          alt=""
+          alt={`${p.name} site preview`}
           className="wk-collage-img"
           loading="eager"
           draggable={false}
         />
       </div>
-    </motion.div>
+    </motion.a>
   );
 }

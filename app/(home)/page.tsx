@@ -1,5 +1,6 @@
 import { WorkNavbar } from "@/components/work/navbar";
 import { WorkScrollProgress } from "@/components/work/scroll-progress";
+import { WorkSmoothScroll } from "@/components/work/smooth-scroll";
 import { WorkHero } from "@/components/work/hero";
 import { WorkMarquee } from "@/components/work/marquee";
 import { WorkProjects } from "@/components/work/projects";
@@ -27,6 +28,7 @@ export default function WorkPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <WorkScrollProgress />
+      <WorkSmoothScroll />
       <WorkNavbar />
       <main>
         <WorkHero />

@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useScroll,
   useTransform,
+  useMotionValueEvent,
   useReducedMotion,
   type MotionValue,
 } from "motion/react";
@@ -15,6 +16,14 @@ import { WORK_PROJECTS } from "@/lib/work-data";
    site has a hover recording play it muted once they're mostly visible.
 */
 
+const ACCENTS: Record<string, string> = {
+  orbit: "#4a8dff",
+  moapoint: "#7fa3d4",
+  fieldstone: "#6fae8d",
+  marlowe: "#d7f23f",
+  plugview: "#70a7ff",
+};
+
 export function WorkShowcase() {
   const listRef = useRef<HTMLUListElement>(null);
   const { scrollYProgress } = useScroll({
@@ -23,18 +32,52 @@ export function WorkShowcase() {
   });
   const n = WORK_PROJECTS.length;
 
+  const [active, setActive] = useState(0);
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    setActive(Math.min(n - 1, Math.max(0, Math.round(v * (n - 1)))));
+  });
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => setInView(e.isIntersecting),
+      { rootMargin: "-20% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <ul ref={listRef} className="relative">
-      {WORK_PROJECTS.map((p, i) => (
-        <Panel
-          key={p.id}
-          project={p}
-          index={i}
-          total={n}
-          listProgress={scrollYProgress}
-        />
-      ))}
-    </ul>
+    <div className="relative">
+      <ul ref={listRef} className="relative">
+        {WORK_PROJECTS.map((p, i) => (
+          <Panel
+            key={p.id}
+            project={p}
+            index={i}
+            total={n}
+            listProgress={scrollYProgress}
+          />
+        ))}
+      </ul>
+      <nav
+        aria-label="Project progress"
+        className={`fixed right-5 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-2.5 transition-opacity duration-300 min-[760px]:right-8 ${
+          inView ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      >
+        {WORK_PROJECTS.map((p, i) => (
+          <span
+            key={p.id}
+            aria-hidden="true"
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              i === active ? "w-6 bg-white" : "w-1.5 bg-white/40"
+            }`}
+          />
+        ))}
+      </nav>
+    </div>
   );
 }
 
@@ -90,6 +133,11 @@ function Panel({
   }, [reduce]);
 
   const isProduct = p.id === "plugview";
+  const accent = ACCENTS[p.id] ?? "#ffffff";
+
+  // Content block rises in as the panel arrives.
+  const contentY = useTransform(entry, [0.2, 1], [44, 0]);
+  const contentOpacity = useTransform(entry, [0.25, 0.9], [0, 1]);
 
   return (
     <li ref={liRef} className="sticky top-0 h-[100svh]">
@@ -126,7 +174,10 @@ function Panel({
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/10" />
 
         <div className="absolute left-5 top-6 flex items-center gap-3 text-white/85 min-[760px]:left-10 min-[760px]:top-9">
-          <span className="text-[0.8125rem] font-semibold tracking-[0.18em]">
+          <span
+            className="text-[0.8125rem] font-semibold tracking-[0.18em]"
+            style={{ color: accent }}
+          >
             {String(i + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
           </span>
           <span className="h-px w-8 bg-white/40" aria-hidden="true" />
@@ -139,8 +190,14 @@ function Panel({
           {p.lang}
         </span>
 
-        <div className="absolute inset-x-0 bottom-0 px-5 pb-9 text-white min-[760px]:px-10 min-[760px]:pb-12">
-          <p className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] text-white/70">
+        <motion.div
+          style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
+          className="absolute inset-x-0 bottom-0 px-5 pb-9 text-white min-[760px]:px-10 min-[760px]:pb-12"
+        >
+          <p
+            className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em]"
+            style={{ color: accent }}
+          >
             {p.kind} · {p.year}
           </p>
           <h3 className="mt-2 text-[clamp(2.2rem,5.5vw,4.5rem)] font-bold leading-none tracking-tight">
@@ -175,7 +232,7 @@ function Panel({
               ))}
             </ul>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </li>
   );
