@@ -65,7 +65,7 @@ export function WorkFooter() {
             <LocalTime />
           </p>
           <p>
-            Three concept projects plus one live product build, all
+            Four concept projects plus one live product build, all
             self-directed.
           </p>
         </div>

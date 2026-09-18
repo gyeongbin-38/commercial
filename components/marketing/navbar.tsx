@@ -40,7 +40,7 @@ export function Navbar() {
           className="flex h-11 items-center bg-void px-5 text-nav text-on-dark"
         >
           <Link
-            href="/#top"
+            href="/orbit#top"
             className="flex items-center gap-2"
             aria-label="Orbit home"
           >
@@ -69,7 +69,7 @@ export function Navbar() {
               Sign in
             </button>
             <Link
-              href="/#get-started"
+              href="/orbit#get-started"
               className="btn hidden h-8 px-4 text-[13px] btn-primary nav:inline-flex"
             >
               Get started
@@ -130,7 +130,7 @@ export function Navbar() {
                   Sign in
                 </button>
                 <Link
-                  href="/#get-started"
+                  href="/orbit#get-started"
                   onClick={() => setMenuOpen(false)}
                   className="btn btn-primary w-full"
                 >

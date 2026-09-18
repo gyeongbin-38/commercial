@@ -78,6 +78,24 @@ export const WORK_PROJECTS = [
     screenshot: "/work/marlowe.png",
     video: "/work/marlowe.webm",
   },
+  {
+    id: "orbit",
+    name: "Orbit",
+    href: "/orbit",
+    kind: "B2B SaaS marketing site",
+    description:
+      "A calm client-operations workspace for freelancers and small studios. Apple-derived restraint: one accent, hairline dividers, product UI as the hero.",
+    highlights: [
+      "Interactive pipeline demo with spring layout animation",
+      "Pricing toggle, lead form with zod validation",
+      "Full SEO: OG image, sitemap, JSON-LD",
+    ],
+    tags: ["Next.js", "SaaS", "Interactive demo", "English"],
+    lang: "EN",
+    year: "2026",
+    screenshot: "/work/orbit.png",
+    video: "/work/orbit.webm",
+  },
 ];
 
 export const WORK_CAPABILITIES = [
@@ -224,7 +242,7 @@ export const WORK_PROCESS = [
 export const WORK_FAQS = [
   {
     q: "Is the work shown real client work?",
-    a: "Three of the showcased projects are self-directed concept work. Their brands are fictional and disclosed as such on each site. Plugview is a real, live product build. All are held to the same standard as client work: real responsive QA, accessibility, SEO, and interaction details. The point is to show the range of design systems I can design and build, end to end.",
+    a: "Four of the showcased projects are self-directed concept work. Their brands are fictional and disclosed as such on each site. Plugview is a real, live product build. All are held to the same standard as client work: real responsive QA, accessibility, SEO, and interaction details. The point is to show the range of design systems I can design and build, end to end.",
   },
   {
     q: "What do you need from me to start?",

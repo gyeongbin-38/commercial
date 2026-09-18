@@ -11,10 +11,10 @@ export function WorkProjects() {
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <h2 className="wk-h2 max-w-[20ch]">
-              Four landing systems, end to end
+              Four landing systems and a live product
             </h2>
             <p className="wk-lead max-w-[26rem] text-[0.9375rem]">
-              Three self-directed concept systems (fictional brands, disclosed
+              Four self-directed concept systems (fictional brands, disclosed
               on each site) plus Plugview, a live product build. Each one is a
               full design system: tokens, type scale, motion rules, responsive
               QA.

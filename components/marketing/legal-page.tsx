@@ -14,11 +14,11 @@ export function LegalPage({
   return (
     <div className="flex min-h-dvh flex-1 flex-col bg-canvas">
       <header className="flex h-11 items-center bg-void px-5">
-        <Link href="/" aria-label="Orbit home" className="flex items-center gap-2">
+        <Link href="/orbit" aria-label="Orbit home" className="flex items-center gap-2">
           <OrbitWordmark onDark />
         </Link>
         <Link
-          href="/"
+          href="/orbit"
           className="text-nav ml-auto inline-flex items-center gap-1.5 text-muted-dark transition-colors hover:text-on-dark"
         >
           <ArrowLeft size={12} strokeWidth={1.75} aria-hidden="true" />

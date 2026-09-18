@@ -27,7 +27,7 @@ export default function PrivacyPage() {
       </p>
       <p>
         Questions about privacy? Reach us through the{" "}
-        <Link href="/#get-started" className="link">request form</Link>.
+        <Link href="/orbit#get-started" className="link">request form</Link>.
       </p>
     </LegalPage>
   );

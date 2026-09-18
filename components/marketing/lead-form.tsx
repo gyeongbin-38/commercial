@@ -207,8 +207,8 @@ export function LeadForm() {
                   </button>
                   <p className="text-fine text-center text-ink-48">
                     By continuing you agree to the{" "}
-                    <Link href="/terms" className="link">Terms</Link> and{" "}
-                    <Link href="/privacy" className="link">Privacy notice</Link>.
+                    <Link href="/orbit/terms" className="link">Terms</Link> and{" "}
+                    <Link href="/orbit/privacy" className="link">Privacy notice</Link>.
                   </p>
                 </div>
               </form>

@@ -38,11 +38,11 @@ export default function AboutPage() {
               responsive, accessible markup throughout.
             </p>
             <p>
-              <Link href="/#get-started" className="link">
+              <Link href="/orbit#get-started" className="link">
                 Try the demo request form
               </Link>{" "}
               or{" "}
-              <Link href="/#demo" className="link">
+              <Link href="/orbit#demo" className="link">
                 play with the pipeline
               </Link>
               .

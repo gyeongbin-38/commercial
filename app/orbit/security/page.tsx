@@ -27,7 +27,7 @@ export default function SecurityPage() {
       </p>
       <p>
         Found a vulnerability? Please disclose it responsibly via the{" "}
-        <Link href="/#get-started" className="link">contact form</Link> before
+        <Link href="/orbit#get-started" className="link">contact form</Link> before
         publishing.
       </p>
     </LegalPage>
