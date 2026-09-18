@@ -3,6 +3,7 @@ import { WorkScrollProgress } from "@/components/work/scroll-progress";
 import { WorkHero } from "@/components/work/hero";
 import { WorkMarquee } from "@/components/work/marquee";
 import { WorkProjects } from "@/components/work/projects";
+import { WorkTryIt } from "@/components/work/try-it";
 import { WorkCapabilities, WorkProcess } from "@/components/work/process";
 import { WorkAbout } from "@/components/work/about";
 import { WorkPackages } from "@/components/work/packages";
@@ -31,6 +32,7 @@ export default function WorkPage() {
         <WorkHero />
         <WorkMarquee />
         <WorkProjects />
+        <WorkTryIt />
         <WorkCapabilities />
         <WorkAbout />
         <WorkPackages />

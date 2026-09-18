@@ -11,21 +11,16 @@ export function WorkCapabilities() {
           </h2>
         </Reveal>
 
-        <ul className="mt-10 border-t border-[var(--wk-line)]">
+        <ul className="mt-10 flex flex-wrap gap-3">
           {WORK_CAPABILITIES.map((c, i) => (
-            <li
-              key={c.title}
-              className="border-b border-[var(--wk-line)]"
-            >
-              <Reveal delay={0.04 * i} y={12}>
-                <div className="grid gap-1 py-4 min-[760px]:grid-cols-[16rem_1fr] min-[760px]:items-baseline min-[760px]:gap-8">
-                  <h3 className="wk-cap-title text-[0.9375rem] font-semibold tracking-tight">
-                    {c.title}
-                  </h3>
-                  <p className="text-[0.875rem] leading-relaxed text-[var(--wk-muted)]">
-                    {c.body}
-                  </p>
-                </div>
+            <li key={c.title}>
+              <Reveal delay={0.05 * i} y={10}>
+                <span
+                  className="wk-cap-chip inline-flex items-center rounded-full border border-[var(--wk-line)] bg-[var(--wk-card)] px-4 py-2 text-[0.875rem] font-medium text-[var(--wk-ink-soft)]"
+                  title={c.body}
+                >
+                  {c.title}
+                </span>
               </Reveal>
             </li>
           ))}

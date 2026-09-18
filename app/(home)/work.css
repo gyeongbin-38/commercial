@@ -1,5 +1,110 @@
 @import "tailwindcss";
 
+/* Orbit product tokens — needed so the embedded PipelineDemo (imported
+   from components/marketing) renders with its own palette on this page.
+   Names match app/globals.css; they only add utilities, never override
+   the wk-* custom properties used by the studio theme. */
+@theme {
+  --color-canvas: #ffffff;
+  --color-parchment: #f5f5f7;
+  --color-pearl: #fafafc;
+  --color-chip: #d2d2d7;
+  --color-divider: #f0f0f0;
+  --color-hairline: #e0e0e0;
+  --color-ink: #1d1d1f;
+  --color-ink-80: #333333;
+  --color-ink-48: #7a7a7a;
+  --color-on-dark: #ffffff;
+  --color-action: #0066cc;
+  --color-action-focus: #0071e3;
+  --color-action-dark: #2997ff;
+
+  --text-display-lg: 2.5rem;
+  --text-display-lg--line-height: 1.1;
+  --text-display-lg--letter-spacing: -0.01em;
+  --text-display-lg--font-weight: 600;
+  --text-lead: 1.75rem;
+  --text-lead--line-height: 1.14;
+  --text-lead--letter-spacing: 0.007em;
+  --text-lead--font-weight: 400;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.43;
+  --text-caption--letter-spacing: -0.01em;
+  --text-caption-strong: 0.875rem;
+  --text-caption-strong--line-height: 1.29;
+  --text-caption-strong--letter-spacing: -0.01em;
+  --text-caption-strong--font-weight: 600;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.47;
+  --text-body--letter-spacing: -0.011em;
+  --text-fine: 0.75rem;
+  --text-fine--line-height: 1.35;
+  --text-fine--letter-spacing: -0.01em;
+
+  --radius-xs: 5px;
+}
+
+/* Orbit chrome classes used by the embedded demo */
+.tile {
+  padding-block: 80px;
+}
+@media (max-width: 1023px) {
+  .tile {
+    padding-block: 56px;
+  }
+}
+@media (max-width: 639px) {
+  .tile {
+    padding-block: 44px;
+  }
+}
+.card {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: 18px;
+}
+.app-window {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: 18px;
+  box-shadow: 3px 5px 30px 0 rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 9999px;
+  border: 1px solid var(--color-hairline);
+  background: var(--color-pearl);
+  color: var(--color-ink-80);
+  font-size: 12px;
+  letter-spacing: -0.01em;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+.btn-pearl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-pearl);
+  color: var(--color-ink-80);
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  border-radius: 11px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-divider);
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+.btn-pearl:active {
+  transform: scale(0.95);
+}
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
 /* ------------------------------------------------------------------
  * /work — studio portfolio index for the four landing systems.
  * Neutral paper canvas, ink text, one vermilion accent, hairline rules.
@@ -317,6 +422,39 @@ li:hover .wk-cap-title {
   font-variant-numeric: tabular-nums;
 }
 
+/* ---------- hero collage ---------- */
+
+.wk-collage-card {
+  position: absolute;
+  border-radius: var(--wk-r-md);
+  overflow: hidden;
+  border: 1px solid var(--wk-line);
+  box-shadow: rgba(27, 25, 23, 0.14) 0 24px 50px -16px;
+  background: var(--wk-card);
+  will-change: transform;
+}
+
+.wk-collage-float {
+  animation: wk-collage-float 7s ease-in-out infinite alternate;
+}
+
+.wk-collage-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 8 / 5;
+  object-fit: cover;
+  object-position: top;
+}
+
+@keyframes wk-collage-float {
+  from {
+    transform: translateY(-6px);
+  }
+  to {
+    transform: translateY(6px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wk-card-hover,
   .wk-btn,
@@ -327,6 +465,9 @@ li:hover .wk-cap-title {
     transform: none;
   }
   .wk-chip-img {
+    animation: none;
+  }
+  .wk-collage-float {
     animation: none;
   }
 }
