@@ -30,13 +30,13 @@ export default function GlobalNotFound() {
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link href="/" className="btn btn-primary">
-            Orbit home
+            Portfolio home
           </Link>
-          <Link href="/moapoint" className="btn btn-ghost">
-            모아포인트 home
+          <Link href="/plugview" className="btn btn-ghost">
+            Plugview
           </Link>
-          <Link href="/fieldstone" className="btn btn-ghost">
-            Fieldstone home
+          <Link href="/orbit" className="btn btn-ghost">
+            Orbit
           </Link>
         </div>
       </body>

@@ -9,7 +9,7 @@ export const WORK_PROJECTS = [
   {
     id: "plugview",
     name: "Plugview",
-    href: "/",
+    href: "/plugview",
     kind: "UI asset market landing",
     description:
       "A dark, motion-led landing page for a live React UI asset market. The page lets product teams see the interface before it enters their codebase.",

@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: "Plugview",
     title: "Plugview | See it live. Ship it fast.",
     description: "Choose, customize, and ship polished React UI from a live preview.",
-    url: "/",
+    url: "/plugview",
   },
   twitter: {
     card: "summary_large_image",
@@ -51,7 +51,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function PlugviewLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full`}>
       <body className="pv-body min-h-full flex flex-col">

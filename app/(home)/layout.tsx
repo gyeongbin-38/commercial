@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: "Gyeongbin Bak, Landing pages, designed and built",
     description:
       "One-person studio for conversion-focused landing pages. Design and Next.js development in a single hand.",
-    url: "/work",
+    url: "/",
   },
   robots: { index: true, follow: true },
 };
@@ -32,7 +32,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function WorkLayout({ children }: LayoutProps<"/work">) {
+export default function HomeLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={plexSans.variable}>
       <body

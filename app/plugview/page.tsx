@@ -6,7 +6,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "Plugview",
-  url: siteUrl,
+  url: `${siteUrl}/plugview`,
   description:
     "A live React UI asset market for choosing, customizing, and shipping polished interface blocks.",
 };

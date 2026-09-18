@@ -12,7 +12,7 @@ export default function NotFound() {
         The page you&apos;re looking for doesn&apos;t exist, but your
         clients are still waiting back home.
       </p>
-      <Link href="/" className="btn btn-primary mt-8">
+      <Link href="/orbit" className="btn btn-primary mt-8">
         Back to Orbit
       </Link>
     </div>

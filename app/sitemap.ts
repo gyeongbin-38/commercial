@@ -36,10 +36,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${siteUrl}/work`,
+      url: `${siteUrl}/plugview`,
       lastModified: now,
       changeFrequency: "weekly" as const,
-      priority: 0.9,
+      priority: 0.8,
     },
     ...["/orbit/privacy", "/orbit/terms", "/orbit/security", "/orbit/about", "/moapoint/privacy", "/moapoint/terms", "/fieldstone/privacy", "/fieldstone/terms", "/marlowe/privacy", "/marlowe/terms"].map((path) => ({
       url: `${siteUrl}${path}`,
