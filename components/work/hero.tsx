@@ -7,7 +7,7 @@ import { HeroCollage } from "./hero-collage";
 export function WorkHero() {
   return (
     <section id="top" className="overflow-hidden border-b border-[var(--wk-line-soft)]">
-      <div className="wk-container grid items-center gap-10 pb-16 pt-14 min-[900px]:grid-cols-[1.05fr_0.95fr] min-[900px]:gap-6 min-[900px]:pb-24 min-[900px]:pt-20">
+      <div className="wk-container grid items-center gap-8 pb-12 pt-10 min-[900px]:grid-cols-[1.05fr_0.95fr] min-[900px]:gap-6 min-[900px]:pb-24 min-[900px]:pt-20">
         <div>
           <Reveal>
             <p className="wk-eyebrow">Design + development, one pair of hands</p>

@@ -44,7 +44,7 @@ export function HeroCollage() {
   return (
     <div
       ref={ref}
-      className="relative h-[300px] w-full select-none min-[900px]:h-[460px]"
+      className="relative h-[260px] w-full select-none min-[900px]:h-[460px]"
       onPointerMove={onMove}
       onPointerLeave={onLeave}
     >

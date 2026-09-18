@@ -432,6 +432,19 @@ li:hover .wk-cap-title {
   box-shadow: rgba(27, 25, 23, 0.14) 0 24px 50px -16px;
   background: var(--wk-card);
   will-change: transform;
+  cursor: pointer;
+  transition: box-shadow 0.35s var(--wk-ease), z-index 0s;
+}
+
+.wk-collage-card:hover {
+  z-index: 10;
+  box-shadow: rgba(27, 25, 23, 0.22) 0 32px 64px -16px;
+}
+
+.wk-collage-card:focus-visible {
+  z-index: 10;
+  outline: 2px solid var(--wk-accent);
+  outline-offset: 3px;
 }
 
 .wk-collage-float {
@@ -444,6 +457,12 @@ li:hover .wk-cap-title {
   aspect-ratio: 8 / 5;
   object-fit: cover;
   object-position: top;
+  transition: transform 0.45s var(--wk-ease);
+}
+
+.wk-collage-card:hover .wk-collage-img,
+.wk-collage-card:focus-visible .wk-collage-img {
+  transform: scale(1.05);
 }
 
 @keyframes wk-collage-float {
@@ -469,5 +488,8 @@ li:hover .wk-cap-title {
   }
   .wk-collage-float {
     animation: none;
+  }
+  .wk-collage-img {
+    transition: none;
   }
 }

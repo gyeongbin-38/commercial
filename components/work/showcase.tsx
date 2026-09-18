@@ -62,17 +62,18 @@ export function WorkShowcase() {
         ))}
       </ul>
       <nav
-        aria-label="Project progress"
-        className={`fixed right-5 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-2.5 transition-opacity duration-300 min-[760px]:right-8 ${
+        aria-label="Jump to project"
+        className={`fixed right-5 top-1/2 z-30 flex -translate-y-1/2 flex-col items-end gap-2.5 transition-opacity duration-300 min-[760px]:right-8 ${
           inView ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
         {WORK_PROJECTS.map((p, i) => (
-          <span
+          <a
             key={p.id}
-            aria-hidden="true"
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === active ? "w-6 bg-white" : "w-1.5 bg-white/40"
+            href={`#deck-${p.id}`}
+            aria-label={p.name}
+            className={`block h-1.5 rounded-full transition-all duration-300 ${
+              i === active ? "w-6 bg-white" : "w-1.5 bg-white/40 hover:bg-white/70"
             }`}
           />
         ))}
@@ -140,7 +141,11 @@ function Panel({
   const contentOpacity = useTransform(entry, [0.25, 0.9], [0, 1]);
 
   return (
-    <li ref={liRef} className="sticky top-0 h-[100svh]">
+    <li
+      ref={liRef}
+      id={`deck-${p.id}`}
+      className="sticky top-0 h-[100svh]"
+    >
       <motion.div
         style={{ scale, filter }}
         className="relative h-full w-full origin-center overflow-hidden rounded-t-[26px] border-t border-black/10 bg-[#141312] will-change-transform"
@@ -173,7 +178,7 @@ function Panel({
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/10" />
 
-        <div className="absolute left-5 top-6 flex items-center gap-3 text-white/85 min-[760px]:left-10 min-[760px]:top-9">
+        <div className="absolute left-5 top-[76px] flex items-center gap-3 text-white/85 min-[760px]:left-10 min-[760px]:top-[84px]">
           <span
             className="text-[0.8125rem] font-semibold tracking-[0.18em]"
             style={{ color: accent }}
@@ -186,7 +191,7 @@ function Panel({
           </span>
         </div>
 
-        <span className="absolute right-5 top-6 rounded-md border border-white/25 bg-black/30 px-2.5 py-1 text-[0.6875rem] font-bold tracking-wide text-white/90 min-[760px]:right-10 min-[760px]:top-9">
+        <span className="absolute right-5 top-[76px] rounded-md border border-white/25 bg-black/30 px-2.5 py-1 text-[0.6875rem] font-bold tracking-wide text-white/90 min-[760px]:right-10 min-[760px]:top-[84px]">
           {p.lang}
         </span>
 
