@@ -7,22 +7,22 @@ export const STUDIO = {
 
 export const WORK_PROJECTS = [
   {
-    id: "plugview",
-    name: "Plugview",
-    href: "/plugview",
-    kind: "UI asset market landing",
+    id: "orbit",
+    name: "Orbit",
+    href: "/orbit",
+    kind: "B2B SaaS marketing site",
     description:
-      "A dark, motion-led landing page for a live React UI asset market. The page lets product teams see the interface before it enters their codebase.",
+      "A calm client-operations workspace for freelancers and small studios. Apple-derived restraint: one accent, hairline dividers, product UI as the hero.",
     highlights: [
-      "Actual screen capture used as the hero visual",
-      "Live preview tabs and copy-to-clipboard flow",
-      "Responsive English-first build with motion",
+      "Interactive pipeline demo with spring layout animation",
+      "Pricing toggle, lead form with zod validation",
+      "Full SEO: OG image, sitemap, JSON-LD",
     ],
-    tags: ["Next.js", "UI marketplace", "Dark theme", "Interactive"],
+    tags: ["Next.js", "SaaS", "Interactive demo", "English"],
     lang: "EN",
     year: "2026",
-    screenshot: "/work/plugview-screen.png",
-    video: "/work/plugview.webm",
+    screenshot: "/work/orbit.png",
+    video: "/work/orbit.webm",
   },
   {
     id: "moapoint",
@@ -79,22 +79,22 @@ export const WORK_PROJECTS = [
     video: "/work/marlowe.webm",
   },
   {
-    id: "orbit",
-    name: "Orbit",
-    href: "/orbit",
-    kind: "B2B SaaS marketing site",
+    id: "plugview",
+    name: "Plugview",
+    href: "/plugview",
+    kind: "UI asset market landing",
     description:
-      "A calm client-operations workspace for freelancers and small studios. Apple-derived restraint: one accent, hairline dividers, product UI as the hero.",
+      "A dark, motion-led landing page for a live React UI asset market. The page lets product teams see the interface before it enters their codebase.",
     highlights: [
-      "Interactive pipeline demo with spring layout animation",
-      "Pricing toggle, lead form with zod validation",
-      "Full SEO: OG image, sitemap, JSON-LD",
+      "Actual screen capture used as the hero visual",
+      "Live preview tabs and copy-to-clipboard flow",
+      "Responsive English-first build with motion",
     ],
-    tags: ["Next.js", "SaaS", "Interactive demo", "English"],
+    tags: ["Next.js", "UI marketplace", "Dark theme", "Interactive"],
     lang: "EN",
     year: "2026",
-    screenshot: "/work/orbit.png",
-    video: "/work/orbit.webm",
+    screenshot: "/work/plugview-screen.png",
+    video: "/work/plugview.webm",
   },
 ];
 
