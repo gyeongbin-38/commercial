@@ -1,8 +1,8 @@
 # Freelance Kit — landing page studio
 
 Copy-paste material for Upwork / Fiverr / 크몽. Replace `[[bracketed]]`
-placeholders before publishing. The live portfolio hub is `/work` on this
-app — deploy first, then paste the URL into every profile.
+placeholders before publishing. The live portfolio hub is
+`https://gyeongbinbak.com` — paste that URL into every profile.
 
 ---
 
@@ -43,9 +43,9 @@ Stack: Next.js, React, TypeScript, Tailwind CSS, deployed on Vercel.
 You own the repo. Clean handoff with a README, or I keep it hosted.
 
 Selected work: gyeongbinbak.com
-Four complete design systems — a B2B SaaS site, a Korean fintech landing,
-an editorial founder-ecosystem page and a motorsport hub — each designed
-and built end to end.
+Five projects — four design systems (B2B SaaS, Korean fintech, editorial,
+motorsport) plus Plugview, a live React UI asset product I designed and
+built end to end.
 
 Fixed-price packages, written spec before work starts, live preview URL
 from day one. Send me two lines — product, audience, goal — and I'll reply
@@ -60,10 +60,12 @@ with a fixed quote and a start date within one business day.
 - **Skills/tags**: `Landing Page`, `Next.js`, `React`, `Tailwind CSS`,
   `Web Design`, `Responsive Web Design`, `TypeScript`, `Conversion
   Optimization`, `Figma to Web`, `Vercel`
-- **Portfolio items**: one entry per site (4 total) + the `/work` hub.
+- **Portfolio items**: one entry per site (5 total) + the root hub.
   Screenshot at 1440px fold + full-page. Title each by *type*, not brand:
-  "B2B SaaS Marketing Site", "Korean Fintech Landing" etc.
-- **Project catalog**: create the three packages from `/work` as
+  "B2B SaaS Marketing Site", "Korean Fintech Landing" etc. Attach
+  `video/showcase.mp4` (74s walkthrough) to the hub entry or the
+  strongest single entry.
+- **Project catalog**: create the three packages from the portfolio as
   fixed-price projects — this puts you in Upwork's project marketplace,
   which sends inbound leads without bidding.
 
@@ -167,8 +169,9 @@ Next.js: responsive, fast, SEO-wired, with a form that validates.
 See the work before you order: gyeongbinbak.com
 ```
 
-**Gig images:** the 4 site screenshots at 1440px fold + a "3 packages"
-table graphic + one image of the interactive pipeline demo.
+**Gig images:** the site screenshots at 1440px fold + a "3 packages"
+table graphic + one image of the interactive pipeline demo. Upload
+`video/showcase.mp4` as the gig video — gigs with video convert better.
 
 ---
 
@@ -202,7 +205,7 @@ AI·SaaS 서비스의 구조와 용어를 이미 알고 있어서, 제품 설명
 쌓는 기간이라 정가 대비 저렴하게 받고, 슬롯이 차면 정가로 돌아갑니다.
 
 포트폴리오: gyeongbinbak.com
-(SaaS, 핀테크, 에디토리얼, 모터스포츠 — 4가지 디자인 시스템)
+(SaaS, 핀테크, 에디토리얼, 모터스포츠 4종 + 실제 운영 중인 제품 Plugview)
 
 모든 페이지에 포함: 반응형(데스크톱/태블릿/모바일), 문의·리드 폼,
 SEO 메타데이터, 접근성, 배포까지.
@@ -220,12 +223,10 @@ vercel                       # from repo root — links + deploys
 vercel --prod                # production
 ```
 
-- Set env `NEXT_PUBLIC_SITE_URL=https://gyeongbinbak.com` in the Vercel
-  dashboard so OG/sitemap URLs resolve.
-- Optional: attach a custom domain (`.com` reads better than `.vercel.app`
-  on Upwork — ~$12/yr).
-- After deploy, record a 60s Loom walkthrough per site (README already
-  has the demo sequence) and pin the hub link in your profile.
+- `NEXT_PUBLIC_SITE_URL=https://gyeongbinbak.com` is set in Vercel and
+  `.env.local`, so OG/sitemap URLs resolve to the custom domain.
+- `video/showcase.mp4` is the 74s walkthrough for profile/gig uploads;
+  re-record with `node scripts/showcase-video.mjs` after site changes.
 
 ## 6. First 60 days
 
@@ -234,5 +235,5 @@ vercel --prod                # production
    Bid ~20% under target price until 3 reviews exist.
 3. Weeks 5–8: raise prices on every new quote; convert one happy client
    into a written testimonial + permission to show the work.
-4. Ongoing: every finished job → new portfolio card on `/work` with the
+4. Ongoing: every finished job → new portfolio card on the hub with the
    client's real result (signups, conversion, launch date).
