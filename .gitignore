@@ -56,4 +56,7 @@ shots-root/
 video/  
 tmp-showcase/  
 shots-audit/  
-shots-v2/  
+shots-v2/
+catalog-images/
+tmp-frames/
+tmp-frames-clean/
