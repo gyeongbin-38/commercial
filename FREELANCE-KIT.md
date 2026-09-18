@@ -42,7 +42,7 @@ What I build:
 Stack: Next.js, React, TypeScript, Tailwind CSS, deployed on Vercel.
 You own the repo. Clean handoff with a README, or I keep it hosted.
 
-Selected work: [[your-domain]]/work
+Selected work: gyeongbinbak.com/work
 Four complete design systems — a B2B SaaS site, a Korean fintech landing,
 an editorial founder-ecosystem page and a motorsport hub — each designed
 and built end to end.
@@ -85,7 +85,7 @@ and a single CTA rather than a feature list."]]
 
 I design and build landing pages myself — no handoff, no waiting on a
 second freelancer. Recent example (B2B SaaS, interactive demo,
-validated lead form): [[your-domain]]
+validated lead form): gyeongbinbak.com
 
 Fixed price, live preview from day one, [[X]] days turnaround. Happy to
 send a one-paragraph direction idea before you commit.
@@ -104,7 +104,7 @@ objection handling → CTA, repeated down the page.
 
 That's how I build. Design and Next.js development in one hand, so the
 page that ships is the page that was designed. Example of the structure
-I mean: [[your-domain]]/work
+I mean: gyeongbinbak.com/work
 
 I can start [[date]] and put a design concept in front of you in 2–3
 days. Fixed quote once I've seen the brief.
@@ -118,7 +118,7 @@ days. Fixed quote once I've seen the brief.
 Hi [[name]] — landing pages are all I do. Design + Next.js build, one
 person, fixed price, live preview from day one.
 
-Recent work: [[your-domain]]/work
+Recent work: gyeongbinbak.com/work
 
 If the style fits, I'll send a direction sketch before you commit to
 anything.
@@ -164,7 +164,7 @@ conversion landing page
 Design and code in one hand — no agency handoff, no "developer says the
 design can't be built". I design your landing page and build it in
 Next.js: responsive, fast, SEO-wired, with a form that validates.
-See the work before you order: [[your-domain]]/work
+See the work before you order: gyeongbinbak.com/work
 ```
 
 **Gig images:** the 4 site screenshots at 1440px fold + a "3 packages"
@@ -201,7 +201,7 @@ AI·SaaS 서비스의 구조와 용어를 이미 알고 있어서, 제품 설명
 [오픈 이벤트] 첫 5팀 한정 할인가로 진행합니다. 포트폴리오와 후기를
 쌓는 기간이라 정가 대비 저렴하게 받고, 슬롯이 차면 정가로 돌아갑니다.
 
-포트폴리오: [[your-domain]]/work
+포트폴리오: gyeongbinbak.com/work
 (SaaS, 핀테크, 에디토리얼, 모터스포츠 — 4가지 디자인 시스템)
 
 모든 페이지에 포함: 반응형(데스크톱/태블릿/모바일), 문의·리드 폼,
@@ -220,7 +220,7 @@ vercel                       # from repo root — links + deploys
 vercel --prod                # production
 ```
 
-- Set env `NEXT_PUBLIC_SITE_URL=https://[[your-domain]]` in the Vercel
+- Set env `NEXT_PUBLIC_SITE_URL=https://gyeongbinbak.com` in the Vercel
   dashboard so OG/sitemap URLs resolve.
 - Optional: attach a custom domain (`.com` reads better than `.vercel.app`
   on Upwork — ~$12/yr).

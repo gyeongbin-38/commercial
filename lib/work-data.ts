@@ -224,7 +224,7 @@ export const WORK_PROCESS = [
 export const WORK_FAQS = [
   {
     q: "Is the work shown real client work?",
-    a: "The showcased projects are self-directed concept work. Every brand is fictional and disclosed as such on each site. They're built to the same standard as client work: real responsive QA, accessibility, SEO, and interaction details. The point is to show the range of design systems I can design and build, end to end.",
+    a: "Three of the showcased projects are self-directed concept work. Their brands are fictional and disclosed as such on each site. Plugview is a real, live product build. All are held to the same standard as client work: real responsive QA, accessibility, SEO, and interaction details. The point is to show the range of design systems I can design and build, end to end.",
   },
   {
     q: "What do you need from me to start?",
