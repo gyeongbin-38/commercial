@@ -23,17 +23,19 @@ Conversion-Focused Landing Pages — Design + Next.js Build
 ### Overview
 
 ```
-You need a landing page that looks designed — not assembled — and ships on a
-date you can plan around. I do both halves: the design concept and the
-production build, so nothing gets lost between a Figma file and the real site.
+You need a landing page that looks designed — not assembled — and ships
+on a date you can plan around. I do both halves: the design concept and
+the production build, so nothing gets lost between a Figma file and the
+real site.
 
-I'm an AI applications major — most of the people buying landing pages right
-now are AI and SaaS startups, and I already speak that language. No call
-spent explaining what your product does.
+I'm an AI applications major and a hackathon award winner — most of the
+people buying landing pages right now are AI and SaaS startups, and I
+already speak that language. No call spent explaining what your product
+does.
 
 What I build:
 • Marketing landing pages for SaaS, fintech, consumer apps and campaigns
-• Interactive product demos, pricing toggles, lead forms that actually validate
+• Interactive product demos, pricing toggles, lead forms that validate
 • Fully responsive builds checked at desktop, tablet and phone widths
 • SEO wired in — metadata, Open Graph, sitemap, structured data
 • Accessible by default — keyboard navigation, screen-reader labels,
@@ -42,15 +44,19 @@ What I build:
 Stack: Next.js, React, TypeScript, Tailwind CSS, deployed on Vercel.
 You own the repo. Clean handoff with a README, or I keep it hosted.
 
-Selected work: gyeongbinbak.com
-Five projects — four design systems (B2B SaaS, Korean fintech, editorial,
-motorsport) plus Plugview, a live React UI asset product I designed and
-built end to end.
+Selected work — a sample of a broader set of design projects, in my
+portfolio below: a B2B SaaS marketing site, a Korean fintech landing,
+an editorial ecosystem page, a motorsport hub, and Plugview, a product
+I designed and built (live public demo).
 
 Fixed-price packages, written spec before work starts, live preview URL
-from day one. Send me two lines — product, audience, goal — and I'll reply
-with a fixed quote and a start date within one business day.
+from day one. Send me two lines — product, audience, goal — and I'll
+reply with a fixed quote and a start date within one business day.
 ```
+
+> Note: Upwork rejects external links in the overview — the URL goes in
+> the Portfolio entries, not here. On platforms that allow links
+> (크몽/직접 영업), add "Selected work: gyeongbinbak.com" back.
 
 ### Profile settings
 
