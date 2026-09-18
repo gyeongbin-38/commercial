@@ -106,8 +106,8 @@ export const WORK_CAPABILITIES = [
     body: "Production build on Vercel with your domain, or a clean handoff to your own infrastructure.",
   },
   {
-    title: "Measured, not vibes",
-    body: "All four demos Lighthouse-audited on real profiles, with cumulative layout shift at 0.00 across the board.",
+    title: "Checked on the live site",
+    body: "Production builds are screenshotted at 1440 / 1280 / 834 / 390 widths before any link goes out, with zero console errors.",
   },
 ];
 

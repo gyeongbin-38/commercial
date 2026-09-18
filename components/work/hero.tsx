@@ -21,9 +21,10 @@ export function WorkHero() {
         <Reveal delay={0.16}>
           <div className="mt-7 flex max-w-[38rem] flex-col gap-5">
             <p className="wk-lead">
-              I&apos;m {STUDIO.name}, an AI applications major in Seoul. No
-              designer-to-developer handoff: concept, responsive build, forms,
-              SEO and deploy come from the same place.
+              I design and build conversion-focused landing pages in
+              Next.js, from concept to responsive build, forms, SEO and
+              deployment. No handoff: the page that ships is the page that
+              was designed.
             </p>
             <p className="flex items-center gap-2.5 text-[0.875rem] font-medium text-[var(--wk-ink)]">
               <span className="wk-dot" aria-hidden="true" />
@@ -60,8 +61,8 @@ export function WorkHero() {
             </WkMagnetic>
           </div>
           <p className="mt-6 text-[0.8125rem] font-medium text-[var(--wk-muted)]">
-            Seoul, KST, remote worldwide, replies within 24h, 5-10 days to
-            launch
+            AI applications major, Seoul KST, remote worldwide, replies
+            within 24h, 5-10 days to launch
           </p>
         </Reveal>
       </div>

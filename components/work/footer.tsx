@@ -65,8 +65,8 @@ export function WorkFooter() {
             <LocalTime />
           </p>
           <p>
-            All showcased brands are fictional concept work, built and
-            disclosed as demos.
+            Three concept projects plus one live product build, all
+            self-directed.
           </p>
         </div>
       </div>

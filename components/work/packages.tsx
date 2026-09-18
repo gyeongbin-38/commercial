@@ -40,8 +40,8 @@ export function WorkPackages() {
             </span>
             <p className="text-[0.875rem] font-medium text-[var(--wk-dark-muted)]">
               First 5 client slots. I&apos;m building my client list, so early
-              partners get the founding rate. Regular prices shown struck
-              through; they go into effect after the slots fill.
+              partners get the founding rate. Regular pricing goes into
+              effect after the slots fill.
             </p>
           </div>
         </Reveal>
@@ -64,7 +64,7 @@ export function WorkPackages() {
                 >
                   {pkg.featured && (
                     <p className="absolute -top-3 left-7 rounded-[var(--wk-r-sm)] bg-[var(--wk-accent)] px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.1em] text-[var(--wk-on-accent)]">
-                      Most picked
+                      Recommended
                     </p>
                   )}
 
@@ -93,24 +93,12 @@ export function WorkPackages() {
                     {pkg.summary}
                   </p>
 
-                  <p className="wk-price mt-6">
-                    {pkg.price}
-                    <span
-                      className="ml-2 align-middle text-[1.125rem] font-medium tracking-normal line-through opacity-60"
-                      style={{
-                        color: pkg.featured
-                          ? "var(--wk-muted)"
-                          : "var(--wk-dark-muted)",
-                      }}
-                    >
-                      {pkg.regularPrice}
-                    </span>
-                  </p>
+                  <p className="wk-price mt-6">{pkg.price}</p>
                   <p
                     className="mt-1 text-[0.75rem] font-semibold uppercase tracking-[0.08em]"
                     style={{ color: "var(--wk-accent)" }}
                   >
-                    launch rate · reg. {pkg.regularPrice}
+                    founding rate
                   </p>
 
                   <ul className="mt-6 flex flex-1 flex-col gap-2.5">
