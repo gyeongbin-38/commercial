@@ -1,5 +1,6 @@
 import { STUDIO, WORK_ABOUT } from "@/lib/work-data";
 import { Reveal } from "@/components/ui/reveal";
+import { Pop } from "./pop";
 
 export function WorkAbout() {
   return (
@@ -10,9 +11,10 @@ export function WorkAbout() {
             <h2 className="wk-h2 max-w-[16ch]">{WORK_ABOUT.title}</h2>
 
             <dl className="mt-8 flex flex-col divide-y divide-[var(--wk-line-soft)] border-y border-[var(--wk-line-soft)]">
-              {WORK_ABOUT.facts.map((f) => (
-                <div
+              {WORK_ABOUT.facts.map((f, i) => (
+                <Pop
                   key={f.label}
+                  delay={0.05 * i}
                   className="flex items-baseline justify-between gap-4 py-3"
                 >
                   <dt className="text-[0.8125rem] font-medium text-[var(--wk-muted)]">
@@ -21,7 +23,7 @@ export function WorkAbout() {
                   <dd className="text-[0.875rem] font-semibold tracking-tight text-right">
                     {f.value}
                   </dd>
-                </div>
+                </Pop>
               ))}
             </dl>
           </Reveal>

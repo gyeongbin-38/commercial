@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+} from "motion/react";
 import { STUDIO } from "@/lib/work-data";
 import { WkMagnetic } from "./magnetic";
 
@@ -13,7 +18,17 @@ const LINKS = [
 
 export function WorkNavbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [active, setActive] = useState<string | null>(null);
+  const reduce = useReducedMotion();
+  const { scrollY } = useScroll();
+
+  // Hide on scroll-down past the hero, reveal on any scroll-up.
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const prev = scrollY.getPrevious() ?? y;
+    if (y < 90 || y < prev - 4) setHidden(false);
+    else if (y > prev + 4 && y > 160) setHidden(true);
+  });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -41,7 +56,9 @@ export function WorkNavbar() {
 
   return (
     <header
-      className="sticky top-0 z-40 border-b transition-colors"
+      className={`sticky top-0 z-40 border-b transition-all duration-300 ${
+        hidden && !reduce ? "-translate-y-full" : "translate-y-0"
+      }`}
       style={{
         background: scrolled ? "rgba(247,247,245,0.92)" : "transparent",
         borderColor: scrolled ? "var(--wk-line-soft)" : "transparent",

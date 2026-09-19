@@ -12,8 +12,8 @@ export function WorkProjects() {
             </h2>
             <p className="wk-lead max-w-[26rem] text-[0.9375rem]">
               Four self-directed concept systems (fictional brands, disclosed
-              on each site) plus Plugview, a live product build. Scroll —
-              each one takes over the screen.
+              on each site) plus Plugview, a live product build. Keep
+              scrolling — the rail moves sideways.
             </p>
           </div>
         </Reveal>
