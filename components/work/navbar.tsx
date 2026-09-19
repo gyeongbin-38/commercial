@@ -65,29 +65,31 @@ export function WorkNavbar() {
       }}
     >
       <nav
-        className="wk-container flex h-16 items-center justify-between"
+        className="wk-container flex h-10 items-center justify-between"
         aria-label="Main"
       >
         <a
           href="#top"
-          className="flex items-center gap-2.5 text-[0.9375rem] font-semibold tracking-tight"
+          className="group flex items-center gap-2 text-[0.875rem] font-semibold tracking-tight"
         >
           <span
-            className="flex h-7 w-7 items-center justify-center rounded-full text-[0.6875rem] font-bold text-[var(--wk-on-accent)]"
+            className="flex h-6 w-6 items-center justify-center rounded-full text-[0.625rem] font-bold text-[var(--wk-on-accent)] transition-colors group-hover:bg-[#a8380d]"
             style={{ background: "var(--wk-accent)" }}
           >
             {STUDIO.shortName}
           </span>
-          {STUDIO.name}
+          <span className="transition-colors group-hover:text-[var(--wk-accent-dim)]">
+            {STUDIO.name}
+          </span>
         </a>
 
-        <ul className="hidden items-center gap-7 min-[700px]:flex">
+        <ul className="hidden items-center gap-6 min-[700px]:flex">
           {LINKS.map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
                 aria-current={active === l.href ? "true" : undefined}
-                className="text-[0.875rem] font-medium transition-colors"
+                className="text-[0.8125rem] font-medium transition-colors"
                 style={{
                   color:
                     active === l.href
@@ -103,7 +105,12 @@ export function WorkNavbar() {
 
         <a
           href={`mailto:${STUDIO.email}`}
-          className="wk-btn wk-btn-primary h-9 px-4 text-[0.8125rem]"
+          className="wk-btn wk-btn-primary"
+          style={{
+            height: "1.75rem",
+            paddingInline: "0.75rem",
+            fontSize: "0.75rem",
+          }}
         >
           Start a project
         </a>
