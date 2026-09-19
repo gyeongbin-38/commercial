@@ -13,13 +13,19 @@ import {
 } from "motion/react";
 import { WORK_MARQUEE } from "@/lib/work-data";
 
-function Strip({ ariaHidden = false }: { ariaHidden?: boolean }) {
+function Strip({
+  items,
+  ariaHidden = false,
+}: {
+  items: string[];
+  ariaHidden?: boolean;
+}) {
   return (
     <div
       className="flex shrink-0 items-center"
       aria-hidden={ariaHidden || undefined}
     >
-      {WORK_MARQUEE.map((item) => (
+      {items.map((item) => (
         <span key={item} className="flex items-center">
           <span className="wk-marquee-item">{item}</span>
           <span className="wk-marquee-dot" aria-hidden="true" />
@@ -29,9 +35,20 @@ function Strip({ ariaHidden = false }: { ariaHidden?: boolean }) {
   );
 }
 
-/* Velocity marquee: steady drift left, scroll velocity adds speed and
-   can flip direction. Pauses on hover, static under reduced motion. */
-export function WorkMarquee() {
+/* Velocity marquee: steady drift, scroll velocity adds speed and can
+   flip direction. Pauses on hover, static under reduced motion.
+   `reverse` drifts the other way — used for the deliverables ticker. */
+export function WorkMarquee({
+  items = WORK_MARQUEE,
+  reverse = false,
+  label = "Services",
+  className = "",
+}: {
+  items?: string[];
+  reverse?: boolean;
+  label?: string;
+  className?: string;
+}) {
   const reduce = useReducedMotion();
   const track = useRef<HTMLDivElement>(null);
   const paused = useRef(false);
@@ -48,7 +65,8 @@ export function WorkMarquee() {
     if (reduce || paused.current) return;
     const half = track.current ? track.current.scrollWidth / 2 : 0;
     if (!half) return;
-    let next = x.get() - 70 * factor.get() * (delta / 1000);
+    const dir = reverse ? 70 : -70;
+    let next = x.get() + dir * factor.get() * (delta / 1000);
     next %= half;
     if (next > 0) next -= half;
     x.set(next);
@@ -56,14 +74,14 @@ export function WorkMarquee() {
 
   return (
     <div
-      className="overflow-hidden border-b border-[var(--wk-line-soft)] py-4"
-      aria-label="Services"
+      className={`overflow-hidden border-b border-[var(--wk-line-soft)] py-4 ${className}`}
+      aria-label={label}
       onMouseEnter={() => (paused.current = true)}
       onMouseLeave={() => (paused.current = false)}
     >
       <motion.div ref={track} className="flex w-max" style={{ x }}>
-        <Strip />
-        <Strip ariaHidden />
+        <Strip items={items} />
+        <Strip items={items} ariaHidden />
       </motion.div>
     </div>
   );

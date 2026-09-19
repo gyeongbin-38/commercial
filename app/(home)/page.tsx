@@ -5,11 +5,13 @@ import { WorkHero } from "@/components/work/hero";
 import { WorkMarquee } from "@/components/work/marquee";
 import { WorkProjects } from "@/components/work/projects";
 import { WorkTryIt } from "@/components/work/try-it";
-import { WorkCapabilities, WorkProcess } from "@/components/work/process";
+import { WorkBento } from "@/components/work/bento";
+import { WorkProcess } from "@/components/work/process";
 import { WorkAbout } from "@/components/work/about";
 import { WorkPackages } from "@/components/work/packages";
 import { WorkFaq } from "@/components/work/faq";
 import { WorkFooter } from "@/components/work/footer";
+import { WORK_DELIVERABLES } from "@/lib/work-data";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -35,9 +37,15 @@ export default function WorkPage() {
         <WorkMarquee />
         <WorkProjects />
         <WorkTryIt />
-        <WorkCapabilities />
+        <WorkBento />
         <WorkAbout />
         <WorkPackages />
+        <WorkMarquee
+          items={WORK_DELIVERABLES}
+          reverse
+          label="Deliverables"
+          className="border-t-0"
+        />
         <WorkProcess />
         <WorkFaq />
       </main>

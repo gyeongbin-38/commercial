@@ -474,6 +474,55 @@ li:hover .wk-cap-title {
   }
 }
 
+/* ---------- bento tiles ---------- */
+
+.wk-bento {
+  transition:
+    transform 0.35s var(--wk-ease),
+    box-shadow 0.35s var(--wk-ease);
+}
+
+.wk-bento:hover {
+  transform: translateY(-4px);
+  box-shadow: rgba(27, 25, 23, 0.1) 0 18px 34px -14px;
+}
+
+/* ---------- founding-slot pulse dots ---------- */
+
+.wk-pulse-dot {
+  animation: wk-pulse-dot 2.4s ease-in-out infinite;
+}
+
+@keyframes wk-pulse-dot {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 1;
+  }
+}
+
+/* ---------- hero scroll cue ---------- */
+
+.wk-scroll-cue {
+  animation: wk-scroll-cue 1.9s ease-in-out infinite;
+}
+
+@keyframes wk-scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(7px);
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wk-card-hover,
   .wk-btn,
@@ -491,5 +540,14 @@ li:hover .wk-cap-title {
   }
   .wk-collage-img {
     transition: none;
+  }
+  .wk-bento,
+  .wk-bento:hover {
+    transition: none;
+    transform: none;
+  }
+  .wk-pulse-dot,
+  .wk-scroll-cue {
+    animation: none;
   }
 }

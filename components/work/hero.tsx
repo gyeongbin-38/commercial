@@ -73,6 +73,23 @@ export function WorkHero() {
           <HeroCollage />
         </Reveal>
       </div>
+
+      <div className="flex justify-center pb-6" aria-hidden="true">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 18 18"
+          className="wk-scroll-cue text-[var(--wk-muted)]"
+        >
+          <path
+            d="M9 3v11m0 0l-4.5-4.5M9 14l4.5-4.5"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
     </section>
   );
 }

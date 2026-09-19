@@ -1,36 +1,29 @@
-import { WORK_CAPABILITIES, WORK_PROCESS } from "@/lib/work-data";
+"use client";
+
+import { useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "motion/react";
+import { WORK_PROCESS } from "@/lib/work-data";
 import { Reveal } from "@/components/ui/reveal";
-
-export function WorkCapabilities() {
-  return (
-    <section className="border-b border-[var(--wk-line-soft)] bg-[var(--wk-bg-deep)]">
-      <div className="wk-container py-16 min-[900px]:py-20">
-        <Reveal>
-          <h2 className="wk-h2 max-w-[22ch]">
-            The parts clients don&apos;t see until they&apos;re missing
-          </h2>
-        </Reveal>
-
-        <ul className="mt-10 flex flex-wrap gap-3">
-          {WORK_CAPABILITIES.map((c, i) => (
-            <li key={c.title}>
-              <Reveal delay={0.05 * i} y={10}>
-                <span
-                  className="wk-cap-chip inline-flex items-center rounded-full border border-[var(--wk-line)] bg-[var(--wk-card)] px-4 py-2 text-[0.875rem] font-medium text-[var(--wk-ink-soft)]"
-                  title={c.body}
-                >
-                  {c.title}
-                </span>
-              </Reveal>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
+import { Pop } from "./pop";
 
 export function WorkProcess() {
+  const ref = useRef<HTMLOListElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.85", "end 0.5"],
+  });
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 24,
+    restDelta: 0.001,
+  });
+
   return (
     <section id="process" className="scroll-mt-20">
       <div className="wk-container py-16 min-[900px]:py-24">
@@ -40,31 +33,40 @@ export function WorkProcess() {
           </h2>
         </Reveal>
 
-        <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <ol
+          ref={ref}
+          className="relative mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {/* Accent line draws across the steps as you scroll through */}
+          {!reduce && (
+            <motion.span
+              aria-hidden="true"
+              className="absolute -top-px left-0 h-[2px] w-full origin-left bg-[var(--wk-accent)]"
+              style={{ scaleX }}
+            />
+          )}
           {WORK_PROCESS.map((s, i) => (
-            <li key={s.step}>
-              <Reveal delay={0.07 * i} className="h-full">
-                <div className="h-full border-t-2 border-[var(--wk-ink)] pt-5">
-                  <div className="flex items-baseline justify-between">
-                    <span
-                      className="text-[0.8125rem] font-semibold tracking-[0.08em] text-[var(--wk-accent)]"
-                      style={{ fontVariantNumeric: "tabular-nums" }}
-                    >
-                      {s.step}
-                    </span>
-                    <span className="text-[0.75rem] font-semibold uppercase tracking-[0.08em] text-[var(--wk-muted)]">
-                      {s.day}
-                    </span>
-                  </div>
-                  <h3 className="mt-3 text-[1.0625rem] font-semibold tracking-tight">
-                    {s.title}
-                  </h3>
-                  <p className="mt-2 text-[0.875rem] leading-relaxed text-[var(--wk-muted)]">
-                    {s.body}
-                  </p>
+            <Pop as="li" key={s.step} delay={0.07 * i} className="h-full">
+              <div className="h-full border-t-2 border-[var(--wk-ink)] pt-5">
+                <div className="flex items-baseline justify-between">
+                  <span
+                    className="text-[0.8125rem] font-semibold tracking-[0.08em] text-[var(--wk-accent)]"
+                    style={{ fontVariantNumeric: "tabular-nums" }}
+                  >
+                    {s.step}
+                  </span>
+                  <span className="text-[0.75rem] font-semibold uppercase tracking-[0.08em] text-[var(--wk-muted)]">
+                    {s.day}
+                  </span>
                 </div>
-              </Reveal>
-            </li>
+                <h3 className="mt-3 text-[1.0625rem] font-semibold tracking-tight">
+                  {s.title}
+                </h3>
+                <p className="mt-2 text-[0.875rem] leading-relaxed text-[var(--wk-muted)]">
+                  {s.body}
+                </p>
+              </div>
+            </Pop>
           ))}
         </ol>
       </div>

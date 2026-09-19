@@ -142,6 +142,21 @@ export const WORK_MARQUEE = [
   "5-10 day delivery",
 ];
 
+export const WORK_DELIVERABLES = [
+  "OG images",
+  "Sitemap",
+  "JSON-LD",
+  "Robots.txt",
+  "Lead forms",
+  "Mobile menu",
+  "Reduced motion",
+  "Keyboard nav",
+  "README handoff",
+  "Live preview URL",
+  "Analytics-ready",
+  "Favicon set",
+];
+
 export const WORK_PACKAGES = [
   {
     id: "launch",

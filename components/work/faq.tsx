@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { WORK_FAQS } from "@/lib/work-data";
 import { Reveal } from "@/components/ui/reveal";
+import { Pop } from "./pop";
 
 export function WorkFaq() {
   const [open, setOpen] = useState<number | null>(0);
@@ -25,7 +26,12 @@ export function WorkFaq() {
             {WORK_FAQS.map((f, i) => {
               const isOpen = open === i;
               return (
-                <li key={f.q} className="wk-card overflow-hidden">
+                <Pop
+                  as="li"
+                  key={f.q}
+                  delay={0.05 * i}
+                  className="wk-card overflow-hidden"
+                >
                   <button
                     type="button"
                     className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
@@ -66,7 +72,7 @@ export function WorkFaq() {
                       </p>
                     </div>
                   </div>
-                </li>
+                </Pop>
               );
             })}
           </ul>

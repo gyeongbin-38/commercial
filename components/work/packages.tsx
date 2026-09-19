@@ -1,5 +1,6 @@
 import { STUDIO, WORK_PACKAGES } from "@/lib/work-data";
 import { Reveal } from "@/components/ui/reveal";
+import { Pop } from "./pop";
 
 export function WorkPackages() {
   return (
@@ -33,7 +34,8 @@ export function WorkPackages() {
               {[0, 1, 2, 3, 4].map((i) => (
                 <span
                   key={i}
-                  className="h-1.5 w-1.5 rounded-full border border-[var(--wk-accent)]"
+                  className="wk-pulse-dot h-1.5 w-1.5 rounded-full border border-[var(--wk-accent)]"
+                  style={{ animationDelay: `${i * 0.3}s` }}
                   aria-hidden="true"
                 />
               ))}
@@ -49,9 +51,13 @@ export function WorkPackages() {
         <ul className="mt-10 grid gap-5 lg:grid-cols-3">
           {WORK_PACKAGES.map((pkg, i) => (
             <li key={pkg.id} className="h-full">
-              <Reveal delay={0.06 * i} className="h-full">
+              <Pop delay={0.06 * i} className="h-full">
                 <div
-                  className="relative flex h-full flex-col rounded-[var(--wk-r-lg)] p-7"
+                  className={`relative flex h-full flex-col rounded-[var(--wk-r-lg)] p-7 ${
+                    pkg.featured
+                      ? "lg:-rotate-[1.3deg] lg:hover:rotate-0 transition-transform duration-500"
+                      : ""
+                  }`}
                   style={{
                     background: pkg.featured
                       ? "var(--wk-bg)"
@@ -138,7 +144,7 @@ export function WorkPackages() {
                     Start with {pkg.name}
                   </a>
                 </div>
-              </Reveal>
+              </Pop>
             </li>
           ))}
         </ul>
