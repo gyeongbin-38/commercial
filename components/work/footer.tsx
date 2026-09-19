@@ -2,6 +2,7 @@ import { STUDIO, WORK_PROJECTS } from "@/lib/work-data";
 import { Reveal } from "@/components/ui/reveal";
 import { LocalTime } from "./localtime";
 import { CopyEmail } from "./copy-email";
+import { Magnetic } from "./magnetic";
 
 export function WorkFooter() {
   return (
@@ -43,14 +44,16 @@ export function WorkFooter() {
             quote and a start date back within 24 hours.
           </p>
           <div className="flex flex-wrap gap-3">
-            <a
-              href={`mailto:${STUDIO.email}?subject=${encodeURIComponent(
-                "Landing page project"
-              )}`}
-              className="wk-btn wk-btn-dark"
-            >
-              {STUDIO.email}
-            </a>
+            <Magnetic strength={0.25}>
+              <a
+                href={`mailto:${STUDIO.email}?subject=${encodeURIComponent(
+                  "Landing page project"
+                )}`}
+                className="wk-btn wk-btn-dark"
+              >
+                {STUDIO.email}
+              </a>
+            </Magnetic>
             <CopyEmail />
             <a
               href="#work"

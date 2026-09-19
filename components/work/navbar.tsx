@@ -7,6 +7,7 @@ import {
   useScroll,
 } from "motion/react";
 import { STUDIO } from "@/lib/work-data";
+import { Scramble } from "./scramble";
 
 const LINKS = [
   { href: "#work", label: "Work" },
@@ -27,8 +28,8 @@ export function WorkNavbar() {
   // Hide on scroll-down past the hero, reveal on any scroll-up.
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? y;
-    if (y < 90 || y < prev - 4) setHidden(false);
-    else if (y > prev + 4 && y > 160) {
+    if (y < 60 || y < prev - 2) setHidden(false);
+    else if (y > prev + 2 && y > 90) {
       setHidden(true);
       setMenuOpen(false);
     }
@@ -89,14 +90,9 @@ export function WorkNavbar() {
       >
         <a
           href="#top"
-          className="group flex items-center gap-2 text-[0.875rem] font-semibold tracking-tight"
+          className="text-[0.875rem] font-semibold tracking-tight transition-colors hover:text-[var(--wk-accent-dim)]"
         >
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--wk-accent)] text-[0.625rem] font-bold text-[var(--wk-on-accent)] transition-colors group-hover:bg-[#a8380d]">
-            {STUDIO.shortName}
-          </span>
-          <span className="transition-colors group-hover:text-[var(--wk-accent-dim)]">
-            {STUDIO.name}
-          </span>
+          <Scramble text={STUDIO.name} />
         </a>
 
         <ul className="hidden items-center gap-6 min-[700px]:flex">
@@ -113,7 +109,7 @@ export function WorkNavbar() {
                       : "var(--wk-muted)",
                 }}
               >
-                {l.label}
+                <Scramble text={l.label} />
               </a>
             </li>
           ))}
@@ -122,7 +118,7 @@ export function WorkNavbar() {
         <div className="flex items-center gap-1">
           <a
             href={`mailto:${STUDIO.email}`}
-            className="wk-btn wk-btn-primary"
+            className="wk-btn wk-btn-ghost"
             style={{
               height: "2rem",
               paddingInline: "0.875rem",

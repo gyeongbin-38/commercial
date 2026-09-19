@@ -1,6 +1,7 @@
 import { STUDIO, WORK_PACKAGES } from "@/lib/work-data";
 import { Reveal } from "@/components/ui/reveal";
 import { Pop } from "./pop";
+import { Magnetic } from "./magnetic";
 
 export function WorkPackages() {
   return (
@@ -132,16 +133,18 @@ export function WorkPackages() {
                     ))}
                   </ul>
 
-                  <a
-                    href={`mailto:${STUDIO.email}?subject=${encodeURIComponent(
-                      `${pkg.name} package inquiry`
-                    )}`}
-                    className={`wk-btn mt-8 w-full ${
-                      pkg.featured ? "wk-btn-primary" : "wk-btn-dark"
-                    }`}
-                  >
-                    Start with {pkg.name}
-                  </a>
+                  <Magnetic strength={0.2} className="mt-8 w-full">
+                    <a
+                      href={`mailto:${STUDIO.email}?subject=${encodeURIComponent(
+                        `${pkg.name} package inquiry`
+                      )}`}
+                      className={`wk-btn w-full ${
+                        pkg.featured ? "wk-btn-primary" : "wk-btn-dark"
+                      }`}
+                    >
+                      Start with {pkg.name}
+                    </a>
+                  </Magnetic>
                 </div>
               </Pop>
             </li>

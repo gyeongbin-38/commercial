@@ -5,24 +5,25 @@ import {
   motion,
   useReducedMotion,
   useScroll,
-  useSpring,
+  useTransform,
+  type MotionValue,
 } from "motion/react";
 import { WORK_PROCESS } from "@/lib/work-data";
 import { Reveal } from "@/components/ui/reveal";
 import { Pop } from "./pop";
+
+/* Each step owns its own progress bar; they fill one after another as
+   the section scrolls through, so position on the page maps to a step,
+   not to one global meter. */
 
 export function WorkProcess() {
   const ref = useRef<HTMLOListElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 0.85", "end 0.5"],
+    offset: ["start 0.85", "end 0.55"],
   });
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 24,
-    restDelta: 0.001,
-  });
+  const n = WORK_PROCESS.length;
 
   return (
     <section id="process" className="scroll-mt-20">
@@ -35,19 +36,17 @@ export function WorkProcess() {
 
         <ol
           ref={ref}
-          className="relative mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
+          className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
         >
-          {/* Accent line draws across the steps as you scroll through */}
-          {!reduce && (
-            <motion.span
-              aria-hidden="true"
-              className="absolute -top-px left-0 h-[2px] w-full origin-left bg-[var(--wk-accent)]"
-              style={{ scaleX }}
-            />
-          )}
           {WORK_PROCESS.map((s, i) => (
             <Pop as="li" key={s.step} delay={0.07 * i} className="h-full">
-              <div className="h-full border-t-2 border-[var(--wk-ink)] pt-5">
+              <StepBar
+                progress={scrollYProgress}
+                index={i}
+                total={n}
+                reduce={!!reduce}
+              />
+              <div className="h-full pt-5">
                 <div className="flex items-baseline justify-between">
                   <span
                     className="text-[0.8125rem] font-semibold tracking-[0.08em] text-[var(--wk-accent-dim)]"
@@ -71,5 +70,36 @@ export function WorkProcess() {
         </ol>
       </div>
     </section>
+  );
+}
+
+function StepBar({
+  progress,
+  index,
+  total,
+  reduce,
+}: {
+  progress: MotionValue<number>;
+  index: number;
+  total: number;
+  reduce: boolean;
+}) {
+  // Slice the section scroll into equal segments; this bar fills only
+  // while its own segment is passing.
+  const scaleX = useTransform(
+    progress,
+    [index / total, (index + 1) / total],
+    [0, 1],
+  );
+  return (
+    <div
+      className="h-[2px] w-full bg-[var(--wk-line)]"
+      role="presentation"
+    >
+      <motion.div
+        className="h-full w-full origin-left bg-[var(--wk-accent)]"
+        style={{ scaleX: reduce ? 1 : scaleX }}
+      />
+    </div>
   );
 }

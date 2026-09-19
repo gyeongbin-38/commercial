@@ -5,9 +5,11 @@ import Image from "next/image";
 import {
   motion,
   useMotionValue,
+  useScroll,
   useSpring,
   useTransform,
   useReducedMotion,
+  type MotionValue,
 } from "motion/react";
 import { WORK_PROJECTS } from "@/lib/work-data";
 
@@ -30,6 +32,13 @@ export function HeroCollage() {
   const sy = useSpring(py, { stiffness: 60, damping: 18 });
   const reduce = useReducedMotion();
 
+  // Cards drift apart as the hero scrolls out — a quiet send-off that
+  // reads as depth, not decoration.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+
   const onMove = (e: React.PointerEvent) => {
     if (reduce) return;
     const r = ref.current?.getBoundingClientRect();
@@ -50,7 +59,13 @@ export function HeroCollage() {
       onPointerLeave={onLeave}
     >
       {LAYERS.map((l) => (
-        <CollageLayer key={l.i} layer={l} sx={sx} sy={sy} />
+        <CollageLayer
+          key={l.i}
+          layer={l}
+          sx={sx}
+          sy={sy}
+          scroll={reduce ? null : scrollYProgress}
+        />
       ))}
     </div>
   );
@@ -60,14 +75,23 @@ function CollageLayer({
   layer,
   sx,
   sy,
+  scroll,
 }: {
   layer: (typeof LAYERS)[number];
   sx: ReturnType<typeof useSpring>;
   sy: ReturnType<typeof useSpring>;
+  scroll: MotionValue<number> | null;
 }) {
   const p = WORK_PROJECTS[layer.i];
+  const zero = useMotionValue(0);
+  const src = scroll ?? zero;
   const x = useTransform(sx, (v) => v * layer.depth);
-  const y = useTransform(sy, (v) => v * layer.depth * 0.7);
+  const drift = useTransform(src, [0, 1], [0, -layer.depth * 2.4]);
+  const y = useTransform([sy, drift], (v) => {
+    const [a, b] = v as [number, number];
+    return a * layer.depth * 0.7 + b;
+  });
+  const rot = useTransform(src, [0, 1], [layer.r, layer.r * 1.7]);
 
   return (
     <motion.a
@@ -80,7 +104,7 @@ function CollageLayer({
         left: layer.x,
         top: layer.y,
         width: layer.w,
-        rotate: layer.r,
+        rotate: scroll ? rot : layer.r,
         x,
         y,
       }}

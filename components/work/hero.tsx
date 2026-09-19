@@ -2,6 +2,7 @@ import { STUDIO } from "@/lib/work-data";
 import { Reveal } from "@/components/ui/reveal";
 import { HeroCollage } from "./hero-collage";
 import { CopyEmail } from "./copy-email";
+import { Magnetic } from "./magnetic";
 
 export function WorkHero() {
   return (
@@ -35,26 +36,30 @@ export function WorkHero() {
 
           <Reveal delay={0.24}>
             <div className="mt-9 flex flex-wrap items-center gap-3">
-              <a href="#work" className="wk-btn wk-btn-primary">
-                See the work
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M7 2v9m0 0l-3.5-3.5M7 11l3.5-3.5"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </a>
-              <a href={`mailto:${STUDIO.email}`} className="wk-btn wk-btn-ghost">
-                {STUDIO.email}
-              </a>
+              <Magnetic>
+                <a href="#work" className="wk-btn wk-btn-primary">
+                  See the work
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M7 2v9m0 0l-3.5-3.5M7 11l3.5-3.5"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </a>
+              </Magnetic>
+              <Magnetic strength={0.25}>
+                <a href={`mailto:${STUDIO.email}`} className="wk-btn wk-btn-ghost">
+                  {STUDIO.email}
+                </a>
+              </Magnetic>
               <CopyEmail variant="light" />
             </div>
           </Reveal>

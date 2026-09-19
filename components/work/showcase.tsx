@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   motion,
+  useMotionTemplate,
+  useMotionValue,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
@@ -225,9 +228,12 @@ function Card({
   onFocus: () => void;
 }) {
   const liRef = useRef<HTMLLIElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const userPaused = useRef(false);
   const [playing, setPlaying] = useState(false);
+  const [mediaHover, setMediaHover] = useState(false);
+  const reduce = useReducedMotion();
 
   // A subtle swell as the card reaches center — the only transform left,
   // so neighboring work stays legible enough to compare.
@@ -237,6 +243,35 @@ function Card({
     [centered - vw * 0.8, centered, centered + vw * 0.8],
     [0.96, 1, 0.96],
   );
+
+  // Pointer tilt + moving glare on the media frame — direct response,
+  // springs only for the return-to-rest.
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const tiltX = useSpring(useTransform(py, [-0.5, 0.5], [4, -4]), {
+    stiffness: 220,
+    damping: 20,
+  });
+  const tiltY = useSpring(useTransform(px, [-0.5, 0.5], [-4, 4]), {
+    stiffness: 220,
+    damping: 20,
+  });
+  const glareX = useTransform(px, [-0.5, 0.5], [15, 85]);
+  const glareY = useTransform(py, [-0.5, 0.5], [15, 85]);
+  const glare = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.22), transparent 55%)`;
+
+  const onMediaMove = (e: React.PointerEvent) => {
+    if (!rail || reduce || e.pointerType !== "mouse") return;
+    const r = mediaRef.current?.getBoundingClientRect();
+    if (!r) return;
+    px.set((e.clientX - r.left) / r.width - 0.5);
+    py.set((e.clientY - r.top) / r.height - 0.5);
+  };
+  const onMediaLeave = () => {
+    px.set(0);
+    py.set(0);
+    setMediaHover(false);
+  };
 
   // Play the site recording while the card is mostly visible; pause on
   // exit. A manual pause wins until the card leaves and returns.
@@ -248,7 +283,6 @@ function Card({
       ([e]) => {
         if (e.intersectionRatio >= 0.55) {
           if (userPaused.current) return;
-          if (!video.src) video.src = video.dataset.src!;
           video.play().then(() => setPlaying(true)).catch(() => {});
         } else {
           video.pause();
@@ -267,7 +301,6 @@ function Card({
     if (!video) return;
     if (video.paused) {
       userPaused.current = false;
-      if (!video.src) video.src = video.dataset.src!;
       video.play().then(() => setPlaying(true)).catch(() => {});
     } else {
       userPaused.current = true;
@@ -287,31 +320,56 @@ function Card({
       className={rail ? "w-[58vw] shrink-0" : "w-full"}
       onFocusCapture={onFocus}
     >
-      <div
+      <motion.div
+        ref={mediaRef}
         className={`relative overflow-hidden rounded-[var(--wk-r-lg)] border border-[var(--wk-line)] bg-[#141312] ${
           rail ? "h-[46svh]" : "aspect-video"
         }`}
+        style={
+          rail && !reduce
+            ? {
+                rotateX: tiltX,
+                rotateY: tiltY,
+                transformPerspective: 1100,
+              }
+            : undefined
+        }
+        onPointerMove={onMediaMove}
+        onPointerEnter={() => setMediaHover(true)}
+        onPointerLeave={onMediaLeave}
       >
-        <img
+        <Image
           src={p.screenshot}
           alt={`${p.name} site, top of page`}
-          className="h-full w-full object-cover"
+          fill
+          sizes="(max-width: 900px) 100vw, 58vw"
+          className="object-cover"
           style={{ objectPosition: mediaPos }}
-          loading={i === 0 ? "eager" : "lazy"}
+          priority={i === 0}
           draggable={false}
         />
         {rail && p.video ? (
           <video
             ref={videoRef}
-            data-src={p.video}
+            src={p.video}
+            poster={p.screenshot}
             className="absolute inset-0 h-full w-full object-cover"
             style={{ objectPosition: mediaPos }}
             muted
             loop
             playsInline
-            preload="none"
+            preload="metadata"
             aria-hidden="true"
             tabIndex={-1}
+          />
+        ) : null}
+        {rail && !reduce ? (
+          <motion.span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            style={{ background: glare }}
+            animate={{ opacity: mediaHover ? 1 : 0 }}
+            transition={{ duration: 0.25 }}
           />
         ) : null}
         {rail && p.video ? (
@@ -333,7 +391,7 @@ function Card({
             {playing ? "Pause" : "Play"}
           </button>
         ) : null}
-      </div>
+      </motion.div>
 
       <div className="mt-4 flex items-start justify-between gap-6">
         <div className="min-w-0">
