@@ -116,7 +116,7 @@ export function WorkShowcase() {
       <div
         className={
           rail
-            ? "sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden"
+            ? "sticky top-0 flex h-[100svh] flex-col justify-center overflow-clip"
             : "wk-container pb-16"
         }
       >
@@ -138,6 +138,7 @@ export function WorkShowcase() {
               trackX={x}
               center={centers[i] ?? 0}
               vw={vw}
+              onFocus={() => rail && goTo(i)}
             />
           ))}
         </motion.ul>
@@ -213,6 +214,7 @@ function Card({
   trackX,
   center,
   vw,
+  onFocus,
 }: {
   project: (typeof WORK_PROJECTS)[number];
   index: number;
@@ -220,6 +222,7 @@ function Card({
   trackX: MotionValue<number>;
   center: number;
   vw: number;
+  onFocus: () => void;
 }) {
   const liRef = useRef<HTMLLIElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -282,6 +285,7 @@ function Card({
       ref={liRef}
       style={rail ? { scale } : undefined}
       className={rail ? "w-[58vw] shrink-0" : "w-full"}
+      onFocusCapture={onFocus}
     >
       <div
         className={`relative overflow-hidden rounded-[var(--wk-r-lg)] border border-[var(--wk-line)] bg-[#141312] ${

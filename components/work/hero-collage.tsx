@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import {
   motion,
   useMotionValue,
@@ -84,11 +85,13 @@ function CollageLayer({
         y,
       }}
     >
-      <img
+      <Image
         src={p.screenshot}
         alt={`${p.name} site preview`}
         className="wk-collage-img"
-        loading="eager"
+        fill
+        sizes="(max-width: 900px) 65vw, 380px"
+        priority={layer.i === 4}
         draggable={false}
       />
     </motion.a>

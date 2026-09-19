@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   useMotionValueEvent,
   useReducedMotion,
@@ -20,6 +20,7 @@ export function WorkNavbar() {
   const [hidden, setHidden] = useState(false);
   const [active, setActive] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuBtnRef = useRef<HTMLButtonElement>(null);
   const reduce = useReducedMotion();
   const { scrollY } = useScroll();
 
@@ -43,7 +44,10 @@ export function WorkNavbar() {
   useEffect(() => {
     if (!menuOpen) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenuOpen(false);
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        menuBtnRef.current?.focus();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -128,6 +132,7 @@ export function WorkNavbar() {
             Email me
           </a>
           <button
+            ref={menuBtnRef}
             type="button"
             className="flex h-10 w-10 items-center justify-center text-[var(--wk-ink)] min-[700px]:hidden"
             aria-expanded={menuOpen}

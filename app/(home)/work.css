@@ -306,6 +306,7 @@
 
 .wk-collage-card {
   position: absolute;
+  aspect-ratio: 8 / 5;
   border-radius: var(--wk-r-md);
   overflow: hidden;
   border: 1px solid var(--wk-line);
@@ -328,9 +329,6 @@
 }
 
 .wk-collage-img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 8 / 5;
   object-fit: cover;
   object-position: top;
   transition: transform 0.45s var(--wk-ease);
@@ -356,7 +354,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .wk-btn,
-  .wk-link-arrow {
+  .wk-link-arrow,
+  .wk-faq-panel {
     transition: none;
   }
   .wk-collage-img {
