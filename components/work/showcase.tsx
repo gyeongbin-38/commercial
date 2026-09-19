@@ -8,15 +8,16 @@ import {
   useScroll,
   useSpring,
   useTransform,
-  useVelocity,
   type MotionValue,
 } from "motion/react";
 import { WORK_PROJECTS } from "@/lib/work-data";
 
-/* Horizontal rail showcase: vertical scroll drives a sideways gallery.
-   The track skews with scroll velocity, each card swells as it reaches
-   the viewport center, its media counter-drifts for depth, and the
-   site recording plays while a card is mostly visible. */
+/* Work gallery. On desktop the five projects ride a sideways rail driven
+   by vertical scroll, with prev/next buttons as an alternative control.
+   On mobile and under reduced-motion it is a plain vertical list — same
+   media, same captions. Screenshots stay in their own colors: text lives
+   in a caption below the image, never over it. The site recording plays
+   only while a card is mostly visible, and can be paused. */
 
 const ACCENTS: Record<string, string> = {
   orbit: "#4a8dff",
@@ -34,6 +35,8 @@ export function WorkShowcase() {
   const [centers, setCenters] = useState<number[]>([]);
   const [vw, setVw] = useState(1200);
 
+  const rail = !reduce && vw >= 900;
+
   const { scrollYProgress } = useScroll({
     target: wrapRef,
     offset: ["start start", "end end"],
@@ -45,14 +48,7 @@ export function WorkShowcase() {
     damping: 26,
     mass: 0.6,
   });
-  const x = reduce ? rawX : springX;
-
-  // Velocity-reactive skew: the rail leans into fast scrolling.
-  const xv = useVelocity(x);
-  const skewX = useSpring(
-    useTransform(xv, [-2400, 2400], [4.5, -4.5]),
-    { damping: 30, stiffness: 220 },
-  );
+  const x = rail ? springX : rawX;
 
   const [active, setActive] = useState(0);
   useMotionValueEvent(x, "change", (v) => {
@@ -95,22 +91,47 @@ export function WorkShowcase() {
       window.removeEventListener("resize", measure);
       clearTimeout(id);
     };
-  }, []);
+  }, [rail]);
+
+  const goTo = (i: number) => {
+    const wrap = wrapRef.current;
+    if (!wrap || !centers.length) return;
+    const p = range > 0 ? (centers[i] - vw / 2) / range : 0;
+    const top =
+      wrap.getBoundingClientRect().top +
+      window.scrollY +
+      Math.min(1, Math.max(0, p)) * (wrap.offsetHeight - window.innerHeight);
+    window.scrollTo({ top, behavior: "smooth" });
+  };
 
   return (
-    <div ref={wrapRef} className="relative" style={{ height: "480svh" }}>
-      <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden">
+    <div
+      ref={wrapRef}
+      className={rail ? "relative" : undefined}
+      style={rail ? { height: "420svh" } : undefined}
+    >
+      <div
+        className={
+          rail
+            ? "sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden"
+            : "wk-container pb-16"
+        }
+      >
         <motion.ul
           ref={trackRef}
-          style={reduce ? { x } : { x, skewX }}
-          className="flex w-max items-stretch gap-[3.5vw] px-[8vw] min-[900px]:px-[19vw] will-change-transform"
+          style={rail ? { x } : undefined}
+          className={
+            rail
+              ? "flex w-max items-start gap-[4vw] px-[21vw] will-change-transform"
+              : "flex flex-col gap-16"
+          }
         >
           {WORK_PROJECTS.map((p, i) => (
             <Card
               key={p.id}
               project={p}
               index={i}
-              total={WORK_PROJECTS.length}
+              rail={rail}
               trackX={x}
               center={centers[i] ?? 0}
               vw={vw}
@@ -118,27 +139,65 @@ export function WorkShowcase() {
           ))}
         </motion.ul>
 
-        {/* Bottom progress: counter + filling line (dark on paper bg) */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-6 flex items-center justify-center gap-4 px-6 min-[760px]:bottom-8">
-          <span
-            className="text-[0.75rem] font-semibold tracking-[0.16em] text-[var(--wk-ink)]"
-            style={{ fontVariantNumeric: "tabular-nums" }}
-          >
-            {String(active + 1).padStart(2, "0")}
-          </span>
-          <span className="relative h-[2px] w-32 overflow-hidden rounded-full bg-[var(--wk-line)] min-[760px]:w-48">
-            <motion.span
-              className="absolute inset-0 origin-left bg-[var(--wk-accent)]"
-              style={{ scaleX: reduce ? scrollYProgress : progress }}
-            />
-          </span>
-          <span
-            className="text-[0.75rem] font-semibold tracking-[0.16em] text-[var(--wk-muted)]"
-            style={{ fontVariantNumeric: "tabular-nums" }}
-          >
-            {String(WORK_PROJECTS.length).padStart(2, "0")}
-          </span>
-        </div>
+        {rail ? (
+          <div className="absolute inset-x-0 bottom-6 flex items-center justify-center gap-5 px-6 min-[760px]:bottom-8">
+            <button
+              type="button"
+              onClick={() => goTo(active - 1)}
+              disabled={active === 0}
+              aria-label="Previous project"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--wk-line)] bg-[var(--wk-card)] text-[var(--wk-ink)] transition-colors hover:border-[var(--wk-ink)] disabled:opacity-30 disabled:hover:border-[var(--wk-line)]"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                <path
+                  d="M9 3L5 7l4 4"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
+            </button>
+            <span
+              className="text-[0.75rem] font-semibold tracking-[0.16em] text-[var(--wk-ink)]"
+              style={{ fontVariantNumeric: "tabular-nums" }}
+              aria-live="polite"
+            >
+              {String(active + 1).padStart(2, "0")}
+            </span>
+            <span className="relative h-[2px] w-32 overflow-hidden rounded-full bg-[var(--wk-line)] min-[760px]:w-48">
+              <motion.span
+                className="absolute inset-0 origin-left bg-[var(--wk-accent-dim)]"
+                style={{ scaleX: reduce ? scrollYProgress : progress }}
+              />
+            </span>
+            <span
+              className="text-[0.75rem] font-semibold tracking-[0.16em] text-[var(--wk-muted)]"
+              style={{ fontVariantNumeric: "tabular-nums" }}
+            >
+              {String(WORK_PROJECTS.length).padStart(2, "0")}
+            </span>
+            <button
+              type="button"
+              onClick={() => goTo(active + 1)}
+              disabled={active === WORK_PROJECTS.length - 1}
+              aria-label="Next project"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--wk-line)] bg-[var(--wk-card)] text-[var(--wk-ink)] transition-colors hover:border-[var(--wk-ink)] disabled:opacity-30 disabled:hover:border-[var(--wk-line)]"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                <path
+                  d="M5 3l4 4-4 4"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );
@@ -147,79 +206,88 @@ export function WorkShowcase() {
 function Card({
   project: p,
   index: i,
-  total: n,
+  rail,
   trackX,
   center,
   vw,
 }: {
   project: (typeof WORK_PROJECTS)[number];
   index: number;
-  total: number;
+  rail: boolean;
   trackX: MotionValue<number>;
   center: number;
   vw: number;
 }) {
   const liRef = useRef<HTMLLIElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const reduce = useReducedMotion();
+  const userPaused = useRef(false);
+  const [playing, setPlaying] = useState(false);
 
-  // Card swells and brightens as it reaches the viewport center.
-  const centered = vw / 2 - center; // trackX value when this card is centered
+  // A subtle swell as the card reaches center — the only transform left,
+  // so neighboring work stays legible enough to compare.
+  const centered = vw / 2 - center;
   const scale = useTransform(
     trackX,
-    [centered - vw * 0.75, centered, centered + vw * 0.75],
-    [0.92, 1, 0.92],
+    [centered - vw * 0.8, centered, centered + vw * 0.8],
+    [0.96, 1, 0.96],
   );
-  const opacity = useTransform(
-    trackX,
-    [centered - vw * 1.1, centered, centered + vw * 1.1],
-    [0.4, 1, 0.4],
-  );
-  // Media counter-drift: depth as the rail slides. Kept under the
-  // 15% overscan so the rail's ends never expose a media edge.
-  const mediaX = useTransform(trackX, (v) => v * -0.03);
 
-  // Play the site recording while the card is mostly visible.
+  // Play the site recording while the card is mostly visible; pause on
+  // exit. A manual pause wins until the card leaves and returns.
   useEffect(() => {
     const el = liRef.current;
     const video = videoRef.current;
-    if (!el || !video || reduce) return;
+    if (!el || !video || !rail) return;
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.intersectionRatio >= 0.55) {
+          if (userPaused.current) return;
           if (!video.src) video.src = video.dataset.src!;
-          video.play().catch(() => {});
+          video.play().then(() => setPlaying(true)).catch(() => {});
         } else {
           video.pause();
+          setPlaying(false);
+          userPaused.current = false;
         }
       },
       { threshold: [0, 0.55, 1] },
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [reduce]);
+  }, [rail]);
+
+  const toggleVideo = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      userPaused.current = false;
+      if (!video.src) video.src = video.dataset.src!;
+      video.play().then(() => setPlaying(true)).catch(() => {});
+    } else {
+      userPaused.current = true;
+      video.pause();
+      setPlaying(false);
+    }
+  };
 
   const isProduct = p.id === "plugview";
-  const accent = ACCENTS[p.id] ?? "#ffffff";
+  const accent = ACCENTS[p.id] ?? "#1b1917";
 
   return (
     <motion.li
       ref={liRef}
-      style={reduce ? undefined : { scale, opacity }}
-      className="relative h-[66svh] w-[84vw] shrink-0 overflow-hidden rounded-[var(--wk-r-lg)] border border-black/10 bg-[#141312] min-[760px]:h-[74svh] min-[900px]:w-[62vw]"
+      style={rail ? { scale } : undefined}
+      className={rail ? "w-[58vw] shrink-0" : "w-full"}
     >
-      <motion.div
-        style={reduce ? undefined : { x: mediaX }}
-        className="absolute -inset-x-[15%] inset-y-0"
-      >
+      <div className="relative aspect-video overflow-hidden rounded-[var(--wk-r-lg)] border border-[var(--wk-line)] bg-[#141312]">
         <img
           src={p.screenshot}
-          alt={`${p.name} site`}
+          alt={`${p.name} site, top of page`}
           className="h-full w-full object-cover object-top"
           loading={i === 0 ? "eager" : "lazy"}
           draggable={false}
         />
-        {!reduce && p.video ? (
+        {rail && p.video ? (
           <video
             ref={videoRef}
             data-src={p.video}
@@ -232,69 +300,81 @@ function Card({
             tabIndex={-1}
           />
         ) : null}
-      </motion.div>
-
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10" />
-      <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/45 to-transparent" />
-
-      <div className="absolute left-5 top-5 flex items-center gap-3 text-white/85 min-[760px]:left-8 min-[760px]:top-7">
-        <span
-          className="text-[clamp(1.4rem,2.4vw,2rem)] font-bold leading-none tracking-tight"
-          style={{ color: accent }}
-        >
-          {String(i + 1).padStart(2, "0")}
-        </span>
-        <span className="h-px w-7 bg-white/40" aria-hidden="true" />
-        <span className="text-[0.75rem] font-medium uppercase tracking-[0.14em]">
-          {isProduct ? "Live product build" : "Concept site"}
-        </span>
+        {rail && p.video ? (
+          <button
+            type="button"
+            onClick={toggleVideo}
+            aria-label={playing ? `Pause ${p.name} recording` : `Play ${p.name} recording`}
+            className="absolute bottom-3 right-3 flex h-8 items-center gap-1.5 rounded-full bg-black/60 px-3 text-[0.6875rem] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-black/80"
+          >
+            {playing ? (
+              <svg width="9" height="10" viewBox="0 0 9 10" aria-hidden="true">
+                <path d="M1 1h2.5v8H1zM5.5 1H8v8H5.5z" fill="currentColor" />
+              </svg>
+            ) : (
+              <svg width="9" height="10" viewBox="0 0 9 10" aria-hidden="true">
+                <path d="M1.5 1l6 4-6 4z" fill="currentColor" />
+              </svg>
+            )}
+            {playing ? "Pause" : "Play"}
+          </button>
+        ) : null}
       </div>
 
-      <span className="absolute right-5 top-5 rounded-md border border-white/25 bg-black/30 px-2.5 py-1 text-[0.6875rem] font-bold tracking-wide text-white/90 min-[760px]:right-8 min-[760px]:top-7">
-        {p.lang}
-      </span>
-
-      <div className="absolute inset-x-0 bottom-0 px-5 pb-7 text-white min-[760px]:px-8 min-[760px]:pb-9">
-        <p
-          className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em]"
-          style={{ color: accent }}
-        >
-          {p.kind} · {p.year}
-        </p>
-        <h3 className="mt-2 text-[clamp(1.9rem,4.2vw,3.6rem)] font-bold leading-none tracking-tight">
-          {p.name}
-        </h3>
-        <p className="mt-3 hidden max-w-[34rem] text-[0.9375rem] leading-relaxed text-white/75 min-[760px]:block">
-          {p.description}
-        </p>
-        <div className="mt-4 flex flex-wrap items-center gap-5">
-          <a
-            href={p.href}
-            target="_blank"
-            rel="noopener"
-            className="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-white underline decoration-white/40 underline-offset-4 transition-colors hover:decoration-white"
-          >
-            Visit live site
-            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
-              <path
-                d="M3 11L11 3M5 3h6v6"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </a>
-          <ul className="hidden flex-wrap gap-x-4 min-[1100px]:flex">
-            {p.tags.map((t) => (
-              <li
-                key={t}
-                className="text-[0.8125rem] font-medium text-white/55"
-              >
-                {t}
-              </li>
-            ))}
-          </ul>
+      <div className="mt-4 flex items-start justify-between gap-6">
+        <div className="min-w-0">
+          <p className="text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-[var(--wk-muted)]">
+            <span style={{ color: accent }}>
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            {" · "}
+            {isProduct ? "Live product build" : "Concept site"}
+            {" · "}
+            {p.lang}
+          </p>
+          <h3 className="mt-1.5 text-[clamp(1.5rem,2.6vw,2.25rem)] font-bold leading-tight tracking-tight">
+            {p.name}
+          </h3>
+          <p className="mt-1 text-[0.8125rem] font-medium text-[var(--wk-muted)]">
+            {p.kind} · {p.year}
+          </p>
+          <p className="mt-2.5 max-w-[36rem] text-[0.9375rem] leading-relaxed text-[var(--wk-ink-soft)]">
+            {p.description}
+          </p>
+          {"note" in p && p.note ? (
+            <p className="mt-2 max-w-[36rem] border-l-2 border-[var(--wk-line)] pl-3 text-[0.8125rem] leading-relaxed text-[var(--wk-muted)]">
+              {p.note}
+            </p>
+          ) : null}
+          <div className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-2">
+            <a
+              href={p.href}
+              target="_blank"
+              rel="noopener"
+              className="inline-flex items-center gap-2 text-[0.9375rem] font-semibold text-[var(--wk-ink)] underline decoration-[var(--wk-line)] underline-offset-4 transition-colors hover:decoration-[var(--wk-ink)]"
+            >
+              Visit live site
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                <path
+                  d="M3 11L11 3M5 3h6v6"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
+            <ul className="hidden flex-wrap gap-x-4 min-[1100px]:flex">
+              {p.tags.map((t) => (
+                <li
+                  key={t}
+                  className="text-[0.8125rem] font-medium text-[var(--wk-muted)]"
+                >
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </motion.li>

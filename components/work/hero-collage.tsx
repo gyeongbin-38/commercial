@@ -12,13 +12,13 @@ import { WORK_PROJECTS } from "@/lib/work-data";
 
 /* Pointer-parallax stack of site screenshots. Each layer moves at a
    different depth; springs ease it back when the pointer leaves.
-   Ambient float keeps it alive without input. */
+   No idle animation — it only responds to the pointer. */
 
 const LAYERS = [
-  { i: 0, x: "6%",  y: "4%",  r: -5, depth: 26, w: "62%", delay: "0s" },
-  { i: 1, x: "34%", y: "16%", r: 4,  depth: 44, w: "58%", delay: "-2.2s" },
-  { i: 2, x: "8%",  y: "46%", r: -2, depth: 60, w: "60%", delay: "-4.1s" },
-  { i: 4, x: "42%", y: "52%", r: 6,  depth: 80, w: "55%", delay: "-1.3s" },
+  { i: 0, x: "6%",  y: "4%",  r: -5, depth: 26, w: "62%" },
+  { i: 1, x: "34%", y: "16%", r: 4,  depth: 44, w: "58%" },
+  { i: 2, x: "8%",  y: "46%", r: -2, depth: 60, w: "60%" },
+  { i: 4, x: "42%", y: "52%", r: 6,  depth: 80, w: "55%" },
 ];
 
 export function HeroCollage() {
@@ -84,18 +84,13 @@ function CollageLayer({
         y,
       }}
     >
-      <div
-        className="wk-collage-float"
-        style={{ animationDelay: layer.delay }}
-      >
-        <img
-          src={p.screenshot}
-          alt={`${p.name} site preview`}
-          className="wk-collage-img"
-          loading="eager"
-          draggable={false}
-        />
-      </div>
+      <img
+        src={p.screenshot}
+        alt={`${p.name} site preview`}
+        className="wk-collage-img"
+        loading="eager"
+        draggable={false}
+      />
     </motion.a>
   );
 }

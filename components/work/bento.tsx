@@ -1,39 +1,24 @@
 "use client";
 
+import { useRef, useState } from "react";
 import {
-  Accessibility,
-  CheckCircle2,
   FormInput,
-  MonitorSmartphone,
+  PenTool,
   Rocket,
-  Search,
-  Zap,
   type LucideIcon,
 } from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import { WORK_CAPABILITIES, WORK_PROJECTS } from "@/lib/work-data";
 import { Pop } from "./pop";
 
-/* Bento grid: a looping site recording, four real stats, and one tile
-   per capability. Every tile spring-pops in — the DesignJoy pattern,
-   restrained palette. */
+/* Compact capability grid: one looping site recording plus three
+   groups — design/build, inquiry flow, launch/handoff. */
 
 const CAP_ICONS: Record<string, LucideIcon> = {
-  "Responsive at every size": MonitorSmartphone,
-  "SEO out of the box": Search,
-  "Accessible by default": Accessibility,
-  "Forms that actually work": FormInput,
-  "Motion with restraint": Zap,
-  "Deployed, not delivered as a zip": Rocket,
-  "Checked on the live site": CheckCircle2,
+  "Design and build, one hand": PenTool,
+  "Inquiry flow that works": FormInput,
+  "Launch and handoff": Rocket,
 };
-
-const STATS: { n: string; label: string }[] = [
-  { n: "5", label: "live sites shipped" },
-  { n: "4", label: "viewports QA'd" },
-  { n: "5–10", label: "days to launch" },
-  { n: "1", label: "pair of hands" },
-];
 
 const orbit = WORK_PROJECTS[0];
 
@@ -42,6 +27,19 @@ const tile =
 
 export function WorkBento() {
   const reduce = useReducedMotion();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [paused, setPaused] = useState(false);
+
+  const toggleVideo = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play().then(() => setPaused(false)).catch(() => {});
+    } else {
+      v.pause();
+      setPaused(true);
+    }
+  };
 
   return (
     <section className="border-b border-[var(--wk-line-soft)] bg-[var(--wk-bg-deep)]">
@@ -52,11 +50,11 @@ export function WorkBento() {
           </h2>
         </Pop>
 
-        <ul className="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
-          {/* Looping recording tile — ambient motion inside the grid */}
+        <ul className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
+          {/* Looping recording tile */}
           <Pop
             as="li"
-            className="wk-bento relative col-span-2 row-span-2 min-h-[220px] overflow-hidden rounded-[var(--wk-r-md)] border border-[var(--wk-line)] bg-[#141312] lg:min-h-[300px]"
+            className="wk-bento relative min-h-[220px] overflow-hidden rounded-[var(--wk-r-md)] border border-[var(--wk-line)] bg-[#141312] sm:col-span-2 lg:row-span-2 lg:min-h-[300px]"
             delay={0.05}
           >
             {reduce ? (
@@ -67,6 +65,7 @@ export function WorkBento() {
               />
             ) : (
               <video
+                ref={videoRef}
                 src={orbit.video}
                 className="h-full w-full object-cover object-top"
                 autoPlay
@@ -80,44 +79,48 @@ export function WorkBento() {
             <span className="absolute bottom-3 left-3 rounded-[var(--wk-r-sm)] bg-black/50 px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-white/90">
               Recorded, not mocked
             </span>
+            {!reduce ? (
+              <button
+                type="button"
+                onClick={toggleVideo}
+                aria-label={paused ? "Play recording" : "Pause recording"}
+                className="absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
+              >
+                {paused ? (
+                  <svg width="9" height="10" viewBox="0 0 9 10" aria-hidden="true">
+                    <path d="M1.5 1l6 4-6 4z" fill="currentColor" />
+                  </svg>
+                ) : (
+                  <svg width="9" height="10" viewBox="0 0 9 10" aria-hidden="true">
+                    <path d="M1 1h2.5v8H1zM5.5 1H8v8H5.5z" fill="currentColor" />
+                  </svg>
+                )}
+              </button>
+            ) : null}
           </Pop>
 
-          {STATS.map((s, i) => (
-            <Pop
-              as="li"
-              key={s.label}
-              delay={0.08 + i * 0.05}
-              className={`${tile} flex flex-col justify-between gap-4`}
-            >
-              <span className="wk-price text-[2rem] lg:text-[2.5rem]">
-                {s.n}
-              </span>
-              <span className="text-[0.8125rem] font-medium text-[var(--wk-muted)]">
-                {s.label}
-              </span>
-            </Pop>
-          ))}
-
           {WORK_CAPABILITIES.map((c, i) => {
-            const Icon = CAP_ICONS[c.title] ?? CheckCircle2;
+            const Icon = CAP_ICONS[c.title] ?? PenTool;
             return (
               <Pop
                 as="li"
                 key={c.title}
-                delay={0.12 + i * 0.04}
-                className={`${tile} flex flex-col gap-3`}
+                delay={0.08 + i * 0.05}
+                className={`${tile} flex flex-col gap-3 ${
+                  i === WORK_CAPABILITIES.length - 1 ? "sm:col-span-2 lg:col-span-2" : ""
+                }`}
               >
                 <Icon
                   size={18}
                   strokeWidth={1.8}
-                  className="text-[var(--wk-accent)]"
+                  className="text-[var(--wk-accent-dim)]"
                   aria-hidden="true"
                 />
                 <div>
-                  <p className="text-[0.875rem] font-semibold tracking-tight">
+                  <p className="text-[0.9375rem] font-semibold tracking-tight">
                     {c.title}
                   </p>
-                  <p className="mt-1 text-[0.75rem] leading-relaxed text-[var(--wk-muted)]">
+                  <p className="mt-1.5 text-[0.875rem] leading-relaxed text-[var(--wk-muted)]">
                     {c.body}
                   </p>
                 </div>
@@ -127,8 +130,8 @@ export function WorkBento() {
 
           <Pop
             as="li"
-            delay={0.4}
-            className="wk-bento flex h-full flex-col justify-between gap-4 rounded-[var(--wk-r-md)] bg-[var(--wk-accent)] p-5 text-[var(--wk-on-accent)]"
+            delay={0.28}
+            className="wk-bento flex h-full flex-col justify-between gap-4 rounded-[var(--wk-r-md)] bg-[var(--wk-accent-dim)] p-5 text-[var(--wk-on-accent)]"
           >
             <p className="text-[0.9375rem] font-semibold tracking-tight">
               All of it, standard on every build

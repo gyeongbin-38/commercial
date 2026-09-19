@@ -50,7 +50,7 @@ export function WorkProcess() {
               <div className="h-full border-t-2 border-[var(--wk-ink)] pt-5">
                 <div className="flex items-baseline justify-between">
                   <span
-                    className="text-[0.8125rem] font-semibold tracking-[0.08em] text-[var(--wk-accent)]"
+                    className="text-[0.8125rem] font-semibold tracking-[0.08em] text-[var(--wk-accent-dim)]"
                     style={{ fontVariantNumeric: "tabular-nums" }}
                   >
                     {s.step}

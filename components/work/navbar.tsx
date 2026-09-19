@@ -7,7 +7,6 @@ import {
   useScroll,
 } from "motion/react";
 import { STUDIO } from "@/lib/work-data";
-import { WkMagnetic } from "./magnetic";
 
 const LINKS = [
   { href: "#work", label: "Work" },
@@ -92,7 +91,7 @@ export function WorkNavbar() {
                 style={{
                   color:
                     active === l.href
-                      ? "var(--wk-accent)"
+                      ? "var(--wk-accent-dim)"
                       : "var(--wk-muted)",
                 }}
               >
@@ -102,14 +101,12 @@ export function WorkNavbar() {
           ))}
         </ul>
 
-        <WkMagnetic strength={0.2}>
-          <a
-            href={`mailto:${STUDIO.email}`}
-            className="wk-btn wk-btn-primary h-9 px-4 text-[0.8125rem]"
-          >
-            Start a project
-          </a>
-        </WkMagnetic>
+        <a
+          href={`mailto:${STUDIO.email}`}
+          className="wk-btn wk-btn-primary h-9 px-4 text-[0.8125rem]"
+        >
+          Start a project
+        </a>
       </nav>
     </header>
   );

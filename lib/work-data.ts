@@ -23,6 +23,7 @@ export const WORK_PROJECTS = [
     year: "2026",
     screenshot: "/work/orbit.png",
     video: "/work/orbit.webm",
+    note: "Goal: let visitors try the follow-up queue instead of reading about it, so the working pipeline board is the demo below. I designed and built the full page and the demo. Checked at four viewport widths; the board runs on local state — nothing persists.",
   },
   {
     id: "moapoint",
@@ -95,66 +96,23 @@ export const WORK_PROJECTS = [
     year: "2026",
     screenshot: "/work/plugview-screen.png",
     video: "/work/plugview.webm",
+    note: "Goal: show the interface before asking for an install, so the hero uses an actual screen capture rather than an illustration. I designed and built the landing page and the live preview tabs. Checked responsive; the marketplace behind it is a separate product build.",
   },
 ];
 
 export const WORK_CAPABILITIES = [
   {
-    title: "Responsive at every size",
-    body: "Checked at 1440 / 1280 / 834 / 390 widths. Mobile menu, snap-scrolling sections, fluid type.",
+    title: "Design and build, one hand",
+    body: "I sketch the page and write the code, so what you approve is what ships. Responsive at 1440 / 1280 / 834 / 390 widths, with reduced-motion and keyboard support.",
   },
   {
-    title: "SEO out of the box",
-    body: "Metadata, Open Graph images, sitemap, robots, and JSON-LD structured data, wired on every page.",
+    title: "Inquiry flow that works",
+    body: "Server-validated lead forms with field-level errors and a spam honeypot. Accessible menus, dialogs, and accordions by default.",
   },
   {
-    title: "Accessible by default",
-    body: "Keyboard-operable menus, dialogs, and accordions. Focus rings, ARIA state, and reduced-motion support.",
+    title: "Launch and handoff",
+    body: "Metadata, OG images, sitemap, and JSON-LD wired on every page. Deployed on Vercel with your domain, or a clean repo handoff with a README.",
   },
-  {
-    title: "Forms that actually work",
-    body: "Server-validated lead forms with field-level errors and a silent honeypot for spam.",
-  },
-  {
-    title: "Motion with restraint",
-    body: "Spring layout animation, reveals, and toggles that collapse gracefully for reduced motion.",
-  },
-  {
-    title: "Deployed, not delivered as a zip",
-    body: "Production build on Vercel with your domain, or a clean handoff to your own infrastructure.",
-  },
-  {
-    title: "Checked on the live site",
-    body: "Production builds are screenshotted at 1440 / 1280 / 834 / 390 widths before any link goes out, with zero console errors.",
-  },
-];
-
-export const WORK_MARQUEE = [
-  "Landing pages",
-  "SaaS marketing sites",
-  "Membership flows",
-  "E-commerce concepts",
-  "Responsive QA",
-  "SEO + OG images",
-  "Lead forms",
-  "Analytics wiring",
-  "Fixed price, fixed date",
-  "5-10 day delivery",
-];
-
-export const WORK_DELIVERABLES = [
-  "OG images",
-  "Sitemap",
-  "JSON-LD",
-  "Robots.txt",
-  "Lead forms",
-  "Mobile menu",
-  "Reduced motion",
-  "Keyboard nav",
-  "README handoff",
-  "Live preview URL",
-  "Analytics-ready",
-  "Favicon set",
 ];
 
 export const WORK_PACKAGES = [
@@ -183,7 +141,7 @@ export const WORK_PACKAGES = [
     priceNote: "fixed",
     timeline: "7-10 days",
     featured: true,
-    summary: "Design and build from scratch. The package most clients pick.",
+    summary: "Design and build from scratch — for projects that need both.",
     features: [
       "Custom design + development",
       "Up to 10 sections",

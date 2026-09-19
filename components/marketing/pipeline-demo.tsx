@@ -20,7 +20,7 @@ const initialStages = Object.fromEntries(
 
 const spring = { type: "spring" as const, stiffness: 380, damping: 34 };
 
-export function PipelineDemo() {
+export function PipelineDemo({ header }: { header?: React.ReactNode }) {
   const [stages, setStages] = useState<Record<string, Stage>>(initialStages);
   const [moves, setMoves] = useState(0);
   const reduce = useReducedMotion();
@@ -52,16 +52,18 @@ export function PipelineDemo() {
   return (
     <section id="demo" className="tile scroll-mt-14 bg-canvas">
       <div className="mx-auto max-w-[980px] px-5 text-center">
-        <Reveal>
-          <p className="text-caption-strong text-ink-48">Interactive demo</p>
-          <h2 className="text-display-lg mt-2 text-ink">
-            Try the pipeline. It&apos;s the real thing.
-          </h2>
-          <p className="text-lead mx-auto mt-4 max-w-[620px] text-ink-80">
-            Move a client forward. This board behaves exactly like the
-            product. No signup required.
-          </p>
-        </Reveal>
+        {header ?? (
+          <Reveal>
+            <p className="text-caption-strong text-ink-48">Interactive demo</p>
+            <h2 className="text-display-lg mt-2 text-ink">
+              Try the pipeline. It&apos;s the real thing.
+            </h2>
+            <p className="text-lead mx-auto mt-4 max-w-[620px] text-ink-80">
+              Move a client forward. This board behaves exactly like the
+              product. No signup required.
+            </p>
+          </Reveal>
+        )}
       </div>
 
       <Reveal delay={0.12} className="mx-auto mt-12 max-w-[1440px] px-5">

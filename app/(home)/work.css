@@ -155,7 +155,7 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--wk-accent);
+  color: var(--wk-accent-dim);
 }
 
 .wk-h1 {
@@ -194,18 +194,6 @@
   border-radius: var(--wk-r-lg);
 }
 
-.wk-card-hover {
-  transition: transform var(--wk-dur) var(--wk-ease),
-    box-shadow var(--wk-dur) var(--wk-ease),
-    border-color var(--wk-dur) var(--wk-ease);
-}
-
-.wk-card-hover:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--wk-shadow);
-  border-color: var(--wk-ink);
-}
-
 .wk-dark-section {
   background: var(--wk-dark);
   color: var(--wk-bg);
@@ -235,12 +223,12 @@
 }
 
 .wk-btn-primary {
-  background: var(--wk-accent);
+  background: var(--wk-accent-dim);
   color: var(--wk-on-accent);
 }
 
 .wk-btn-primary:hover {
-  background: var(--wk-accent-dim);
+  background: #a8380d;
 }
 
 .wk-btn-ghost {
@@ -262,21 +250,6 @@
   background: #ffffff;
 }
 
-/* ---------- tags ---------- */
-
-.wk-tag {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--wk-muted);
-  letter-spacing: 0.01em;
-}
-
-.wk-tag + .wk-tag::before {
-  content: "·";
-  margin-right: 0.5rem;
-  color: var(--wk-line);
-}
-
 /* faq accordion — height animation via grid rows */
 
 .wk-faq-panel {
@@ -287,106 +260,6 @@
 
 .wk-faq-panel[data-open="true"] {
   grid-template-rows: 1fr;
-}
-
-/* capability hairline rows — quiet hover accent */
-
-.wk-cap-title {
-  transition: transform 0.35s var(--wk-ease), color 0.35s var(--wk-ease);
-}
-
-li:hover .wk-cap-title {
-  transform: translateX(6px);
-  color: var(--wk-accent);
-}
-
-/* ---------- hero inline chips ---------- */
-
-.wk-chip {
-  display: inline-block;
-  position: relative;
-  height: 0.82em;
-  width: 1.9em;
-  margin-inline: 0.06em;
-  border-radius: 999px;
-  overflow: hidden;
-  border: 1px solid var(--wk-line);
-  vertical-align: -0.06em;
-  transition: transform 0.35s var(--wk-ease);
-}
-
-.wk-chip:hover {
-  transform: scale(1.12);
-}
-
-.wk-chip-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-  transition: opacity 0.55s var(--wk-ease);
-  animation: wk-chip-drift 7s ease-in-out infinite alternate;
-}
-
-.wk-chip:nth-of-type(2) .wk-chip-img {
-  animation-delay: -3.5s;
-}
-
-@keyframes wk-chip-drift {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-14%);
-  }
-}
-
-/* ---------- services marquee ---------- */
-
-.wk-marquee-item {
-  padding-inline: 1.5rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--wk-muted);
-  white-space: nowrap;
-}
-
-.wk-marquee-dot {
-  width: 0.3rem;
-  height: 0.3rem;
-  border-radius: 9999px;
-  background: var(--wk-accent);
-}
-
-/* ---------- project card ---------- */
-
-.wk-thumb {
-  display: block;
-  width: 100%;
-  aspect-ratio: 8 / 5;
-  object-fit: cover;
-  object-position: top;
-  border-bottom: 1px solid var(--wk-line);
-  transition: transform 0.5s var(--wk-ease);
-}
-
-.wk-card-hover:hover .wk-thumb {
-  transform: scale(1.02);
-}
-
-.wk-thumb-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-  transition: opacity 0.4s var(--wk-ease);
-  pointer-events: none;
 }
 
 .wk-link-arrow {
@@ -401,7 +274,7 @@ li:hover .wk-cap-title {
 
 .wk-link-arrow:hover {
   gap: 0.625rem;
-  color: var(--wk-accent);
+  color: var(--wk-accent-dim);
 }
 
 /* ---------- misc ---------- */
@@ -447,10 +320,6 @@ li:hover .wk-cap-title {
   outline-offset: 3px;
 }
 
-.wk-collage-float {
-  animation: wk-collage-float 7s ease-in-out infinite alternate;
-}
-
 .wk-collage-img {
   display: block;
   width: 100%;
@@ -463,15 +332,6 @@ li:hover .wk-cap-title {
 .wk-collage-card:hover .wk-collage-img,
 .wk-collage-card:focus-visible .wk-collage-img {
   transform: scale(1.05);
-}
-
-@keyframes wk-collage-float {
-  from {
-    transform: translateY(-6px);
-  }
-  to {
-    transform: translateY(6px);
-  }
 }
 
 /* ---------- bento tiles ---------- */
@@ -487,56 +347,10 @@ li:hover .wk-cap-title {
   box-shadow: rgba(27, 25, 23, 0.1) 0 18px 34px -14px;
 }
 
-/* ---------- founding-slot pulse dots ---------- */
-
-.wk-pulse-dot {
-  animation: wk-pulse-dot 2.4s ease-in-out infinite;
-}
-
-@keyframes wk-pulse-dot {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.6);
-    opacity: 1;
-  }
-}
-
-/* ---------- hero scroll cue ---------- */
-
-.wk-scroll-cue {
-  animation: wk-scroll-cue 1.9s ease-in-out infinite;
-}
-
-@keyframes wk-scroll-cue {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.45;
-  }
-  50% {
-    transform: translateY(7px);
-    opacity: 1;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .wk-card-hover,
   .wk-btn,
   .wk-link-arrow {
     transition: none;
-  }
-  .wk-card-hover:hover {
-    transform: none;
-  }
-  .wk-chip-img {
-    animation: none;
-  }
-  .wk-collage-float {
-    animation: none;
   }
   .wk-collage-img {
     transition: none;
@@ -545,9 +359,5 @@ li:hover .wk-cap-title {
   .wk-bento:hover {
     transition: none;
     transform: none;
-  }
-  .wk-pulse-dot,
-  .wk-scroll-cue {
-    animation: none;
   }
 }

@@ -23,7 +23,7 @@ export function WorkPackages() {
 
         <Reveal delay={0.08}>
           <div className="mt-8 flex flex-wrap items-center gap-3 rounded-[var(--wk-r-md)] border border-[var(--wk-dark-line)] bg-[var(--wk-dark-card)] px-5 py-4">
-            <span className="rounded-[var(--wk-r-sm)] bg-[var(--wk-accent)] px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.1em] text-[var(--wk-on-accent)]">
+            <span className="rounded-[var(--wk-r-sm)] bg-[var(--wk-accent-dim)] px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.1em] text-[var(--wk-on-accent)]">
               Launch pricing
             </span>
             <span
@@ -34,8 +34,7 @@ export function WorkPackages() {
               {[0, 1, 2, 3, 4].map((i) => (
                 <span
                   key={i}
-                  className="wk-pulse-dot h-1.5 w-1.5 rounded-full border border-[var(--wk-accent)]"
-                  style={{ animationDelay: `${i * 0.3}s` }}
+                  className="h-1.5 w-1.5 rounded-full bg-[var(--wk-accent)]"
                   aria-hidden="true"
                 />
               ))}
@@ -69,7 +68,7 @@ export function WorkPackages() {
                   }}
                 >
                   {pkg.featured && (
-                    <p className="absolute -top-3 left-7 rounded-[var(--wk-r-sm)] bg-[var(--wk-accent)] px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.1em] text-[var(--wk-on-accent)]">
+                    <p className="absolute -top-3 left-7 rounded-[var(--wk-r-sm)] bg-[var(--wk-accent-dim)] px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.1em] text-[var(--wk-on-accent)]">
                       Recommended
                     </p>
                   )}
@@ -102,7 +101,11 @@ export function WorkPackages() {
                   <p className="wk-price mt-6">{pkg.price}</p>
                   <p
                     className="mt-1 text-[0.75rem] font-semibold uppercase tracking-[0.08em]"
-                    style={{ color: "var(--wk-accent)" }}
+                    style={{
+                      color: pkg.featured
+                        ? "var(--wk-accent-dim)"
+                        : "var(--wk-dark-muted)",
+                    }}
                   >
                     founding rate
                   </p>
