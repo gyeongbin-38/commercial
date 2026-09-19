@@ -34,8 +34,10 @@ export function WorkShowcase() {
   const [range, setRange] = useState(0);
   const [centers, setCenters] = useState<number[]>([]);
   const [vw, setVw] = useState(1200);
+  const [vh, setVh] = useState(900);
 
-  const rail = !reduce && vw >= 900;
+  // Wide AND tall enough for the rail; short windows get the list too.
+  const rail = !reduce && vw >= 900 && vh >= 620;
 
   const { scrollYProgress } = useScroll({
     target: wrapRef,
@@ -76,6 +78,7 @@ export function WorkShowcase() {
       if (!t) return;
       const w = window.innerWidth;
       setVw(w);
+      setVh(window.innerHeight);
       setRange(Math.max(0, t.scrollWidth - w));
       setCenters(
         Array.from(t.children).map((el) => {
@@ -280,7 +283,11 @@ function Card({
       style={rail ? { scale } : undefined}
       className={rail ? "w-[58vw] shrink-0" : "w-full"}
     >
-      <div className="relative aspect-video overflow-hidden rounded-[var(--wk-r-lg)] border border-[var(--wk-line)] bg-[#141312]">
+      <div
+        className={`relative overflow-hidden rounded-[var(--wk-r-lg)] border border-[var(--wk-line)] bg-[#141312] ${
+          rail ? "h-[46svh]" : "aspect-video"
+        }`}
+      >
         <img
           src={p.screenshot}
           alt={`${p.name} site, top of page`}
@@ -326,8 +333,13 @@ function Card({
 
       <div className="mt-4 flex items-start justify-between gap-6">
         <div className="min-w-0">
-          <p className="text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-[var(--wk-muted)]">
-            <span style={{ color: accent }}>
+          <p className="flex items-center gap-2 text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-[var(--wk-muted)]">
+            <span
+              className="inline-block h-2 w-2 rounded-full"
+              style={{ background: accent }}
+              aria-hidden="true"
+            />
+            <span className="text-[var(--wk-ink)]">
               {String(i + 1).padStart(2, "0")}
             </span>
             {" · "}
