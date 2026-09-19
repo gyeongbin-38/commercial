@@ -42,6 +42,7 @@ export const WORK_PROJECTS = [
     year: "2026",
     screenshot: "/work/moapoint.png",
     video: "/work/moapoint.webm",
+    mediaPos: "50% 30%",
   },
   {
     id: "fieldstone",

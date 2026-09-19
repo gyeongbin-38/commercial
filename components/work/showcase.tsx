@@ -272,6 +272,7 @@ function Card({
 
   const isProduct = p.id === "plugview";
   const accent = ACCENTS[p.id] ?? "#1b1917";
+  const mediaPos = "mediaPos" in p ? p.mediaPos : "50% 0%";
 
   return (
     <motion.li
@@ -283,7 +284,8 @@ function Card({
         <img
           src={p.screenshot}
           alt={`${p.name} site, top of page`}
-          className="h-full w-full object-cover object-top"
+          className="h-full w-full object-cover"
+          style={{ objectPosition: mediaPos }}
           loading={i === 0 ? "eager" : "lazy"}
           draggable={false}
         />
@@ -291,7 +293,8 @@ function Card({
           <video
             ref={videoRef}
             data-src={p.video}
-            className="absolute inset-0 h-full w-full object-cover object-top"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: mediaPos }}
             muted
             loop
             playsInline
