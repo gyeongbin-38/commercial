@@ -55,9 +55,19 @@ export function WorkShowcase() {
   );
 
   const [active, setActive] = useState(0);
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const n = WORK_PROJECTS.length;
-    setActive(Math.min(n - 1, Math.max(0, Math.round(v * (n - 1)))));
+  useMotionValueEvent(x, "change", (v) => {
+    if (!centers.length) return;
+    const vp = vw / 2;
+    let best = 0;
+    let bestD = Infinity;
+    centers.forEach((c, i) => {
+      const d = Math.abs(c + v - vp);
+      if (d < bestD) {
+        bestD = d;
+        best = i;
+      }
+    });
+    setActive(best);
   });
   const progress = useSpring(scrollYProgress, {
     stiffness: 140,
@@ -93,7 +103,7 @@ export function WorkShowcase() {
         <motion.ul
           ref={trackRef}
           style={reduce ? { x } : { x, skewX }}
-          className="flex w-max items-stretch gap-[3.5vw] px-[8vw] will-change-transform"
+          className="flex w-max items-stretch gap-[3.5vw] px-[8vw] min-[900px]:px-[19vw] will-change-transform"
         >
           {WORK_PROJECTS.map((p, i) => (
             <Card
@@ -165,8 +175,9 @@ function Card({
     [centered - vw * 1.1, centered, centered + vw * 1.1],
     [0.4, 1, 0.4],
   );
-  // Media counter-drift: depth as the rail slides.
-  const mediaX = useTransform(trackX, (v) => v * -0.045);
+  // Media counter-drift: depth as the rail slides. Kept under the
+  // 15% overscan so the rail's ends never expose a media edge.
+  const mediaX = useTransform(trackX, (v) => v * -0.03);
 
   // Play the site recording while the card is mostly visible.
   useEffect(() => {
@@ -199,7 +210,7 @@ function Card({
     >
       <motion.div
         style={reduce ? undefined : { x: mediaX }}
-        className="absolute -inset-x-[10%] inset-y-0"
+        className="absolute -inset-x-[15%] inset-y-0"
       >
         <img
           src={p.screenshot}
