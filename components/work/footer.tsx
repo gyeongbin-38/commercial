@@ -36,7 +36,7 @@ export function WorkFooter() {
 
         <Reveal>
           <div className="flex flex-col items-start gap-8">
-          <h2 className="wk-h2 max-w-[18ch] text-[var(--wk-bg)]">
+          <h2 className="wk-h2 max-w-[16ch] text-[var(--wk-bg)] text-[clamp(2.3rem,5.8vw,4.6rem)]">
             Tell me what the page needs to do.
           </h2>
           <p className="max-w-[30rem] text-[1rem] leading-relaxed text-[var(--wk-dark-muted)]">

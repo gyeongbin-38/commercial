@@ -1,5 +1,5 @@
 import { Reveal } from "@/components/ui/reveal";
-import { WorkShowcase } from "./showcase";
+import { WorkIndex } from "./index-list";
 
 export function WorkProjects() {
   return (
@@ -19,7 +19,7 @@ export function WorkProjects() {
         </Reveal>
       </div>
 
-      <WorkShowcase />
+      <WorkIndex />
     </section>
   );
 }
