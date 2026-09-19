@@ -12,7 +12,7 @@ export const WORK_PROJECTS = [
     href: "/orbit",
     kind: "B2B SaaS marketing site",
     description:
-      "A calm client-operations workspace for freelancers and small studios. Apple-derived restraint: one accent, hairline dividers, product UI as the hero.",
+      "A client-operations workspace concept where the pitch is the product — the hero is the app UI, and the pipeline demo below is working software. Kept deliberately quiet: one accent, hairline dividers, restrained type.",
     highlights: [
       "Interactive pipeline demo with spring layout animation",
       "Pricing toggle, lead form with zod validation",
@@ -31,7 +31,7 @@ export const WORK_PROJECTS = [
     href: "/moapoint",
     kind: "Consumer membership landing",
     description:
-      "Korean consumer-fintech membership landing. Monochrome navy system, Pretendard type, white cards on a light-gray field.",
+      "Goal: explain a points membership to Korean consumers without a sales call. The page leads with the app screen, and a restrained navy card system keeps tiers and partners scannable. Fully Korean copy and layout rhythm.",
     highlights: [
       "Fully Korean copy and layout rhythm",
       "Phone mock and partner grid sections",
@@ -50,7 +50,7 @@ export const WORK_PROJECTS = [
     href: "/fieldstone",
     kind: "Editorial founder-ecosystem landing",
     description:
-      "A serif-led editorial landing for an entrepreneurial ecosystem. Cormorant Garamond display over DM Sans, evergreen accent.",
+      "Goal: make a founder ecosystem feel credible to founders and backers alike. Chose an editorial voice — long-form story sections over stat blocks — with program cards and founder figures carrying the detail.",
     highlights: [
       "Story-driven long-form sections",
       "Program cards and founder stats",
@@ -68,7 +68,7 @@ export const WORK_PROJECTS = [
     href: "/marlowe",
     kind: "Motorsport driver hub",
     description:
-      "A volt-on-olive motorsport poster page: condensed uppercase display type, flat blocks, checker cues, marquee band.",
+      "Goal: give a racing driver a hub that reads as race-poster energy, not a template. Condensed display type, flat blocks, and checker cues carry the identity; results, merch, and media sections sit underneath.",
     highlights: [
       "Magnetic CTA buttons and marquee",
       "Results, merch and media sections",

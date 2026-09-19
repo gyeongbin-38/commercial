@@ -1,6 +1,7 @@
 import { STUDIO } from "@/lib/work-data";
 import { Reveal } from "@/components/ui/reveal";
 import { HeroCollage } from "./hero-collage";
+import { CopyEmail } from "./copy-email";
 
 export function WorkHero() {
   return (
@@ -20,7 +21,8 @@ export function WorkHero() {
           <Reveal delay={0.16}>
             <div className="mt-7 flex max-w-[38rem] flex-col gap-5">
               <p className="wk-lead">
-                Conversion-focused pages in Next.js — responsive build,
+                For early-stage products that need a page up fast —
+                design and Next.js build by one person: responsive,
                 working forms, SEO, deployment. No handoff: the page that
                 ships is the page that was designed.
               </p>
@@ -53,6 +55,7 @@ export function WorkHero() {
               <a href={`mailto:${STUDIO.email}`} className="wk-btn wk-btn-ghost">
                 {STUDIO.email}
               </a>
+              <CopyEmail variant="light" />
             </div>
           </Reveal>
         </div>

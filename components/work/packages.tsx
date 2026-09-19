@@ -52,11 +52,7 @@ export function WorkPackages() {
             <li key={pkg.id} className="h-full">
               <Pop delay={0.06 * i} className="h-full">
                 <div
-                  className={`relative flex h-full flex-col rounded-[var(--wk-r-lg)] p-7 ${
-                    pkg.featured
-                      ? "lg:-rotate-[1.3deg] lg:hover:rotate-0 transition-transform duration-500"
-                      : ""
-                  }`}
+                  className="relative flex h-full flex-col rounded-[var(--wk-r-lg)] p-7"
                   style={{
                     background: pkg.featured
                       ? "var(--wk-bg)"

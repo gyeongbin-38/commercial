@@ -19,6 +19,7 @@ export function WorkNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [active, setActive] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const reduce = useReducedMotion();
   const { scrollY } = useScroll();
 
@@ -26,7 +27,10 @@ export function WorkNavbar() {
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? y;
     if (y < 90 || y < prev - 4) setHidden(false);
-    else if (y > prev + 4 && y > 160) setHidden(true);
+    else if (y > prev + 4 && y > 160) {
+      setHidden(true);
+      setMenuOpen(false);
+    }
   });
 
   useEffect(() => {
@@ -35,6 +39,15 @@ export function WorkNavbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   useEffect(() => {
     const ids = LINKS.map((l) => l.href.slice(1));
@@ -59,9 +72,11 @@ export function WorkNavbar() {
         hidden && !reduce ? "-translate-y-full" : "translate-y-0"
       }`}
       style={{
-        background: scrolled ? "rgba(247,247,245,0.92)" : "transparent",
-        borderColor: scrolled ? "var(--wk-line-soft)" : "transparent",
-        backdropFilter: scrolled ? "blur(10px)" : "none",
+        background:
+          scrolled || menuOpen ? "rgba(247,247,245,0.92)" : "transparent",
+        borderColor:
+          scrolled || menuOpen ? "var(--wk-line-soft)" : "transparent",
+        backdropFilter: scrolled || menuOpen ? "blur(10px)" : "none",
       }}
     >
       <nav
@@ -72,10 +87,7 @@ export function WorkNavbar() {
           href="#top"
           className="group flex items-center gap-2 text-[0.875rem] font-semibold tracking-tight"
         >
-          <span
-            className="flex h-6 w-6 items-center justify-center rounded-full text-[0.625rem] font-bold text-[var(--wk-on-accent)] transition-colors group-hover:bg-[#a8380d]"
-            style={{ background: "var(--wk-accent)" }}
-          >
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--wk-accent)] text-[0.625rem] font-bold text-[var(--wk-on-accent)] transition-colors group-hover:bg-[#a8380d]">
             {STUDIO.shortName}
           </span>
           <span className="transition-colors group-hover:text-[var(--wk-accent-dim)]">
@@ -103,18 +115,73 @@ export function WorkNavbar() {
           ))}
         </ul>
 
-        <a
-          href={`mailto:${STUDIO.email}`}
-          className="wk-btn wk-btn-primary"
-          style={{
-            height: "1.75rem",
-            paddingInline: "0.75rem",
-            fontSize: "0.75rem",
-          }}
-        >
-          Start a project
-        </a>
+        <div className="flex items-center gap-1">
+          <a
+            href={`mailto:${STUDIO.email}`}
+            className="wk-btn wk-btn-primary"
+            style={{
+              height: "2rem",
+              paddingInline: "0.875rem",
+              fontSize: "0.75rem",
+            }}
+          >
+            Email me
+          </a>
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center text-[var(--wk-ink)] min-[700px]:hidden"
+            aria-expanded={menuOpen}
+            aria-controls="wk-mobile-menu"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+              {menuOpen ? (
+                <path
+                  d="M4 4l10 10M14 4L4 14"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                />
+              ) : (
+                <path
+                  d="M3 5.5h12M3 9h12M3 12.5h12"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                />
+              )}
+            </svg>
+          </button>
+        </div>
       </nav>
+
+      {menuOpen ? (
+        <div
+          id="wk-mobile-menu"
+          className="border-t border-[var(--wk-line-soft)] min-[700px]:hidden"
+        >
+          <ul className="wk-container flex flex-col pb-2">
+            {LINKS.map((l) => (
+              <li key={l.href}>
+                <a
+                  href={l.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center py-3.5 text-[0.9375rem] font-medium"
+                  style={{
+                    color:
+                      active === l.href
+                        ? "var(--wk-accent-dim)"
+                        : "var(--wk-ink)",
+                  }}
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </header>
   );
 }

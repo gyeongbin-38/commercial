@@ -13,7 +13,7 @@
   --color-hairline: #e0e0e0;
   --color-ink: #1d1d1f;
   --color-ink-80: #333333;
-  --color-ink-48: #7a7a7a;
+  --color-ink-48: #6e6e73;
   --color-on-dark: #ffffff;
   --color-action: #0066cc;
   --color-action-focus: #0071e3;
@@ -44,7 +44,9 @@
   --radius-xs: 5px;
 }
 
-/* Orbit chrome classes used by the embedded demo */
+/* Orbit chrome classes used by the embedded demo. Lives in the
+   components layer so Tailwind utilities can still override it. */
+@layer components {
 .tile {
   padding-block: 80px;
 }
@@ -104,6 +106,7 @@
 .tnum {
   font-variant-numeric: tabular-nums;
 }
+}
 
 /* ------------------------------------------------------------------
  * /work — studio portfolio index for the four landing systems.
@@ -137,6 +140,10 @@
   --wk-dur: 300ms;
 }
 
+/* All wk-* classes live in the components layer: a Tailwind utility
+   placed next to them (e.g. text size on .wk-lead) must win, so the
+   value written at the call site is the value that ships. */
+@layer components {
 .wk-body {
   background: var(--wk-bg);
   color: var(--wk-ink);
@@ -360,4 +367,5 @@
     transition: none;
     transform: none;
   }
+}
 }

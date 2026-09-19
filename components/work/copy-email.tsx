@@ -4,14 +4,18 @@ import { useRef, useState } from "react";
 import { STUDIO } from "@/lib/work-data";
 
 /* One-click email copy with a check confirmation. */
-export function CopyEmail() {
+export function CopyEmail({ variant = "dark" }: { variant?: "dark" | "light" }) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   return (
     <button
       type="button"
-      className="wk-btn border border-[var(--wk-dark-line)] px-4 text-[var(--wk-bg)] transition-colors hover:border-[var(--wk-bg)]"
+      className={`wk-btn border transition-colors ${
+        variant === "dark"
+          ? "border-[var(--wk-dark-line)] px-4 text-[var(--wk-bg)] hover:border-[var(--wk-bg)]"
+          : "w-[2.875rem] border-[var(--wk-line)] px-0 text-[var(--wk-ink)] hover:border-[var(--wk-ink)]"
+      }`}
       aria-label={copied ? "Email copied" : "Copy email address"}
       onClick={async () => {
         try {

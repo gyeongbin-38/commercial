@@ -143,7 +143,7 @@ export function WorkShowcase() {
         </motion.ul>
 
         {rail ? (
-          <div className="absolute inset-x-0 bottom-6 flex items-center justify-center gap-5 px-6 min-[760px]:bottom-8">
+          <div className="mt-6 flex items-center justify-center gap-5 px-6">
             <button
               type="button"
               onClick={() => goTo(active - 1)}
