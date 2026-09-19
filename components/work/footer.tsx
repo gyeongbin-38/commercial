@@ -3,6 +3,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { LocalTime } from "./localtime";
 import { CopyEmail } from "./copy-email";
 import { Magnetic } from "./magnetic";
+import { BriefForm } from "./brief";
 
 export function WorkFooter() {
   return (
@@ -79,6 +80,7 @@ export function WorkFooter() {
               GitHub
             </a>
           </div>
+          <BriefForm />
           </div>
         </Reveal>
 

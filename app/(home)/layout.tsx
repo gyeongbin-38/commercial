@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./work.css";
 
 const plexSans = IBM_Plex_Sans({
@@ -45,6 +46,7 @@ export default function HomeLayout({
         }}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );

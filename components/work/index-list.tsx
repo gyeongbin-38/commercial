@@ -33,6 +33,10 @@ export function WorkIndex() {
   const y = useMotionValue(0);
   const px = useSpring(x, { stiffness: 160, damping: 22, mass: 0.5 });
   const py = useSpring(y, { stiffness: 160, damping: 22, mass: 0.5 });
+  const rotRaw = useMotionValue(0);
+  const rot = useSpring(rotRaw, { stiffness: 240, damping: 16 });
+  const lastX = useRef(0);
+  const settle = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(pointer:fine)");
@@ -53,6 +57,12 @@ export function WorkIndex() {
   const moveTo = (cx: number, cy: number) => {
     x.set(cx);
     y.set(cy);
+    // Velocity tilt: lean into the pointer's travel, then settle flat.
+    const dx = cx - lastX.current;
+    lastX.current = cx;
+    rotRaw.set(Math.max(-9, Math.min(9, dx * 0.35)));
+    if (settle.current) clearTimeout(settle.current);
+    settle.current = setTimeout(() => rotRaw.set(0), 80);
   };
 
   return (
@@ -157,10 +167,10 @@ export function WorkIndex() {
       >
         <motion.div
           className="relative aspect-video w-[400px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[var(--wk-r-lg)] border border-[var(--wk-line)] bg-[#141312] shadow-[0_30px_70px_-20px_rgba(27,25,23,0.45)]"
+          style={{ rotate: rot }}
           animate={{
             opacity: preview ? 1 : 0,
             scale: preview ? 1 : 0.88,
-            rotate: preview ? -1.5 : 0,
           }}
           transition={{ type: "spring", stiffness: 260, damping: 24 }}
         >

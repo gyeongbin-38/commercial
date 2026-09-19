@@ -3,6 +3,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { HeroCollage } from "./hero-collage";
 import { CopyEmail } from "./copy-email";
 import { Magnetic } from "./magnetic";
+import { WordReveal } from "./word-reveal";
 
 export function WorkHero() {
   return (
@@ -13,11 +14,11 @@ export function WorkHero() {
             <p className="wk-eyebrow">Design + development, one pair of hands</p>
           </Reveal>
 
-          <Reveal delay={0.08}>
-            <h1 className="wk-h1 mt-5 max-w-[20ch]">
-              I design and build landing pages.
-            </h1>
-          </Reveal>
+          <WordReveal
+            text="I design and build landing pages."
+            className="wk-h1 mt-5 max-w-[20ch]"
+            delay={0.08}
+          />
 
           <Reveal delay={0.16}>
             <div className="mt-7 flex max-w-[38rem] flex-col gap-5">

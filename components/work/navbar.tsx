@@ -8,6 +8,7 @@ import {
 } from "motion/react";
 import { STUDIO } from "@/lib/work-data";
 import { Scramble } from "./scramble";
+import { CmdK } from "./cmdk";
 
 const LINKS = [
   { href: "#work", label: "Work" },
@@ -115,7 +116,8 @@ export function WorkNavbar() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
+          <CmdK />
           <a
             href={`mailto:${STUDIO.email}`}
             className="wk-btn wk-btn-ghost"
