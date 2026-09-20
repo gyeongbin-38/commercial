@@ -175,10 +175,10 @@ export const WORK_PACKAGES = [
 export const WORK_ABOUT = {
   title: "The designer is the developer",
   bio: [
-    "I'm Gyeongbin, an AI applications major in Seoul. I sketch the page and write the code, so what you approve is what ships.",
+    "I'm Gyeongbin, a computer science student in Seoul. I sketch the page and write the code, so what you approve is what ships.",
   ],
   facts: [
-    { label: "Background", value: "AI Applications major" },
+    { label: "Background", value: "Computer Science" },
     { label: "Role", value: "Designer + developer" },
     { label: "Languages", value: "English / Korean" },
     { label: "Location", value: "Seoul, KST, remote worldwide" },

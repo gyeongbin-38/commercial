@@ -28,7 +28,7 @@ on a date you can plan around. I do both halves: the design concept and
 the production build, so nothing gets lost between a Figma file and the
 real site.
 
-I'm an AI applications major and a hackathon award winner — most of the
+I'm a computer science student and a hackathon award winner — most of the
 people buying landing pages right now are AI and SaaS startups, and I
 already speak that language. No call spent explaining what your product
 does.
