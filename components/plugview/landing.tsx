@@ -692,7 +692,7 @@ export function PlugviewLanding() {
             <Link href="#market" className="transition hover:text-white">Asset Market</Link>
             <Link href="#make" className="transition hover:text-white">Make</Link>
             <Link href="#contact" className="transition hover:text-white">Contact</Link>
-            <span>© 2026 Plugview</span>
+            <span>© 2025 Plugview</span>
           </div>
         </div>
       </footer>

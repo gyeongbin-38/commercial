@@ -94,7 +94,7 @@ export const WORK_PROJECTS = [
     ],
     tags: ["Next.js", "UI marketplace", "Dark theme", "Interactive"],
     lang: "EN",
-    year: "2026",
+    year: "2025",
     screenshot: "/work/plugview-screen.png",
     video: "/work/plugview.webm",
     note: "Goal: show the interface before asking for an install, so the hero uses an actual screen capture rather than an illustration. I designed and built the landing page and the live preview tabs. Checked responsive; the marketplace behind it is a separate product build.",
