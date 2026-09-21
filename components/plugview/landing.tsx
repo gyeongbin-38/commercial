@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useRef, useState, type FormEvent, type PointerEvent, type ReactNode } from "react";
@@ -54,6 +53,11 @@ const HeroScene = dynamic(
 
 const LiquidCore = dynamic(
   () => import("./scene3d").then((mod) => mod.LiquidCore),
+  { ssr: false }
+);
+
+const ComponentField = dynamic(
+  () => import("./scene3d").then((mod) => mod.ComponentField),
   { ssr: false }
 );
 
@@ -863,14 +867,8 @@ export function PlugviewLanding() {
               <Reveal delay={0.04}>
                 <InteractivePreview>
                   <div className="relative min-h-[390px] overflow-hidden rounded-[16px] border border-white/12 bg-[#111318] sm:min-h-[520px]">
-                    <Image
-                      src="/plugview/component-studio.png"
-                      alt="Modular UI blocks arranged in a dark studio"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 60vw"
-                      className="object-cover object-center opacity-90"
-                    />
-                    <div className="absolute inset-0 bg-[#1d1d21]/12" />
+                    <ComponentField />
+                    <p className="sr-only">Modular UI blocks rendered as floating glass sheets.</p>
                     <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 border-t border-white/12 bg-[#1d1d21]/85 p-5 backdrop-blur-md sm:p-7">
                       <div>
                         <p className="pv-mono text-[10px] uppercase tracking-[0.18em] text-[#a9c8ff]">Component studio</p>

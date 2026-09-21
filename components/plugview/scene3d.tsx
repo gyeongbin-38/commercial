@@ -1,6 +1,13 @@
 "use client";
 
-import { useMemo, useRef, useSyncExternalStore, type ReactNode } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Environment,
@@ -373,5 +380,145 @@ export function LiquidCore() {
         />
       </Environment>
     </Canvas>
+  );
+}
+
+/* Market section visual: an exploded stack of glass "component sheets"
+   drifting in the panel — a live stand-in for a stock render, same
+   material language as the hero. Mounts when near the viewport;
+   renders a single static frame under reduced-motion. */
+const STACK: { position: Vec3; size: Vec3; rotation: Vec3; speed: number }[] = [
+  { position: [-0.9, -0.85, 0.3], size: [2.5, 1.5, 0.06], rotation: [0, 0.3, 0.05], speed: 0.8 },
+  { position: [-0.2, -0.05, 0], size: [2.3, 1.4, 0.06], rotation: [0, 0.16, -0.03], speed: 1.0 },
+  { position: [0.45, 0.75, -0.35], size: [2.1, 1.3, 0.06], rotation: [0, 0.02, 0.04], speed: 1.2 },
+];
+
+function ComponentObjects() {
+  const group = useRef<THREE.Group>(null);
+
+  useFrame((state, delta) => {
+    if (!group.current) return;
+    const t = state.clock.elapsedTime;
+    group.current.rotation.y = THREE.MathUtils.damp(
+      group.current.rotation.y,
+      0.35 + state.pointer.x * 0.12 + Math.sin(t * 0.14) * 0.12,
+      2,
+      delta
+    );
+    group.current.rotation.x = THREE.MathUtils.damp(
+      group.current.rotation.x,
+      -0.08 - state.pointer.y * 0.08,
+      2,
+      delta
+    );
+  });
+
+  return (
+    <group ref={group} rotation={[0, 0.35, 0]} position={[0, -0.1, 0]}>
+      {STACK.map((s, i) => (
+        <Float
+          key={i}
+          speed={s.speed}
+          floatIntensity={0.55}
+          rotationIntensity={0.12}
+        >
+          <RoundedBox
+            args={s.size}
+            radius={0.08}
+            position={s.position}
+            rotation={s.rotation}
+          >
+            <MeshTransmissionMaterial {...GLASS_PROPS} />
+          </RoundedBox>
+        </Float>
+      ))}
+      <Float speed={1.4} floatIntensity={0.8} rotationIntensity={0.3}>
+        <RoundedBox
+          args={[0.95, 0.6, 0.06]}
+          radius={0.07}
+          position={[1.9, 0.15, 0.9]}
+          rotation={[0.1, -0.5, 0.08]}
+        >
+          <meshStandardMaterial
+            color="#145fe4"
+            emissive="#0d49c9"
+            emissiveIntensity={0.7}
+            metalness={0.6}
+            roughness={0.25}
+          />
+        </RoundedBox>
+      </Float>
+      <Float speed={0.9} floatIntensity={1} rotationIntensity={0.4}>
+        <RoundedBox
+          args={[0.6, 0.6, 0.6]}
+          radius={0.09}
+          position={[2.1, -1.15, -0.4]}
+          rotation={[0.3, 0.5, 0.1]}
+        >
+          <MeshTransmissionMaterial {...GLASS_PROPS} />
+        </RoundedBox>
+      </Float>
+      <Float speed={1.1} floatIntensity={0.9} rotationIntensity={0.35}>
+        <RoundedBox
+          args={[0.45, 0.45, 0.45]}
+          radius={0.08}
+          position={[-2.3, 0.9, -0.6]}
+          rotation={[0.2, -0.4, 0.15]}
+        >
+          <MeshTransmissionMaterial {...GLASS_PROPS} />
+        </RoundedBox>
+      </Float>
+      <pointLight
+        color="#2b70ed"
+        intensity={7}
+        distance={9}
+        decay={2}
+        position={[1.5, 1, 2]}
+      />
+    </group>
+  );
+}
+
+export function ComponentField() {
+  const reduce = useReducedMotion();
+  const host = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = host.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => entries[0].isIntersecting && setVisible(true),
+      { rootMargin: "300px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div ref={host} aria-hidden="true" className="absolute inset-0">
+      {visible ? (
+        <Canvas
+          dpr={[1, 1.5]}
+          camera={{ position: [0, 0.5, 6.4], fov: 38 }}
+          gl={{
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance",
+          }}
+          frameloop={reduce ? "never" : "always"}
+        >
+          <GradientBackdrop />
+          <ComponentObjects />
+          <ambientLight intensity={0.35} />
+          <directionalLight
+            position={[4, 6, 5]}
+            intensity={0.9}
+            color="#e6efff"
+          />
+          <FieldLights />
+        </Canvas>
+      ) : null}
+    </div>
   );
 }
