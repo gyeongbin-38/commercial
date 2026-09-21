@@ -126,8 +126,6 @@ export function CmdK() {
       ?.scrollIntoView({ block: "nearest" });
   }, [index]);
 
-  useEffect(() => setIndex(0), [query]);
-
   let lastGroup = "";
 
   return (
@@ -171,7 +169,10 @@ export function CmdK() {
                 <input
                   ref={inputRef}
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    setIndex(0);
+                  }}
                   placeholder="Jump to a section, open a project…"
                   className="w-full bg-transparent py-3 text-[0.9375rem] text-wk-ink outline-none placeholder:text-wk-muted/60"
                   aria-label="Search commands"

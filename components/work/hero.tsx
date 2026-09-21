@@ -1,6 +1,6 @@
 import { STUDIO } from "@/lib/work-data";
 import { Reveal } from "@/components/ui/reveal";
-import { HeroCollage } from "./hero-collage";
+import { HeroAtlas } from "./hero-atlas";
 import { CopyEmail } from "./copy-email";
 import { Magnetic } from "./magnetic";
 import { WordReveal } from "./word-reveal";
@@ -67,7 +67,7 @@ export function WorkHero() {
         </div>
 
         <Reveal delay={0.15} className="min-[900px]:-mr-10">
-          <HeroCollage />
+          <HeroAtlas />
         </Reveal>
       </div>
     </section>

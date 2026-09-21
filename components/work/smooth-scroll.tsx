@@ -12,7 +12,7 @@ export function WorkSmoothScroll() {
   useEffect(() => {
     if (reduce) return;
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: 0.45,
       smoothWheel: true,
       anchors: true,
     });

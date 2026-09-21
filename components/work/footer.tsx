@@ -7,7 +7,7 @@ import { BriefForm } from "./brief";
 
 export function WorkFooter() {
   return (
-    <footer className="wk-dark-section overflow-hidden">
+    <footer className="wk-dark-section wk-cv overflow-hidden">
       <div className="wk-container relative py-16 min-[900px]:py-24">
         {/* Static thumbnails behind the CTA, desktop only */}
         <div

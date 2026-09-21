@@ -8,7 +8,7 @@ export function WorkFaq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="scroll-mt-20 bg-[var(--wk-bg-deep)]">
+    <section id="faq" className="wk-cv scroll-mt-20 bg-[var(--wk-bg-deep)]">
       <div className="wk-container py-16 min-[900px]:py-20">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <Reveal>

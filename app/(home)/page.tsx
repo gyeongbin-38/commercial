@@ -1,4 +1,3 @@
-import { WorkCursor } from "@/components/work/cursor";
 import { WorkNavbar } from "@/components/work/navbar";
 import { WorkScrollProgress } from "@/components/work/scroll-progress";
 import { WorkSmoothScroll } from "@/components/work/smooth-scroll";
@@ -28,7 +27,6 @@ export default function WorkPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <WorkCursor />
       <WorkScrollProgress />
       <WorkSmoothScroll />
       <WorkNavbar />

@@ -3,7 +3,7 @@ import { WorkIndex } from "./index-list";
 
 export function WorkProjects() {
   return (
-    <section id="work" className="scroll-mt-20">
+    <section id="work" className="wk-cv scroll-mt-20">
       <div className="wk-container pt-16 pb-10 min-[900px]:pt-24 min-[900px]:pb-14">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">

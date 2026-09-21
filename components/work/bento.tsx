@@ -23,7 +23,7 @@ const tile =
 
 export function WorkBento() {
   return (
-    <section className="border-b border-[var(--wk-line-soft)] bg-[var(--wk-bg-deep)]">
+    <section className="wk-cv border-b border-[var(--wk-line-soft)] bg-[var(--wk-bg-deep)]">
       <div className="wk-container py-16 min-[900px]:py-20">
         <Pop>
           <h2 className="wk-h2 max-w-[22ch]">

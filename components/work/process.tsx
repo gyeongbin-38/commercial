@@ -26,7 +26,7 @@ export function WorkProcess() {
   const n = WORK_PROCESS.length;
 
   return (
-    <section id="process" className="scroll-mt-20">
+    <section id="process" className="wk-cv scroll-mt-20">
       <div className="wk-container py-16 min-[900px]:py-24">
         <Reveal>
           <h2 className="wk-h2 max-w-[22ch]">

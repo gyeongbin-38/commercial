@@ -4,7 +4,7 @@ import { Pop } from "./pop";
 
 export function WorkAbout() {
   return (
-    <section id="about" className="scroll-mt-20 border-b border-[var(--wk-line-soft)]">
+    <section id="about" className="wk-cv scroll-mt-20 border-b border-[var(--wk-line-soft)]">
       <div className="wk-container py-16 min-[900px]:py-24">
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <Reveal>

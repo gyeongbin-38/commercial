@@ -302,41 +302,202 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ---------- hero collage ---------- */
+/* ---------- hero atlas ---------- */
 
-.wk-collage-card {
-  position: absolute;
-  aspect-ratio: 8 / 5;
-  border-radius: var(--wk-r-md);
+.wk-atlas {
+  display: grid;
+  gap: 0.875rem;
+}
+
+.wk-atlas-frame {
+  display: block;
   overflow: hidden;
   border: 1px solid var(--wk-line);
-  box-shadow: rgba(27, 25, 23, 0.14) 0 24px 50px -16px;
+  border-radius: var(--wk-r-lg);
   background: var(--wk-card);
-  will-change: transform;
-  cursor: pointer;
-  transition: box-shadow 0.35s var(--wk-ease), z-index 0s;
+  box-shadow: rgba(27, 25, 23, 0.14) 0 24px 50px -16px;
+  transition:
+    transform 0.35s var(--wk-ease),
+    box-shadow 0.35s var(--wk-ease);
 }
 
-.wk-collage-card:hover {
-  z-index: 10;
-  box-shadow: rgba(27, 25, 23, 0.22) 0 32px 64px -16px;
+.wk-atlas-frame:hover {
+  transform: translateY(-3px);
+  box-shadow: rgba(27, 25, 23, 0.2) 0 32px 64px -16px;
 }
 
-.wk-collage-card:focus-visible {
-  z-index: 10;
+.wk-atlas-frame:focus-visible {
   outline: 2px solid var(--wk-accent);
   outline-offset: 3px;
 }
 
-.wk-collage-img {
-  object-fit: cover;
-  object-position: top;
-  transition: transform 0.45s var(--wk-ease);
+.wk-atlas-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  border-bottom: 1px solid var(--wk-line-soft);
 }
 
-.wk-collage-card:hover .wk-collage-img,
-.wk-collage-card:focus-visible .wk-collage-img {
-  transform: scale(1.05);
+.wk-atlas-dots {
+  display: inline-flex;
+  gap: 5px;
+}
+.wk-atlas-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #d9d7d0;
+}
+
+.wk-atlas-url {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  border-radius: 9999px;
+  background: var(--wk-bg-deep);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--wk-muted);
+}
+
+.wk-atlas-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3d8b4f;
+  white-space: nowrap;
+}
+.wk-atlas-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #3d8b4f;
+}
+
+.wk-atlas-screen {
+  position: relative;
+  display: block;
+  aspect-ratio: 8 / 5;
+}
+
+.wk-atlas-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.625rem;
+}
+
+.wk-atlas-fact {
+  border: 1px solid var(--wk-line);
+  border-radius: var(--wk-r-md);
+  background: var(--wk-card);
+  padding: 0.75rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.wk-atlas-fact-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--wk-muted);
+}
+
+.wk-atlas-fact-value {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--wk-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.wk-atlas-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  color: var(--wk-muted);
+}
+.wk-atlas-caption strong {
+  color: var(--wk-ink);
+  font-weight: 650;
+}
+
+@media (min-width: 700px) {
+  .wk-atlas {
+    grid-template-columns: 1fr 148px;
+  }
+  .wk-atlas-frame {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .wk-atlas-facts {
+    grid-column: 2;
+    grid-row: 1;
+    grid-template-columns: 1fr;
+    align-content: stretch;
+  }
+  .wk-atlas-fact {
+    flex: 1;
+  }
+  .wk-atlas-caption {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- work index hover preview (CSS-only) ---------- */
+
+.wk-index-preview {
+  display: none;
+  position: fixed;
+  right: clamp(1rem, 5vw, 6rem);
+  top: 50%;
+  z-index: 80;
+  width: min(400px, 34vw);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--wk-r-lg);
+  border: 1px solid var(--wk-line);
+  background: #141312;
+  box-shadow: 0 30px 70px -20px rgba(27, 25, 23, 0.45);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+@media (pointer: fine) and (min-width: 900px) {
+  li:hover > .wk-index-preview,
+  li:focus-within > .wk-index-preview {
+    display: block;
+    animation: wk-preview-in 0.22s var(--wk-ease);
+  }
+}
+
+@keyframes wk-preview-in {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+/* skip rendering for below-fold sections until near viewport */
+.wk-cv {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
 }
 
 /* ---------- bento tiles ---------- */
@@ -358,8 +519,13 @@
   .wk-faq-panel {
     transition: none;
   }
-  .wk-collage-img {
+  .wk-atlas-frame,
+  .wk-atlas-frame:hover {
     transition: none;
+    transform: none;
+  }
+  .wk-index-preview {
+    animation: none;
   }
   .wk-bento,
   .wk-bento:hover {
