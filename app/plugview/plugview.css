@@ -84,45 +84,212 @@
   font-size: 13px;
 }
 
-@keyframes pv-live-pulse {
+/* --- Liquid glass surfaces ------------------------------------------- */
+
+.pv-glass {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.07),
+    rgba(255, 255, 255, 0.03)
+  );
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+    0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+.pv-glass-bar {
+  background: rgba(29, 29, 33, 0.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  backdrop-filter: blur(24px) saturate(1.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.pv-glass-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.03)
+  );
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  backdrop-filter: blur(16px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 12px 34px rgba(0, 0, 0, 0.3);
+  padding: 7px 16px 7px 8px;
+}
+
+/* --- Liquid logo mark ------------------------------------------------- */
+
+.pv-liquid {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.pv-liquid-face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 24%;
+  background: linear-gradient(160deg, #2b70ed, #145fe4 55%, #0f4cc0);
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  filter: url(#pv-liquid-calm);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 10px 28px rgba(20, 95, 228, 0.35);
+}
+
+.pv-liquid:hover .pv-liquid-face {
+  filter: url(#pv-liquid-hot);
+}
+
+/* --- Liquid-metal text sheen ------------------------------------------ */
+
+.pv-liquid-text {
+  background: linear-gradient(
+    100deg,
+    #4b8df4 0%,
+    #a9c8ff 18%,
+    #4b8df4 36%,
+    #2b70ed 60%,
+    #4b8df4 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: pv-sheen 9s ease-in-out infinite;
+}
+
+@keyframes pv-sheen {
   0%,
   100% {
-    opacity: 0.6;
-    transform: scale(0.86);
+    background-position: 0% 50%;
   }
-
   50% {
-    opacity: 1;
-    transform: scale(1.16);
+    background-position: 100% 50%;
   }
 }
 
-@keyframes pv-scan-line {
-  0% {
-    opacity: 0;
-    transform: translateY(0);
-  }
+/* --- Primary button specular sweep ------------------------------------ */
 
-  12% {
-    opacity: 0.8;
-  }
-
-  78% {
-    opacity: 0.15;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(390px);
-  }
+.pv-button-primary {
+  position: relative;
+  overflow: hidden;
 }
 
-.pv-live-dot {
-  animation: pv-live-pulse 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+.pv-button-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.32) 48%,
+    transparent 62%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
 }
 
-.pv-scan-line {
-  animation: pv-scan-line 4.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+.pv-button-primary:hover::after {
+  transform: translateX(130%);
+}
+
+/* --- Liquid core blob mask --------------------------------------------- */
+
+.pv-blob-mask {
+  -webkit-mask-image: radial-gradient(
+    62% 62% at 55% 50%,
+    black 25%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    62% 62% at 55% 50%,
+    black 25%,
+    transparent 72%
+  );
+}
+
+/* --- Asset ticker ------------------------------------------------------ */
+
+.pv-ticker {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 9%,
+    #000 91%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 9%,
+    #000 91%,
+    transparent
+  );
+}
+
+.pv-ticker-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: pv-ticker-x 42s linear infinite;
+}
+
+.pv-ticker:hover .pv-ticker-track {
+  animation-play-state: paused;
+}
+
+.pv-ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: 3.25rem;
+  white-space: nowrap;
+}
+
+.pv-ticker-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: #145fe4;
+  flex-shrink: 0;
+}
+
+.pv-ticker-name {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.44);
+}
+
+.pv-ticker-tag {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.22);
+}
+
+@keyframes pv-ticker-x {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -135,8 +302,16 @@
     transform: none;
   }
 
-  .pv-live-dot,
-  .pv-scan-line {
+  .pv-button-primary::after {
+    display: none;
+  }
+
+  .pv-liquid-text {
+    animation: none;
+    background-position: 0% 50%;
+  }
+
+  .pv-ticker-track {
     animation: none;
   }
 }

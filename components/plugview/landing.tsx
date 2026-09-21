@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useRef, useState, type FormEvent, type PointerEvent, type ReactNode } from "react";
 import {
   AnimatePresence,
@@ -9,9 +10,11 @@ import {
   useMotionTemplate,
   useMotionValue,
   useReducedMotion,
+  useScroll,
   useSpring,
   useTransform,
 } from "motion/react";
+import { AssetTicker, HeroPreviewStage, LiquidMark, PvMagnetic } from "./effects";
 import {
   ArrowRight,
   Braces,
@@ -43,6 +46,16 @@ const previewTabs: { kind: PreviewKind; label: string }[] = [
   { kind: "pricing", label: "Pricing Cards" },
   { kind: "form", label: "Login Form" },
 ];
+
+const HeroScene = dynamic(
+  () => import("./scene3d").then((mod) => mod.HeroScene),
+  { ssr: false }
+);
+
+const LiquidCore = dynamic(
+  () => import("./scene3d").then((mod) => mod.LiquidCore),
+  { ssr: false }
+);
 
 function LogoMark({ small = false }: { small?: boolean }) {
   return (
@@ -83,13 +96,13 @@ function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#1d1d21]/95 backdrop-blur-xl">
+    <header className="pv-glass-bar sticky top-0 z-50 border-b border-white/10">
       <nav
         aria-label="Primary navigation"
         className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between gap-6 px-5 sm:px-8 lg:px-10"
       >
         <Link href="#top" className="flex items-center gap-3" aria-label="Plugview home">
-          <LogoMark small />
+          <LiquidMark size={32} />
           <span className="flex flex-col leading-none">
             <span className="text-[17px] font-bold tracking-[-0.03em] text-white">Plugview</span>
             <span className="mt-1 text-[10px] font-medium tracking-[0.08em] text-white/45">UI ASSET MARKET</span>
@@ -131,7 +144,7 @@ function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: EASE }}
-            className="border-t border-white/10 bg-[#1d1d21] px-5 pb-6 pt-4 lg:hidden"
+            className="border-t border-white/10 bg-[#1d1d21]/95 px-5 pb-6 pt-4 backdrop-blur-xl lg:hidden"
           >
             <div className="flex flex-col">
               {navItems.map((item) => (
@@ -198,7 +211,6 @@ function InteractivePreview({ children }: { children: ReactNode }) {
 
 function PreviewChrome({ children }: { children: ReactNode }) {
   return (
-    <InteractivePreview>
       <div className="pv-preview-window overflow-hidden rounded-[16px] border border-white/12 bg-[#111318] text-white shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
       <div className="flex h-11 items-center border-b border-white/10 bg-[#0d0f14] px-4">
         <div className="flex items-center gap-1.5" aria-hidden="true">
@@ -206,40 +218,226 @@ function PreviewChrome({ children }: { children: ReactNode }) {
           <span className="h-2.5 w-2.5 rounded-full bg-white/12" />
           <span className="h-2.5 w-2.5 rounded-full bg-white/10" />
         </div>
-        <div className="mx-auto flex items-center gap-2 rounded-[7px] border border-white/10 bg-white/[0.035] px-3 py-1 text-[10px] font-mono text-white/35">
+        <div className="mx-auto flex items-center gap-2 rounded-[7px] border border-white/12 bg-white/[0.05] px-3 py-1 text-[10px] font-mono text-white/35 backdrop-blur-md">
           <span className="text-[#145fe4]">https://</span>plugview.dev/preview
         </div>
         <span className="w-[42px]" aria-hidden="true" />
       </div>
       {children}
       </div>
-    </InteractivePreview>
   );
 }
 
-function HeroPreview() {
+function AtlasCard({
+  index,
+  title,
+  children,
+  className = "",
+  delay = 0,
+  depth = 0,
+}: {
+  index: string;
+  title: string;
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  depth?: number;
+}) {
+  const reduce = useReducedMotion();
+
   return (
-    <InteractivePreview>
-      <div className="overflow-hidden rounded-[16px] border border-white/12 bg-[#111318] text-white shadow-[0_30px_90px_rgba(0,0,0,0.42)]">
-        <div className="relative aspect-[972/535] overflow-hidden bg-[#111318]">
-          <Image
-            src="/plugview/plugview-screen.png"
-            alt="Plugview component studio screen"
-            fill
-            priority
-            sizes="(max-width: 1024px) 100vw, 62vw"
-            className="object-cover object-center"
-          />
-          <div aria-hidden="true" className="pv-scan-line pointer-events-none absolute inset-x-0 top-0 z-10 h-px bg-[#4b8df4]/55" />
+    <motion.section
+      initial={reduce ? false : { opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay, ease: EASE }}
+      style={
+        depth > 0
+          ? { z: depth, boxShadow: "0 24px 50px rgba(0,0,0,0.38)" }
+          : undefined
+      }
+      className={`rounded-[10px] border border-white/10 bg-[#232327] p-3.5 sm:p-4 ${className}`}
+    >
+      <div className="flex items-baseline justify-between">
+        <span className="pv-mono text-[8px] uppercase tracking-[0.2em] text-[#8f8a7c]">
+          {index}
+        </span>
+        <span className="pv-mono text-[8px] uppercase tracking-[0.16em] text-white/38">
+          {title}
+        </span>
+      </div>
+      {children}
+    </motion.section>
+  );
+}
+
+function CalendarCard() {
+  const weekdays = ["M", "T", "W", "T", "F", "S", "S"];
+  const offset = 1;
+  const eventDays = new Set([5, 22, 30]);
+  return (
+    <AtlasCard index="A-01" title="Calendar" className="flex flex-col sm:row-span-2" delay={0.5} depth={34}>
+      <div className="mt-3 flex items-center justify-between">
+        <span className="pv-mono text-[9px] tracking-[0.12em] text-white/72">
+          SEP 2026
+        </span>
+        <span className="flex gap-1">
+          <span className="flex h-4 w-4 items-center justify-center rounded-[3px] border border-white/12 text-[8px] leading-none text-white/40">
+            ‹
+          </span>
+          <span className="flex h-4 w-4 items-center justify-center rounded-[3px] border border-white/12 text-[8px] leading-none text-white/40">
+            ›
+          </span>
+        </span>
+      </div>
+      <div className="mb-3 mt-3 grid grid-cols-7 gap-[3px] text-center">
+        {weekdays.map((d, i) => (
+          <span key={i} className="pv-mono text-[7.5px] uppercase text-white/28">
+            {d}
+          </span>
+        ))}
+        {Array.from({ length: offset + 30 }, (_, i) => {
+          const day = i - offset + 1;
+          const inMonth = day >= 1;
+          const isToday = day === 17;
+          const hasEvent = inMonth && eventDays.has(day);
+          return (
+            <span
+              key={i}
+              className={`flex h-7 items-center justify-center rounded-[4px] pv-mono text-[8px] sm:h-8 ${
+                isToday
+                  ? "bg-[#b8d94a] font-semibold text-[#1d1d21]"
+                  : hasEvent
+                    ? "bg-white/8 text-white/72"
+                    : inMonth
+                      ? "text-white/38"
+                      : ""
+              }`}
+            >
+              {inMonth ? day : ""}
+            </span>
+          );
+        })}
+      </div>
+      <div className="mt-auto flex items-center gap-2 border-t border-white/8 pt-3">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#b8d94a]" />
+        <span className="pv-mono text-[8px] uppercase tracking-[0.14em] text-white/40">
+          3 events this week
+        </span>
+      </div>
+    </AtlasCard>
+  );
+}
+
+function QueueCard() {
+  const items = [
+    { name: "Proposal follow-up", tag: "TODAY", lime: true },
+    { name: "Invoice #1042", tag: "DUE" },
+    { name: "Intake form", tag: "FRI" },
+    { name: "Kickoff prep", tag: "+2D" },
+  ];
+  return (
+    <AtlasCard index="A-02" title="Follow-up queue" delay={0.62} depth={20}>
+      <div className="mt-3 flex items-center justify-between">
+        <span className="pv-mono text-[9px] tracking-[0.12em] text-white/72">
+          QUEUE
+        </span>
+        <span className="pv-mono text-[8px] text-white/35">4 OPEN</span>
+      </div>
+      <ul className="mt-2.5 space-y-1.5">
+        {items.map((item) => (
+          <li
+            key={item.name}
+            className="flex items-center gap-2.5 rounded-[6px] border border-white/8 bg-white/[0.03] px-2.5 py-2"
+          >
+            <span
+              className={`h-1.5 w-1.5 shrink-0 rounded-full ${item.lime ? "bg-[#b8d94a]" : "bg-white/25"}`}
+            />
+            <span className="truncate text-[11px] text-white/68">
+              {item.name}
+            </span>
+            <span
+              className={`ml-auto shrink-0 rounded-[3px] border px-1.5 py-0.5 pv-mono text-[7.5px] tracking-[0.08em] ${
+                item.lime
+                  ? "border-[#b8d94a]/50 text-[#b8d94a]"
+                  : "border-white/12 text-white/40"
+              }`}
+            >
+              {item.tag}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </AtlasCard>
+  );
+}
+
+function StatusCard() {
+  const bars = [34, 48, 40, 62, 55, 78, 92];
+  return (
+    <AtlasCard index="A-03" title="Status" delay={0.74} depth={48}>
+      <div className="mt-3 flex items-start justify-between">
+        <div>
+          <span className="pv-mono text-[8px] uppercase tracking-[0.14em] text-white/35">
+            On-time
+          </span>
+          <p className="mt-1.5 text-[26px] font-light leading-none text-white">
+            92<span className="text-white/38">%</span>
+          </p>
         </div>
-        <div className="flex items-center justify-between gap-4 border-t border-white/10 bg-[#111318] px-5 py-3.5 sm:px-6">
-          <span className="pv-mono text-[9px] uppercase tracking-[0.16em] text-[#a9c8ff]">Plugview / Component Studio</span>
-          <span className="flex items-center gap-2 text-[9px] font-mono text-white/42">
-            <span className="pv-live-dot h-1.5 w-1.5 rounded-full bg-[#145fe4]" /> Actual screen preview
+        <span className="pv-mono flex items-center gap-1.5 text-[8px] uppercase tracking-[0.12em] text-[#b8d94a]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#b8d94a]" />
+          Synced
+        </span>
+      </div>
+      <div className="mt-3.5 flex h-11 items-end gap-1">
+        {bars.map((h, i) => (
+          <span
+            key={i}
+            style={{ height: `${h}%` }}
+            className={`w-full rounded-[2px] ${i === bars.length - 1 ? "bg-[#b8d94a]" : "bg-white/14"}`}
+          />
+        ))}
+      </div>
+    </AtlasCard>
+  );
+}
+
+function UiAtlas() {
+  return (
+    <div
+      role="img"
+      aria-label="Plugview asset sheet preview: calendar, follow-up queue and status cards"
+      className="pv-atlas rounded-[16px] border border-[#ddd9cb] bg-[#efede6] p-2.5 shadow-[0_30px_80px_rgba(0,0,0,0.45)] [transform-style:preserve-3d] sm:p-3"
+    >
+      <div aria-hidden="true">
+        <div className="flex items-center justify-between px-1 pb-2.5 pt-0.5 sm:px-1.5">
+          <span className="pv-mono text-[8px] uppercase tracking-[0.2em] text-[#8f8a7c]">
+            PV·Atlas / 03 modules
+          </span>
+          <span className="hidden items-center gap-1 sm:flex">
+            <span className="h-2 w-2 rounded-[2px] border border-[#b9b4a3]" />
+            <span className="h-2 w-2 rounded-[2px] border border-[#b9b4a3]" />
+            <span className="h-2 w-2 rounded-[2px] border border-[#b9b4a3]" />
+          </span>
+          <span className="pv-mono text-[8px] uppercase tracking-[0.14em] text-[#a39e8f]">
+            Sheet 01
+          </span>
+        </div>
+        <div className="grid gap-2.5 [transform-style:preserve-3d] sm:grid-cols-[1.08fr_1fr]">
+          <CalendarCard />
+          <QueueCard />
+          <StatusCard />
+        </div>
+        <div className="flex items-center justify-between px-1 pb-0.5 pt-2.5 sm:px-1.5">
+          <span className="pv-mono text-[8px] uppercase tracking-[0.2em] text-[#8f8a7c]">
+            Asset sheet · React UI
+          </span>
+          <span className="pv-mono text-[8px] uppercase tracking-[0.14em] text-[#a39e8f]">
+            Charcoal / Paper / Lime
           </span>
         </div>
       </div>
-    </InteractivePreview>
+    </div>
   );
 }
 
@@ -310,10 +508,112 @@ function FormPreview() {
   );
 }
 
+function HeroSectionPreview() {
+  return (
+    <PreviewChrome>
+      <div className="flex min-h-[390px] items-center bg-[#181b22] p-6 sm:p-10">
+        <div className="mx-auto grid w-full max-w-[720px] items-center gap-8 sm:grid-cols-[1.1fr_1fr] sm:gap-10">
+          <div>
+            <div className="h-2.5 w-20 rounded bg-[#145fe4]/70" />
+            <div className="mt-5 space-y-3">
+              <div className="h-6 w-4/5 rounded bg-white/75" />
+              <div className="h-6 w-3/5 rounded bg-white/55" />
+            </div>
+            <div className="mt-5 space-y-2">
+              <div className="h-2 w-full rounded bg-white/14" />
+              <div className="h-2 w-4/5 rounded bg-white/14" />
+            </div>
+            <div className="mt-7 flex gap-2.5">
+              <div className="h-9 w-28 rounded-full bg-[#145fe4]" />
+              <div className="h-9 w-24 rounded-full border border-white/16" />
+            </div>
+          </div>
+          <div className="hidden rounded-[10px] border border-white/10 bg-[#20242c] p-4 sm:block">
+            <div className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-white/16" />
+              <span className="h-2 w-2 rounded-full bg-white/16" />
+              <span className="h-2 w-2 rounded-full bg-white/16" />
+            </div>
+            <div className="mt-4 space-y-2.5">
+              <div className="h-8 rounded-[5px] bg-white/8" />
+              <div className="h-8 rounded-[5px] bg-white/8" />
+              <div className="h-8 rounded-[5px] border border-[#145fe4]/50 bg-[#145fe4]/15" />
+              <div className="h-8 rounded-[5px] bg-white/8" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </PreviewChrome>
+  );
+}
+
 function ComponentPreview({ kind }: { kind: PreviewKind }) {
   if (kind === "pricing") return <PricingPreview />;
   if (kind === "form") return <FormPreview />;
-  return <HeroPreview />;
+  return <HeroSectionPreview />;
+}
+
+/*
+ * Cover-flow deck: all three previews live on a shallow 3D stage. The active
+ * card sits front and flat; the other two recede left/right, dimmed, and a
+ * click (or the tab pills) rotates the deck. Reduced motion keeps the same
+ * layout with instant transitions.
+ */
+function PreviewDeck({
+  active,
+  onSelect,
+}: {
+  active: PreviewKind;
+  onSelect: (kind: PreviewKind) => void;
+}) {
+  const order: PreviewKind[] = ["hero", "pricing", "form"];
+  const activeIndex = order.indexOf(active);
+  const reduce = useReducedMotion();
+
+  return (
+    <div className="relative mx-auto h-[470px] max-w-[1240px] [perspective:2000px] sm:h-[540px]">
+      <div
+        className="absolute inset-0 [transform-style:preserve-3d]"
+        style={{ transform: "rotateX(3deg)" }}
+      >
+        {order.map((kind, i) => {
+          const offset = i - activeIndex;
+          const isActive = offset === 0;
+          return (
+            <motion.div
+              key={kind}
+              initial={false}
+              animate={{
+                x: `${offset * 54}%`,
+                z: -Math.abs(offset) * 230,
+                rotateY: offset * -26,
+                scale: 1 - Math.abs(offset) * 0.13,
+                opacity: isActive ? 1 : 0.4,
+              }}
+              transition={
+                reduce
+                  ? { duration: 0 }
+                  : { type: "spring", stiffness: 110, damping: 19, mass: 0.9 }
+              }
+              style={{
+                zIndex: 10 - Math.abs(offset),
+                transformStyle: "preserve-3d",
+              }}
+              className={`absolute inset-x-0 top-0 mx-auto w-[min(96%,1040px)] ${
+                isActive ? "" : "cursor-pointer"
+              }`}
+              aria-hidden={!isActive}
+              onClick={() => {
+                if (!isActive) onSelect(kind);
+              }}
+            >
+              <ComponentPreview kind={kind} />
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 function FeatureRow({
@@ -405,7 +705,7 @@ function InterestForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="rounded-[12px] border border-white/12 bg-white/[0.035] p-6 sm:p-8">
+    <form onSubmit={handleSubmit} noValidate className="pv-glass rounded-[12px] p-6 sm:p-8">
       <div>
         <label htmlFor="interest-email" className="text-sm font-medium text-white">Email address</label>
         <p className="mt-2 text-xs leading-5 text-white/45">Get new assets and release notes before everyone else.</p>
@@ -450,46 +750,81 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
 export function PlugviewLanding() {
   const [previewKind, setPreviewKind] = useState<PreviewKind>("hero");
   const reduce = useReducedMotion();
+  const heroRef = useRef<HTMLElement>(null);
+  const stepsRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const atlasY = useTransform(heroProgress, [0, 1], [0, -48]);
+  const atlasRotate = useTransform(heroProgress, [0, 1], [0, -1.6]);
+  const { scrollYProgress: stepsProgress } = useScroll({
+    target: stepsRef,
+    offset: ["start 0.82", "end 0.5"],
+  });
 
   return (
     <div id="top" className="min-h-[100dvh] overflow-x-clip bg-[#1d1d21] text-white">
       <Nav />
 
       <main>
-        <section className="relative border-b border-white/10">
-          <div className="mx-auto grid min-h-[calc(100dvh-72px)] max-w-[1440px] items-center gap-12 px-5 pb-14 pt-14 sm:px-8 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16 lg:px-10 lg:pt-16 xl:gap-20">
+        <section ref={heroRef} className="relative overflow-hidden border-b border-white/10">
+          <HeroScene />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-[1] hidden lg:block"
+            style={{
+              background:
+                "linear-gradient(100deg, rgba(29,29,33,0.88) 0%, rgba(29,29,33,0.52) 30%, rgba(29,29,33,0.14) 55%, rgba(29,29,33,0.34) 100%)",
+            }}
+          />
+          <div className="relative z-10 mx-auto grid min-h-[calc(100dvh-72px)] max-w-[1440px] items-center gap-12 px-5 pb-14 pt-14 sm:px-8 lg:grid-cols-[5fr_7fr] lg:gap-16 lg:px-10 lg:pt-16 xl:gap-20">
             <motion.div
               initial={reduce ? false : { opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.62, ease: EASE }}
               className="max-w-[540px]"
             >
-              <p className="pv-eyebrow">PLUGVIEW / UI ASSET MARKET</p>
-              <h1 className="mt-7 max-w-[580px] text-[clamp(3.2rem,6vw,5.7rem)] font-light leading-[1.02] tracking-[-0.065em] text-white">
+              <div className="pv-glass-chip">
+                <LiquidMark size={30} />
+                <p className="pv-eyebrow">PLUGVIEW / UI ASSET MARKET</p>
+              </div>
+              <h1 className="mt-7 max-w-[620px] text-[clamp(3.4rem,6.4vw,6.3rem)] font-light leading-[1.02] tracking-[-0.065em] text-white">
                 See it live.
                 <br />
-                <span className="text-[#4b8df4]">Ship it now.</span>
+                <span className="pv-liquid-text">Ship it now.</span>
               </h1>
               <p className="mt-7 max-w-[30rem] text-base leading-7 tracking-[-0.02em] text-white/57 sm:text-lg">
                 Preview polished React UI live, then copy it straight into your product.
               </p>
               <div className="mt-9 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-                <Link href="#market" className="pv-button pv-button-primary">
-                  Explore assets <ArrowRight size={16} strokeWidth={1.8} />
-                </Link>
+                <PvMagnetic>
+                  <Link href="#market" className="pv-button pv-button-primary">
+                    Explore assets <ArrowRight size={16} strokeWidth={1.8} />
+                  </Link>
+                </PvMagnetic>
                 <Link href="#make" className="pv-button pv-button-ghost">
                   Open Make Builder
                 </Link>
               </div>
+              <p className="pv-mono mt-7 text-[10px] uppercase tracking-[0.16em] text-white/38">
+                Self-directed product build by Gyeongbin Bak
+              </p>
             </motion.div>
 
             <motion.div
               initial={reduce ? false : { opacity: 0, y: 38 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.72, delay: 0.16, ease: EASE }}
-              className="min-w-0 lg:translate-y-5"
+              className="min-w-0 lg:-ml-10 lg:translate-y-5"
             >
-              <HeroPreview />
+              <motion.div
+                style={reduce ? undefined : { y: atlasY, rotate: atlasRotate }}
+              >
+                <HeroPreviewStage>
+                  <UiAtlas />
+                </HeroPreviewStage>
+              </motion.div>
             </motion.div>
           </div>
         </section>
@@ -497,7 +832,7 @@ export function PlugviewLanding() {
         <section aria-label="Plugview capabilities" className="border-b border-white/10 bg-[#20242c]">
           <div className="mx-auto grid max-w-[1440px] grid-cols-1 divide-y divide-white/10 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-8 lg:px-10">
             {[
-              { value: "141+", label: "Curated assets" },
+              { value: "Curated", label: "UI assets" },
               { value: "LIVE", label: "Live previews" },
               { value: "1-click", label: "One-click code" },
             ].map((item) => (
@@ -508,6 +843,8 @@ export function PlugviewLanding() {
             ))}
           </div>
         </section>
+
+        <AssetTicker />
 
         <section id="market" className="scroll-mt-[72px] border-b border-white/10">
           <div className="mx-auto max-w-[1440px] px-5 py-24 sm:px-8 sm:py-32 lg:px-10">
@@ -523,22 +860,26 @@ export function PlugviewLanding() {
             </Reveal>
 
             <div className="mt-16 grid gap-5 lg:grid-cols-[1.22fr_0.78fr]">
-              <Reveal className="relative min-h-[390px] overflow-hidden rounded-[16px] border border-white/12 bg-[#111318] sm:min-h-[520px]" delay={0.04}>
-                <Image
-                  src="/plugview/component-studio.png"
-                  alt="Modular UI blocks arranged in a dark studio"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                  className="object-cover object-center opacity-90"
-                />
-                <div className="absolute inset-0 bg-[#1d1d21]/12" />
-                <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 border-t border-white/12 bg-[#1d1d21]/85 p-5 backdrop-blur-md sm:p-7">
-                  <div>
-                    <p className="pv-mono text-[10px] uppercase tracking-[0.18em] text-[#a9c8ff]">Component studio</p>
-                    <p className="mt-2 text-sm text-white/72">Compose one screen, then carry the system into the next.</p>
+              <Reveal delay={0.04}>
+                <InteractivePreview>
+                  <div className="relative min-h-[390px] overflow-hidden rounded-[16px] border border-white/12 bg-[#111318] sm:min-h-[520px]">
+                    <Image
+                      src="/plugview/component-studio.png"
+                      alt="Modular UI blocks arranged in a dark studio"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 60vw"
+                      className="object-cover object-center opacity-90"
+                    />
+                    <div className="absolute inset-0 bg-[#1d1d21]/12" />
+                    <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 border-t border-white/12 bg-[#1d1d21]/85 p-5 backdrop-blur-md sm:p-7">
+                      <div>
+                        <p className="pv-mono text-[10px] uppercase tracking-[0.18em] text-[#a9c8ff]">Component studio</p>
+                        <p className="mt-2 text-sm text-white/72">Compose one screen, then carry the system into the next.</p>
+                      </div>
+                      <Sparkles size={20} strokeWidth={1.4} className="shrink-0 text-[#4b8df4]" aria-hidden="true" />
+                    </div>
                   </div>
-                  <Sparkles size={20} strokeWidth={1.4} className="shrink-0 text-[#4b8df4]" aria-hidden="true" />
-                </div>
+                </InteractivePreview>
               </Reveal>
               <Reveal className="divide-y divide-white/10 border-y border-white/10" delay={0.12}>
                 <FeatureRow icon={<Eye size={18} strokeWidth={1.5} />} title="Preview it live" text="Judge the finish through real interaction, not a static image." />
@@ -565,7 +906,7 @@ export function PlugviewLanding() {
                     role="tab"
                     aria-selected={previewKind === tab.kind}
                     onClick={() => setPreviewKind(tab.kind)}
-                    className={`relative isolate min-h-11 overflow-hidden rounded-full border px-4 text-sm transition duration-200 active:scale-[0.98] ${previewKind === tab.kind ? "border-[#145fe4] text-white" : "border-white/14 bg-transparent text-white/52 hover:border-white/30 hover:text-white"}`}
+                    className={`relative isolate min-h-11 overflow-hidden rounded-full border px-4 text-sm transition duration-200 active:scale-[0.98] ${previewKind === tab.kind ? "border-[#145fe4] text-white" : "border-white/14 bg-white/[0.04] text-white/52 backdrop-blur-md hover:border-white/30 hover:text-white"}`}
                   >
                     {previewKind === tab.kind && (
                       <motion.span
@@ -580,18 +921,8 @@ export function PlugviewLanding() {
                 ))}
               </div>
             </Reveal>
-            <Reveal delay={0.08} className="mt-8">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={previewKind}
-                  initial={reduce ? false : { opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={reduce ? undefined : { opacity: 0, y: -8 }}
-                  transition={{ duration: 0.3, ease: EASE }}
-                >
-                  <ComponentPreview kind={previewKind} />
-                </motion.div>
-              </AnimatePresence>
+            <Reveal delay={0.08} className="mt-10">
+              <PreviewDeck active={previewKind} onSelect={setPreviewKind} />
             </Reveal>
           </div>
         </section>
@@ -627,14 +958,25 @@ export function PlugviewLanding() {
                 to start the screen.
               </h2>
             </Reveal>
-            <div className="border-t border-white/10">
+            <div ref={stepsRef} className="relative border-t border-white/10">
+              <div
+                aria-hidden="true"
+                className="absolute bottom-8 left-[22px] top-8 w-px bg-white/10 sm:left-[24px]"
+              />
+              {!reduce && (
+                <motion.div
+                  aria-hidden="true"
+                  style={{ scaleY: stepsProgress }}
+                  className="absolute bottom-8 left-[22px] top-8 w-px origin-top bg-[#2b70ed] sm:left-[24px]"
+                />
+              )}
               {[
                 { icon: <Search size={18} strokeWidth={1.5} />, title: "Find", text: "Search for the UI you need by purpose and screen." },
                 { icon: <Eye size={18} strokeWidth={1.5} />, title: "Preview", text: "Check every state and response in the live preview." },
                 { icon: <Code2 size={18} strokeWidth={1.5} />, title: "Ship", text: "Copy the code into the product you are building now." },
               ].map((item, index) => (
                 <Reveal key={item.title} delay={0.06 * index} className="grid grid-cols-[44px_1fr] gap-4 border-b border-white/10 py-6 sm:grid-cols-[56px_1fr] sm:gap-6 sm:py-8">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/14 text-[#70a7ff] sm:h-12 sm:w-12">{item.icon}</span>
+                  <span className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/14 bg-[#20242c] text-[#70a7ff] sm:h-12 sm:w-12">{item.icon}</span>
                   <div>
                     <div className="flex items-center gap-3">
                       <h3 className="text-xl font-medium tracking-[-0.03em] text-white">{item.title}</h3>
@@ -661,8 +1003,14 @@ export function PlugviewLanding() {
           </div>
         </section>
 
-        <section id="contact" className="scroll-mt-[72px] bg-[#20242c]">
-          <div className="mx-auto grid max-w-[1440px] gap-12 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20 lg:px-10">
+        <section id="contact" className="relative scroll-mt-[72px] overflow-hidden bg-[#20242c]">
+          <div
+            aria-hidden="true"
+            className="pv-blob-mask pointer-events-none absolute inset-y-0 right-[-6%] hidden w-[58%] lg:block"
+          >
+            <LiquidCore />
+          </div>
+          <div className="relative mx-auto grid max-w-[1440px] gap-12 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20 lg:px-10">
             <Reveal>
               <p className="pv-eyebrow">START WITH THE NEXT SCREEN</p>
               <h2 className="mt-6 max-w-[680px] text-4xl font-light leading-[1.08] tracking-[-0.055em] text-white sm:text-6xl">
@@ -682,7 +1030,7 @@ export function PlugviewLanding() {
       <footer className="border-t border-white/10 bg-[#1d1d21]">
         <div className="mx-auto flex max-w-[1440px] flex-col gap-8 px-5 py-9 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10">
           <div className="flex items-center gap-3">
-            <LogoMark small />
+            <LiquidMark size={32} />
             <div>
               <p className="text-sm font-medium text-white">Plugview</p>
               <p className="mt-1 text-xs text-white/36">Curated React UI asset market</p>
