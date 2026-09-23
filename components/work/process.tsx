@@ -34,6 +34,14 @@ export function WorkProcess() {
           </h2>
         </Reveal>
 
+        <Reveal>
+          <p className="wk-lead mt-4 max-w-[34rem] text-[0.9375rem]">
+            The Growth and Custom arc below. The Launch package compresses
+            the same arc into 5 days because you bring the copy and the
+            direction.
+          </p>
+        </Reveal>
+
         <ol
           ref={ref}
           className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4"

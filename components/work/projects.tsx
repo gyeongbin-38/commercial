@@ -8,12 +8,12 @@ export function WorkProjects() {
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <h2 className="wk-h2 max-w-[20ch]">
-              Four landing systems and a live product
+              One live product and four concept systems
             </h2>
             <p className="wk-lead max-w-[26rem] text-[0.9375rem]">
-              Four self-directed concept systems (fictional brands, disclosed
-              on each site) plus Plugview, a live product build. Screenshots
-              and recordings are of the actual pages.
+              Plugview is a real product build; the other four are
+              self-directed concept systems with fictional brands, disclosed
+              on each site. Click a card — the live site opens right here.
             </p>
           </div>
         </Reveal>

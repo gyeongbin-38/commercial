@@ -7,6 +7,9 @@ export function FsStats() {
       className="bg-[var(--fs-pine)]"
     >
       <div className="fs-container py-14 min-[900px]:py-20">
+        <p className="mb-8 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-white/50">
+          Illustrative figures — fictional ecosystem, concept design
+        </p>
         <dl className="grid grid-cols-2 gap-x-6 gap-y-10 min-[900px]:grid-cols-4">
           {STATS.map((s) => (
             <div

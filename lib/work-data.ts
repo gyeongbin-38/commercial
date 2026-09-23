@@ -25,6 +25,7 @@ export const WORK_PROJECTS = [
     screenshot: "/work/orbit.webp",
     video: "/work/orbit.webm",
     note: "Goal: let visitors try the follow-up queue instead of reading about it, so the working pipeline board is the demo below. I designed and built the full page and the demo. Checked at four viewport widths; the board runs on local state — nothing persists.",
+    proof: "Proof to try: mark a follow-up done — the queue reschedules itself.",
   },
   {
     id: "moapoint",
@@ -46,6 +47,7 @@ export const WORK_PROJECTS = [
     video: "/work/moapoint.webm",
     mediaPos: "50% 30%",
     note: "Goal: explain a fictional points membership to Korean consumers without a sales call. I designed and built the full page — phone mock with working tabs, an earn demo that moves a real local balance, and the partner grid. Fully Korean copy. All figures are demo data and disclosed as such.",
+    proof: "Proof to try: tap the phone tabs — the earn demo moves a real balance.",
   },
   {
     id: "fieldstone",
@@ -66,6 +68,7 @@ export const WORK_PROJECTS = [
     screenshot: "/work/fieldstone.webp",
     video: "/work/fieldstone.webm",
     note: "Goal: make a fictional founder ecosystem credible without stat blocks. I designed and built the editorial page — program cards, a stage matcher, and a local application draft that ends the CTA loop. Photography is stock; programs, founders and figures are invented and labeled as concept work.",
+    proof: "Proof to try: the stage matcher routes you to a program.",
   },
   {
     id: "marlowe",
@@ -86,6 +89,7 @@ export const WORK_PROJECTS = [
     screenshot: "/work/marlowe.webp",
     video: "/work/marlowe.webm",
     note: "Goal: give a fictional racing driver a hub that reads as race-poster energy, not a template. I designed and built the page — timing-board results, a photo rail with a real lightbox, and a demo cart that honestly says there is no checkout. Stock photography; the team is invented.",
+    proof: "Proof to try: open the photo rail — it's a real lightbox, and the cart totals locally.",
   },
   {
     id: "plugview",
@@ -106,6 +110,7 @@ export const WORK_PROJECTS = [
     screenshot: "/work/plugview-screen.webp",
     video: "/work/plugview.webm",
     note: "Goal: show the interface before asking for an install, so the hero uses an actual screen capture rather than an illustration. I designed and built the landing page and the live preview tabs. Checked responsive; the marketplace behind it is a separate product build.",
+    proof: "Proof to try: pick a block, change a state, copy the code.",
   },
 ];
 

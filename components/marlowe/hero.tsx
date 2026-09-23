@@ -13,7 +13,7 @@ function Word({
   className?: string;
 }) {
   return (
-    <span className={`block overflow-hidden pb-[0.06em] ${className}`}>
+    <span aria-hidden="true" className={`block overflow-hidden pb-[0.06em] ${className}`}>
       {text.split("").map((c, i) => (
         <span
           key={i}
@@ -46,7 +46,10 @@ export function MarHero() {
             />
             Car 71 / World GP Series
           </span>
-          <h1 className="mar-display text-[clamp(4.75rem,12vw,10.5rem)]">
+          <h1
+            className="mar-display text-[clamp(4.75rem,12vw,10.5rem)]"
+            aria-label="Jett Marlowe"
+          >
             <Word text="Jett" base={0} />
             <Word
               text="Marlowe"
@@ -74,6 +77,49 @@ export function MarHero() {
               2026 results
             </a>
           </div>
+
+          {/* Season board — where in the season we are, in timing-board
+              mono. Answers "last result / next race / running total". */}
+          <dl
+            className="mar-rise mt-9 grid max-w-[30rem] grid-cols-3 divide-x divide-[var(--mar-line)] border-y border-[var(--mar-line)] py-3.5"
+            style={{ animationDelay: "500ms" }}
+            aria-label="Season status"
+          >
+            <div className="px-4 first:pl-0">
+              <dt className="text-[0.5625rem] font-extrabold uppercase tracking-[0.18em] text-[var(--mar-text-dim)]">
+                Last · R06
+              </dt>
+              <dd className="mar-display mt-1 text-[1rem] leading-tight sm:text-[1.125rem]">
+                Solenne Coast <span className="text-[var(--mar-volt)]">P3</span>
+              </dd>
+            </div>
+            <div className="px-4">
+              <dt className="text-[0.5625rem] font-extrabold uppercase tracking-[0.18em] text-[var(--mar-text-dim)]">
+                Next · R07
+              </dt>
+              <dd className="mar-display mt-1 text-[1rem] leading-tight sm:text-[1.125rem]">
+                Vulcan Pass
+                <span className="mt-0.5 block text-[0.75rem] text-[var(--mar-text-dim)] sm:text-[0.8125rem]">
+                  Sep 28
+                </span>
+              </dd>
+            </div>
+            <div className="px-4">
+              <dt className="text-[0.5625rem] font-extrabold uppercase tracking-[0.18em] text-[var(--mar-text-dim)]">
+                Season
+              </dt>
+              <dd className="mar-display mt-1 text-[1rem] leading-tight sm:text-[1.125rem]">
+                3 wins <span className="text-[var(--mar-volt)]">187 pts</span>
+              </dd>
+            </div>
+          </dl>
+
+          <p
+            className="mar-rise mt-4 text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-[var(--mar-text-dim)]"
+            style={{ animationDelay: "560ms" }}
+          >
+            Fictional team · concept design · stock photography
+          </p>
         </div>
 
         <div className="mar-rise relative z-10" style={{ animationDelay: "200ms" }}>

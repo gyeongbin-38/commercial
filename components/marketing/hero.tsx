@@ -1,10 +1,13 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   CalendarDays,
+  Check,
   Inbox,
   ListChecks,
+  Undo2,
   Users,
   Zap,
 } from "lucide-react";
@@ -27,8 +30,30 @@ const SIDEBAR_ITEMS = [
   { label: "Automations", icon: Zap },
 ];
 
+/* The hero demo plays one complete workflow instead of showing a static
+   dashboard: an overdue follow-up is spotlighted, the visitor picks the
+   next action, and the queue visibly reschedules it. Local state only. */
+
+type HeroAction = "sent" | "snoozed" | "call";
+
+const ACTION_LABEL: Record<HeroAction, string> = {
+  sent: "Reminder sent — reply window open",
+  snoozed: "Snoozed · back Friday",
+  call: "Call booked · Fri 10:00",
+};
+
+const ACTION_BTN: { id: HeroAction; label: string }[] = [
+  { id: "sent", label: "Send reminder" },
+  { id: "snoozed", label: "Snooze +2d" },
+  { id: "call", label: "Call instead" },
+];
+
 export function Hero() {
   const reduce = useReducedMotion();
+  const [acted, setActed] = useState<HeroAction | null>(null);
+  const focus = FOLLOWUPS_TODAY.find((f) => f.overdue) ?? FOLLOWUPS_TODAY[0];
+  const rest = FOLLOWUPS_TODAY.filter((f) => f.id !== focus.id);
+  const open = FOLLOWUPS_TODAY.length - (acted ? 1 : 0);
   const rise = (delay: number) =>
     reduce
       ? {}
@@ -94,34 +119,97 @@ export function Hero() {
             <Sidebar items={SIDEBAR_ITEMS} active="Follow-ups" />
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between border-b border-hairline px-5 py-3">
-                <p className="text-caption-strong text-ink">Today</p>
+                <p className="text-caption-strong text-ink">
+                  Today · {open} open
+                </p>
                 <span className="chip">Thu, Sep 17</span>
               </div>
               <ul className="divide-y divide-hairline">
-                {FOLLOWUPS_TODAY.map((f) => (
-                  <li
-                    key={f.id}
-                    className="flex items-center gap-3 px-5 py-3"
-                  >
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-parchment text-ink-80">
-                      <KindIcon kind={f.kind} />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="text-caption-strong block truncate text-ink">
-                        {f.client}
-                      </span>
-                      <span className="text-caption block truncate text-ink-48">
-                        {f.task}
-                      </span>
-                    </span>
-                    {f.overdue ? (
-                      <StatusChip tone="warn">3d overdue</StatusChip>
-                    ) : (
-                      <span className="chip tnum">{f.due}</span>
-                    )}
-                  </li>
-                ))}
+                <AnimatePresence initial={false}>
+                  {(acted ? [...rest, focus] : [focus, ...rest]).map((f) => {
+                    const isFocus = f.id === focus.id;
+                    const dim = !isFocus || !!acted;
+                    return (
+                      <motion.li
+                        key={f.id}
+                        layout
+                        transition={
+                          reduce
+                            ? { duration: 0.15 }
+                            : { type: "spring", stiffness: 380, damping: 34 }
+                        }
+                        className={`px-5 py-3 transition-opacity ${dim ? "opacity-55" : ""}`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-parchment text-ink-80">
+                            <KindIcon kind={f.kind} />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span
+                              className={`text-caption-strong block truncate text-ink ${isFocus && acted ? "line-through" : ""}`}
+                            >
+                              {f.client}
+                            </span>
+                            <span className="text-caption block truncate text-ink-48">
+                              {isFocus && acted ? ACTION_LABEL[acted] : f.task}
+                            </span>
+                          </span>
+                          {isFocus ? (
+                            acted ? (
+                              <StatusChip tone="ok">
+                                <Check size={11} strokeWidth={2.5} aria-hidden="true" />
+                                {" "}Handled
+                              </StatusChip>
+                            ) : (
+                              <StatusChip tone="warn">3d overdue</StatusChip>
+                            )
+                          ) : f.overdue ? (
+                            <StatusChip tone="warn">3d overdue</StatusChip>
+                          ) : (
+                            <span className="chip tnum">{f.due}</span>
+                          )}
+                        </div>
+                        {isFocus && !acted ? (
+                          <div className="mt-2.5 flex flex-wrap gap-1.5 pl-10">
+                            {ACTION_BTN.map((a) => (
+                              <button
+                                key={a.id}
+                                type="button"
+                                onClick={() => setActed(a.id)}
+                                className="rounded-full border border-hairline bg-pearl px-3 py-1.5 text-[0.75rem] font-semibold text-ink transition-colors hover:border-ink-24 hover:bg-canvas focus-visible:outline-2 focus-visible:outline-[#1463e8]"
+                              >
+                                {a.label}
+                              </button>
+                            ))}
+                          </div>
+                        ) : null}
+                      </motion.li>
+                    );
+                  })}
+                </AnimatePresence>
               </ul>
+              <div className="flex items-center justify-between border-t border-hairline bg-pearl px-5 py-2.5">
+                <p className="text-caption text-ink-48" aria-hidden="true">
+                  {acted
+                    ? `${focus.client} handled — ${ACTION_LABEL[acted].toLowerCase()}.`
+                    : "One overdue item. Pick the next move."}
+                </p>
+                <p className="sr-only" role="status" aria-live="polite">
+                  {acted
+                    ? `${focus.client} handled: ${ACTION_LABEL[acted]}. ${open} items left today.`
+                    : ""}
+                </p>
+                {acted ? (
+                  <button
+                    type="button"
+                    onClick={() => setActed(null)}
+                    className="flex items-center gap-1.5 rounded-full border border-hairline bg-canvas px-2.5 py-1 text-[0.6875rem] font-semibold text-ink-80 transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-[#1463e8]"
+                  >
+                    <Undo2 size={11} strokeWidth={2} aria-hidden="true" />
+                    Undo
+                  </button>
+                ) : null}
+              </div>
               <div className="grid grid-cols-2 gap-px border-t border-hairline bg-hairline sm:grid-cols-4">
                 {PIPELINE_COUNTS.map((p) => (
                   <div key={p.stage} className="bg-canvas px-4 py-3">

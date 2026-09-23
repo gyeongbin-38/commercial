@@ -48,6 +48,9 @@ export function FsHero() {
             <p className="mt-1 text-[0.8125rem] font-medium text-[var(--fs-muted)]">
               raised by member companies
             </p>
+            <p className="mt-1 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-[var(--fs-muted)]/70">
+              Concept figure
+            </p>
           </div>
         </div>
       </div>

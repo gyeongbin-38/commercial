@@ -23,7 +23,7 @@ const ACCENTS: Record<string, string> = {
   plugview: "#70a7ff",
 };
 
-const FEATURED_IDS = ["orbit", "plugview", "marlowe"];
+const FEATURED_IDS = ["plugview", "orbit", "marlowe"];
 const COMPACT_IDS = ["moapoint", "fieldstone"];
 
 function StatusBadge({ id }: { id: string }) {
@@ -34,7 +34,7 @@ function StatusBadge({ id }: { id: string }) {
         style={{ background: ACCENTS[id] }}
         aria-hidden="true"
       />
-      {id === "plugview" ? "Live build" : "Concept"}
+      {id === "plugview" ? "Live product" : "Concept"}
     </span>
   );
 }
@@ -465,7 +465,7 @@ function FeaturedCard({
             </span>
           ) : null}
           <span className="mt-1 text-[0.8125rem] leading-snug text-[var(--wk-ink)]">
-            {p.highlights[0]}
+            {p.proof}
           </span>
           <span className="wk-link-arrow mt-2">
             Preview <ArrowIcon className="h-4 w-4" />
@@ -540,7 +540,7 @@ export function WorkIndex() {
                   <StatusBadge id={p.id} />
                 </span>
                 <span className="mt-1 block max-w-[34rem] text-[0.875rem] leading-snug text-[var(--wk-muted)]">
-                  {p.kind} · {p.role} · {p.highlights[0]}
+                  {p.kind} · {p.role} · {p.proof.replace("Proof to try: ", "Try: ")}
                 </span>
               </span>
               <span className="hidden shrink-0 text-[0.8125rem] font-medium text-[var(--wk-muted)] min-[700px]:block">

@@ -333,6 +333,7 @@ function CalendarCard() {
 }
 
 function QueueCard() {
+  const [done, setDone] = useState(false);
   const items = [
     { name: "Proposal follow-up", tag: "TODAY", lime: true },
     { name: "Invoice #1042", tag: "DUE" },
@@ -345,29 +346,66 @@ function QueueCard() {
         <span className="pv-mono text-[9px] tracking-[0.12em] text-white/72">
           QUEUE
         </span>
-        <span className="pv-mono text-[8px] text-white/35">4 OPEN</span>
+        <span className="pv-mono text-[8px] text-white/35" aria-live="polite">
+          {done ? "3 OPEN" : "4 OPEN"}
+        </span>
       </div>
       <ul className="mt-2.5 space-y-1.5">
-        {items.map((item) => (
-          <li
-            key={item.name}
-            className="flex items-center gap-2.5 rounded-[6px] border border-white/8 bg-white/[0.03] px-2.5 py-2"
-          >
-            <span
-              className={`h-1.5 w-1.5 shrink-0 rounded-full ${item.lime ? "bg-[#b8d94a]" : "bg-white/25"}`}
-            />
-            <span className="truncate text-[11px] text-white/68">
-              {item.name}
-            </span>
-            <span
-              className={`ml-auto shrink-0 rounded-[3px] border px-1.5 py-0.5 pv-mono text-[7.5px] tracking-[0.08em] ${
-                item.lime
-                  ? "border-[#b8d94a]/50 text-[#b8d94a]"
-                  : "border-white/12 text-white/40"
-              }`}
-            >
-              {item.tag}
-            </span>
+        {items.map((item, i) => (
+          <li key={item.name}>
+            {i === 0 ? (
+              <button
+                type="button"
+                aria-pressed={done}
+                onClick={() => setDone((d) => !d)}
+                title={done ? "Reopen" : "Mark done"}
+                className={`flex w-full items-center gap-2.5 rounded-[6px] border px-2.5 py-2 text-left transition-all duration-300 focus-visible:outline-1 focus-visible:outline-[#b8d94a] ${
+                  done
+                    ? "border-white/8 bg-white/[0.03] opacity-45"
+                    : "border-[#b8d94a]/30 bg-[#b8d94a]/[0.06] hover:bg-[#b8d94a]/[0.1]"
+                }`}
+              >
+                <span
+                  className={`flex h-3 w-3 shrink-0 items-center justify-center rounded-full border ${
+                    done
+                      ? "border-[#b8d94a] bg-[#b8d94a]"
+                      : "border-[#b8d94a]/60"
+                  }`}
+                  aria-hidden="true"
+                >
+                  {done && <Check size={8} strokeWidth={3} className="text-[#1d1d21]" />}
+                </span>
+                <span
+                  className={`truncate text-[11px] ${
+                    done ? "text-white/40 line-through" : "text-white/72"
+                  }`}
+                >
+                  {item.name}
+                </span>
+                <span
+                  className={`ml-auto shrink-0 rounded-[3px] border px-1.5 py-0.5 pv-mono text-[7.5px] tracking-[0.08em] ${
+                    done
+                      ? "border-white/12 text-white/40"
+                      : "border-[#b8d94a]/50 text-[#b8d94a]"
+                  }`}
+                >
+                  {done ? "DONE" : item.tag}
+                </span>
+              </button>
+            ) : (
+              <div className="flex items-center gap-2.5 rounded-[6px] border border-white/8 bg-white/[0.03] px-2.5 py-2">
+                <span
+                  className="h-1.5 w-1.5 shrink-0 rounded-full bg-white/25"
+                  aria-hidden="true"
+                />
+                <span className="truncate text-[11px] text-white/68">
+                  {item.name}
+                </span>
+                <span className="ml-auto shrink-0 rounded-[3px] border border-white/12 px-1.5 py-0.5 pv-mono text-[7.5px] tracking-[0.08em] text-white/40">
+                  {item.tag}
+                </span>
+              </div>
+            )}
           </li>
         ))}
       </ul>
@@ -409,12 +447,13 @@ function StatusCard() {
 function UiAtlas() {
   return (
     <div
-      role="img"
-      aria-label="Plugview asset sheet preview: calendar, follow-up queue and status cards"
       className="pv-atlas rounded-[16px] border border-[#ddd9cb] bg-[#efede6] p-2.5 shadow-[0_30px_80px_rgba(0,0,0,0.45)] [transform-style:preserve-3d] sm:p-3"
     >
-      <div aria-hidden="true">
-        <div className="flex items-center justify-between px-1 pb-2.5 pt-0.5 sm:px-1.5">
+      <div>
+        <div
+          aria-hidden="true"
+          className="flex items-center justify-between px-1 pb-2.5 pt-0.5 sm:px-1.5"
+        >
           <span className="pv-mono text-[8px] uppercase tracking-[0.2em] text-[#8f8a7c]">
             PV·Atlas / 03 modules
           </span>
@@ -428,11 +467,18 @@ function UiAtlas() {
           </span>
         </div>
         <div className="grid gap-2.5 [transform-style:preserve-3d] sm:grid-cols-[1.08fr_1fr]">
-          <CalendarCard />
+          <div aria-hidden="true">
+            <CalendarCard />
+          </div>
           <QueueCard />
-          <StatusCard />
+          <div aria-hidden="true">
+            <StatusCard />
+          </div>
         </div>
-        <div className="flex items-center justify-between px-1 pb-0.5 pt-2.5 sm:px-1.5">
+        <div
+          aria-hidden="true"
+          className="flex items-center justify-between px-1 pb-0.5 pt-2.5 sm:px-1.5"
+        >
           <span className="pv-mono text-[8px] uppercase tracking-[0.2em] text-[#8f8a7c]">
             Asset sheet · React UI
           </span>
@@ -1330,6 +1376,15 @@ export function PlugviewLanding() {
                       : `import { HeroSection } from "@plugview/ui";\n\nexport default function Page() {\n  return (\n    <HeroSection theme="${heroTheme}" align="${heroAlign}" />\n  );\n}`
                 }
               />
+              <p className="mt-4 max-w-[38rem] text-xs leading-5 text-white/40">
+                React 19 + Tailwind. The snippet assumes{" "}
+                <code className="pv-mono text-[10px] text-white/55">
+                  @plugview/ui
+                </code>{" "}
+                is installed — the demo license covers copy-paste use in
+                your own projects; the design system itself isn't
+                redistributable.
+              </p>
             </div>
           </div>
         </section>

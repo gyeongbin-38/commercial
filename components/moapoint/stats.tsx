@@ -19,8 +19,9 @@ const STATS = [
 export function MoaStats() {
   return (
     <section aria-label="서비스 지표" className="bg-[var(--moa-bg)]">
-      <div className="moa-container grid gap-4 py-10 sm:grid-cols-3">
-        {STATS.map((s) => (
+      <div className="moa-container py-10">
+        <div className="grid gap-4 sm:grid-cols-3">
+          {STATS.map((s) => (
           <div key={s.label} className="moa-card px-6 py-6">
             <p className="text-[1.625rem] font-bold tracking-tight">
               {s.value}
@@ -30,7 +31,11 @@ export function MoaStats() {
               {s.sub}
             </p>
           </div>
-        ))}
+          ))}
+        </div>
+        <p className="mt-4 text-[0.75rem] font-medium text-[var(--moa-muted)]">
+          * 컨셉 데모용 예시 수치입니다.
+        </p>
       </div>
     </section>
   );

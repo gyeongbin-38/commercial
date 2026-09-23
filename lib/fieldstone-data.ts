@@ -40,21 +40,29 @@ export const PATH_PHASES = [
     num: "01",
     name: "Validate",
     body: "Weekly critiques and structured customer interviews turn a hunch into a tested problem worth solving.",
+    program: "Idea Studio",
+    outcome: "A go or no-go decision",
   },
   {
     num: "02",
     name: "Build",
     body: "Operator mentors work alongside you to ship a first product inside the cohort, not after it.",
+    program: "Launch Accelerator",
+    outcome: "A shipped v1",
   },
   {
     num: "03",
     name: "Launch",
     body: "Pilot with regional partners, land your first paying customers and prove the model in the open.",
+    program: "Launch Accelerator",
+    outcome: "First paying customers",
   },
   {
     num: "04",
     name: "Raise",
     body: "Pitch practice, data-room prep and warm introductions to the investors in our network.",
+    program: "Capital Pathways",
+    outcome: "A ready data room",
   },
 ] as const;
 
