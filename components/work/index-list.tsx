@@ -1,15 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useReducedMotion } from "motion/react";
-import { Pause, Play } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { Pause, Play, X } from "lucide-react";
 import { WORK_PROJECTS } from "@/lib/work-data";
 
 /* Work index — three featured projects with always-visible media
    (screenshot by default, the real recording plays on hover/focus and
-   can be paused), then two compact rows. Videos are muted ambient
-   loops with an explicit pause control; reduced-motion never autoplays. */
+   can be paused), then two compact rows. Clicking any card opens a
+   case-note aside instead of leaving the page; modifier clicks still
+   open the live site in a new tab. Videos are muted ambient loops with
+   an explicit pause control; reduced-motion never autoplays. */
 
 type Project = (typeof WORK_PROJECTS)[number];
 
@@ -51,7 +53,231 @@ function ArrowIcon({ className }: { className?: string }) {
   );
 }
 
-function FeaturedCard({ p, large = false }: { p: Project; large?: boolean }) {
+function PauseButton({
+  videoRef,
+  label,
+}: {
+  videoRef: React.RefObject<HTMLVideoElement | null>;
+  label: string;
+}) {
+  const [paused, setPaused] = useState(false);
+  return (
+    <button
+      type="button"
+      aria-label={paused ? `Play ${label} preview` : `Pause ${label} preview`}
+      aria-pressed={paused}
+      onClick={() => {
+        const v = videoRef.current;
+        if (!v) return;
+        if (paused) {
+          setPaused(false);
+          v.play().catch(() => {});
+        } else {
+          setPaused(true);
+          v.pause();
+        }
+      }}
+      className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--wk-line)] bg-[var(--wk-bg)]/90 text-[var(--wk-ink)] backdrop-blur-sm transition-colors hover:bg-[var(--wk-bg)] focus-visible:outline-2 focus-visible:outline-[var(--wk-accent)]"
+    >
+      {paused ? (
+        <Play size={15} aria-hidden="true" />
+      ) : (
+        <Pause size={15} aria-hidden="true" />
+      )}
+    </button>
+  );
+}
+
+/* Case-note aside — opens on plain click, never hijacks modifier
+   clicks. Dialog semantics: focus enters on open, Tab is trapped,
+   Escape/overlay close, focus returns to the card that opened it. */
+function ProjectAside({
+  p,
+  onClose,
+  returnFocus,
+}: {
+  p: Project;
+  onClose: () => void;
+  returnFocus: React.RefObject<HTMLElement | null>;
+}) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    closeRef.current?.focus();
+    document.body.style.overflow = "hidden";
+    const panel = panelRef.current;
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !panel) return;
+      const focusables = panel.querySelectorAll<HTMLElement>(
+        "a[href], button:not([disabled])",
+      );
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && (active === first || !panel.contains(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (active === last || !panel.contains(active))) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+      returnFocus.current?.focus?.();
+    };
+  }, [onClose, returnFocus]);
+
+  return (
+    <>
+      <motion.div
+        aria-hidden="true"
+        onClick={onClose}
+        className="fixed inset-0 z-[90] bg-[rgba(27,25,23,0.4)]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: reduce ? 0 : 0.2 }}
+      />
+      <motion.div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${p.name} — case note`}
+        className="fixed inset-y-0 right-0 z-[100] flex w-[min(480px,100vw)] flex-col overflow-hidden border-l border-[var(--wk-line)] bg-[var(--wk-bg)] shadow-[-24px_0_60px_-24px_rgba(27,25,23,0.35)]"
+        initial={{ x: reduce ? 0 : "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: reduce ? 0 : "100%" }}
+        transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 34 }}
+      >
+        <div className="flex items-center justify-between gap-4 border-b border-[var(--wk-line)] px-5 py-4">
+          <span className="flex items-center gap-3">
+            <StatusBadge id={p.id} />
+            <span className="text-[0.8125rem] font-medium text-[var(--wk-muted)]">
+              {p.year} · {p.lang}
+            </span>
+          </span>
+          <button
+            ref={closeRef}
+            type="button"
+            onClick={onClose}
+            aria-label="Close case note"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--wk-line)] text-[var(--wk-ink)] transition-colors hover:border-[var(--wk-ink)] focus-visible:outline-2 focus-visible:outline-[var(--wk-accent)]"
+          >
+            <X size={16} aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="relative aspect-video overflow-hidden bg-[#141312]">
+            <Image
+              src={p.screenshot}
+              alt={`${p.name} site preview`}
+              fill
+              sizes="480px"
+              className="object-cover"
+              style={{
+                objectPosition: "mediaPos" in p ? p.mediaPos : "50% 0%",
+              }}
+            />
+            {p.video ? (
+              <video
+                ref={videoRef}
+                src={p.video}
+                className="absolute inset-0 h-full w-full object-cover"
+                style={{
+                  objectPosition: "mediaPos" in p ? p.mediaPos : "50% 0%",
+                }}
+                autoPlay={!reduce}
+                muted
+                loop
+                playsInline
+                aria-hidden="true"
+              />
+            ) : null}
+            {p.video ? <PauseButton videoRef={videoRef} label={p.name} /> : null}
+          </div>
+
+          <div className="flex flex-col gap-4 px-6 py-6">
+            <h3 className="text-[clamp(1.6rem,4vw,2.1rem)] font-bold leading-tight tracking-tight">
+              {p.name}
+            </h3>
+            <p className="text-[0.8125rem] font-medium text-[var(--wk-muted)]">
+              {p.kind} · {p.role}
+            </p>
+            <p className="text-[0.9375rem] leading-relaxed text-[var(--wk-muted)]">
+              {p.note ?? p.description}
+            </p>
+
+            <ul className="flex flex-col gap-2 border-t border-[var(--wk-line)] pt-4">
+              {p.highlights.map((h) => (
+                <li
+                  key={h}
+                  className="flex gap-2.5 text-[0.875rem] leading-snug text-[var(--wk-ink)]"
+                >
+                  <span
+                    className="mt-[7px] h-1 w-1 shrink-0 rounded-full"
+                    style={{ background: ACCENTS[p.id] }}
+                    aria-hidden="true"
+                  />
+                  {h}
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-wrap gap-1.5">
+              {p.tags.map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full border border-[var(--wk-line)] px-2.5 py-1 text-[0.6875rem] font-medium text-[var(--wk-muted)]"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-[var(--wk-line)] px-6 py-5">
+          <a
+            href={p.href}
+            target="_blank"
+            rel="noopener"
+            className="wk-btn wk-btn-primary w-full"
+          >
+            Open live site <ArrowIcon className="h-4 w-4" />
+          </a>
+          <p className="mt-2.5 text-center text-[0.75rem] text-[var(--wk-muted)]">
+            Opens in a new tab
+            {p.id === "plugview" ? " — live product build" : " — fictional concept brand"}
+          </p>
+        </div>
+      </motion.div>
+    </>
+  );
+}
+
+function FeaturedCard({
+  p,
+  large = false,
+  onOpen,
+}: {
+  p: Project;
+  large?: boolean;
+  onOpen: (trigger: HTMLElement) => void;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [paused, setPaused] = useState(false);
   const reduce = useReducedMotion();
@@ -74,11 +300,13 @@ function FeaturedCard({ p, large = false }: { p: Project; large?: boolean }) {
         href={p.href}
         target="_blank"
         rel="noopener"
-        className={
-          large
-            ? "grid min-[900px]:grid-cols-[1.2fr_0.8fr]"
-            : "block"
-        }
+        onClick={(e) => {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0)
+            return;
+          e.preventDefault();
+          onOpen(e.currentTarget);
+        }}
+        className={large ? "grid min-[900px]:grid-cols-[1.2fr_0.8fr]" : "block"}
       >
         <span className="relative block aspect-[16/10] overflow-hidden bg-[#141312]">
           <Image
@@ -143,52 +371,39 @@ function FeaturedCard({ p, large = false }: { p: Project; large?: boolean }) {
             {p.highlights[0]}
           </span>
           <span className="wk-link-arrow mt-2">
-            Open live site <ArrowIcon className="h-4 w-4" />
+            Case note <ArrowIcon className="h-4 w-4" />
           </span>
         </span>
       </a>
-      {p.video ? (
-        <button
-          type="button"
-          aria-label={paused ? `Play ${p.name} preview` : `Pause ${p.name} preview`}
-          aria-pressed={paused}
-          onClick={() => {
-            if (paused) {
-              setPaused(false);
-              videoRef.current?.play().catch(() => {});
-            } else {
-              setPaused(true);
-              stop();
-            }
-          }}
-          className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--wk-line)] bg-[var(--wk-bg)]/90 text-[var(--wk-ink)] backdrop-blur-sm transition-colors hover:bg-[var(--wk-bg)] focus-visible:outline-2 focus-visible:outline-[var(--wk-accent)]"
-        >
-          {paused ? (
-            <Play size={15} aria-hidden="true" />
-          ) : (
-            <Pause size={15} aria-hidden="true" />
-          )}
-        </button>
-      ) : null}
+      {p.video ? <PauseButton videoRef={videoRef} label={p.name} /> : null}
     </div>
   );
 }
 
 export function WorkIndex() {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+
   const featured = FEATURED_IDS.map(
     (id) => WORK_PROJECTS.find((p) => p.id === id)!
   );
   const compact = COMPACT_IDS.map(
     (id) => WORK_PROJECTS.find((p) => p.id === id)!
   );
+  const open = WORK_PROJECTS.find((p) => p.id === openId) ?? null;
+
+  const handleOpen = (id: string) => (trigger: HTMLElement) => {
+    triggerRef.current = trigger;
+    setOpenId(id);
+  };
 
   return (
     <div className="wk-container pb-16 min-[900px]:pb-24">
       <div className="grid gap-5 min-[900px]:gap-7">
-        <FeaturedCard p={featured[0]} large />
+        <FeaturedCard p={featured[0]} large onOpen={handleOpen(featured[0].id)} />
         <div className="grid gap-5 min-[700px]:grid-cols-2 min-[900px]:gap-7">
-          <FeaturedCard p={featured[1]} />
-          <FeaturedCard p={featured[2]} />
+          <FeaturedCard p={featured[1]} onOpen={handleOpen(featured[1].id)} />
+          <FeaturedCard p={featured[2]} onOpen={handleOpen(featured[2].id)} />
         </div>
       </div>
 
@@ -199,6 +414,13 @@ export function WorkIndex() {
               href={p.href}
               target="_blank"
               rel="noopener"
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0)
+                  return;
+                e.preventDefault();
+                triggerRef.current = e.currentTarget;
+                setOpenId(p.id);
+              }}
               className="flex items-center gap-4 py-5 min-[900px]:py-6"
             >
               <span className="relative hidden aspect-video w-28 shrink-0 overflow-hidden rounded-[var(--wk-r-md)] border border-[var(--wk-line)] bg-[#141312] min-[700px]:block">
@@ -247,6 +469,17 @@ export function WorkIndex() {
           </li>
         ))}
       </ul>
+
+      <AnimatePresence>
+        {open ? (
+          <ProjectAside
+            key={open.id}
+            p={open}
+            onClose={() => setOpenId(null)}
+            returnFocus={triggerRef}
+          />
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 }

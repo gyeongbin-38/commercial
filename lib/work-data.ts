@@ -45,6 +45,7 @@ export const WORK_PROJECTS = [
     screenshot: "/work/moapoint.webp",
     video: "/work/moapoint.webm",
     mediaPos: "50% 30%",
+    note: "Goal: explain a fictional points membership to Korean consumers without a sales call. I designed and built the full page — phone mock with working tabs, an earn demo that moves a real local balance, and the partner grid. Fully Korean copy. All figures are demo data and disclosed as such.",
   },
   {
     id: "fieldstone",
@@ -64,6 +65,7 @@ export const WORK_PROJECTS = [
     year: "2026",
     screenshot: "/work/fieldstone.webp",
     video: "/work/fieldstone.webm",
+    note: "Goal: make a fictional founder ecosystem credible without stat blocks. I designed and built the editorial page — program cards, a stage matcher, and a local application draft that ends the CTA loop. Photography is stock; programs, founders and figures are invented and labeled as concept work.",
   },
   {
     id: "marlowe",
@@ -83,6 +85,7 @@ export const WORK_PROJECTS = [
     year: "2026",
     screenshot: "/work/marlowe.webp",
     video: "/work/marlowe.webm",
+    note: "Goal: give a fictional racing driver a hub that reads as race-poster energy, not a template. I designed and built the page — timing-board results, a photo rail with a real lightbox, and a demo cart that honestly says there is no checkout. Stock photography; the team is invented.",
   },
   {
     id: "plugview",
