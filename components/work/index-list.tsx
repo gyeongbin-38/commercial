@@ -56,9 +56,13 @@ function ArrowIcon({ className }: { className?: string }) {
 function PauseButton({
   videoRef,
   label,
+  dark = false,
+  className = "right-3 top-3",
 }: {
   videoRef: React.RefObject<HTMLVideoElement | null>;
   label: string;
+  dark?: boolean;
+  className?: string;
 }) {
   const [paused, setPaused] = useState(false);
   return (
@@ -77,7 +81,11 @@ function PauseButton({
           v.pause();
         }
       }}
-      className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--wk-line)] bg-[var(--wk-bg)]/90 text-[var(--wk-ink)] backdrop-blur-sm transition-colors hover:bg-[var(--wk-bg)] focus-visible:outline-2 focus-visible:outline-[var(--wk-accent)]"
+      className={`absolute z-10 flex h-11 w-11 items-center justify-center rounded-full border backdrop-blur-sm transition-colors focus-visible:outline-2 focus-visible:outline-[var(--wk-accent)] ${className} ${
+        dark
+          ? "border-white/20 bg-black/45 text-white hover:bg-black/60"
+          : "border-[var(--wk-line)] bg-[var(--wk-bg)]/90 text-[var(--wk-ink)] hover:bg-[var(--wk-bg)]"
+      }`}
     >
       {paused ? (
         <Play size={15} aria-hidden="true" />
@@ -88,9 +96,11 @@ function PauseButton({
   );
 }
 
-/* Case-note aside — opens on plain click, never hijacks modifier
-   clicks. Dialog semantics: focus enters on open, Tab is trapped,
-   Escape/overlay close, focus returns to the card that opened it. */
+/* Media-first aside — the recording is the content; text is a caption
+   strip and the only exit is "Open live site". Plain click opens it,
+   modifier clicks still go straight to the live demo. Dialog semantics:
+   focus enters on open, Tab is trapped, Escape/overlay close, focus
+   returns to the card that opened it. */
 function ProjectAside({
   p,
   onClose,
@@ -155,107 +165,83 @@ function ProjectAside({
         ref={panelRef}
         role="dialog"
         aria-modal="true"
-        aria-label={`${p.name} — case note`}
-        className="fixed inset-y-0 right-0 z-[100] flex w-[min(480px,100vw)] flex-col overflow-hidden border-l border-[var(--wk-line)] bg-[var(--wk-bg)] shadow-[-24px_0_60px_-24px_rgba(27,25,23,0.35)]"
+        aria-label={`${p.name} — project preview`}
+        className="fixed inset-y-0 right-0 z-[100] flex w-[min(560px,100vw)] flex-col overflow-hidden border-l border-[var(--wk-line)] bg-[var(--wk-bg)] shadow-[-24px_0_60px_-24px_rgba(27,25,23,0.35)]"
         initial={{ x: reduce ? 0 : "100%" }}
         animate={{ x: 0 }}
         exit={{ x: reduce ? 0 : "100%" }}
         transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 34 }}
       >
-        <div className="flex items-center justify-between gap-4 border-b border-[var(--wk-line)] px-5 py-4">
-          <span className="flex items-center gap-3">
-            <StatusBadge id={p.id} />
-            <span className="text-[0.8125rem] font-medium text-[var(--wk-muted)]">
-              {p.year} · {p.lang}
-            </span>
+        <div className="absolute left-4 right-4 top-4 z-20 flex items-center justify-between gap-4">
+          <span className="flex items-center gap-2 rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-[0.625rem] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-md">
+            <span
+              className="h-1.5 w-1.5 rounded-full"
+              style={{ background: ACCENTS[p.id] }}
+              aria-hidden="true"
+            />
+            {p.id === "plugview" ? "Live build" : "Concept"} · {p.year}
           </span>
           <button
             ref={closeRef}
             type="button"
             onClick={onClose}
-            aria-label="Close case note"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--wk-line)] text-[var(--wk-ink)] transition-colors hover:border-[var(--wk-ink)] focus-visible:outline-2 focus-visible:outline-[var(--wk-accent)]"
+            aria-label="Close project preview"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-md transition-colors hover:bg-black/60 focus-visible:outline-2 focus-visible:outline-[var(--wk-accent)]"
           >
             <X size={16} aria-hidden="true" />
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto">
-          <div className="relative aspect-video overflow-hidden bg-[#141312]">
-            <Image
-              src={p.screenshot}
-              alt={`${p.name} site preview`}
-              fill
-              sizes="480px"
-              className="object-cover"
+        <div className="relative min-h-0 flex-1 bg-[#141312]">
+          <Image
+            src={p.screenshot}
+            alt=""
+            fill
+            sizes="560px"
+            className="object-cover"
+            style={{
+              objectPosition: "mediaPos" in p ? p.mediaPos : "50% 0%",
+            }}
+          />
+          {p.video ? (
+            <video
+              ref={videoRef}
+              src={p.video}
+              className="absolute inset-0 h-full w-full object-cover"
               style={{
                 objectPosition: "mediaPos" in p ? p.mediaPos : "50% 0%",
               }}
+              autoPlay={!reduce}
+              muted
+              loop
+              playsInline
+              aria-hidden="true"
             />
-            {p.video ? (
-              <video
-                ref={videoRef}
-                src={p.video}
-                className="absolute inset-0 h-full w-full object-cover"
-                style={{
-                  objectPosition: "mediaPos" in p ? p.mediaPos : "50% 0%",
-                }}
-                autoPlay={!reduce}
-                muted
-                loop
-                playsInline
-                aria-hidden="true"
-              />
-            ) : null}
-            {p.video ? <PauseButton videoRef={videoRef} label={p.name} /> : null}
-          </div>
-
-          <div className="flex flex-col gap-4 px-6 py-6">
-            <h3 className="text-[clamp(1.6rem,4vw,2.1rem)] font-bold leading-tight tracking-tight">
-              {p.name}
-            </h3>
-            <p className="text-[0.8125rem] font-medium text-[var(--wk-muted)]">
-              {p.kind} · {p.role}
-            </p>
-            <p className="text-[0.9375rem] leading-relaxed text-[var(--wk-muted)]">
-              {p.note ?? p.description}
-            </p>
-
-            <ul className="flex flex-col gap-2 border-t border-[var(--wk-line)] pt-4">
-              {p.highlights.map((h) => (
-                <li
-                  key={h}
-                  className="flex gap-2.5 text-[0.875rem] leading-snug text-[var(--wk-ink)]"
-                >
-                  <span
-                    className="mt-[7px] h-1 w-1 shrink-0 rounded-full"
-                    style={{ background: ACCENTS[p.id] }}
-                    aria-hidden="true"
-                  />
-                  {h}
-                </li>
-              ))}
-            </ul>
-
-            <div className="flex flex-wrap gap-1.5">
-              {p.tags.map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-[var(--wk-line)] px-2.5 py-1 text-[0.6875rem] font-medium text-[var(--wk-muted)]"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
+          ) : null}
+          {p.video ? (
+            <PauseButton
+              videoRef={videoRef}
+              label={p.name}
+              dark
+              className="bottom-3 right-3"
+            />
+          ) : null}
         </div>
 
         <div className="border-t border-[var(--wk-line)] px-6 py-5">
+          <div className="flex items-baseline justify-between gap-4">
+            <h3 className="text-[1.5rem] font-bold leading-none tracking-tight">
+              {p.name}
+            </h3>
+            <p className="text-[0.8125rem] font-medium text-[var(--wk-muted)]">
+              {p.kind}
+            </p>
+          </div>
           <a
             href={p.href}
             target="_blank"
             rel="noopener"
-            className="wk-btn wk-btn-primary w-full"
+            className="wk-btn wk-btn-primary mt-4 w-full"
           >
             Open live site <ArrowIcon className="h-4 w-4" />
           </a>
@@ -371,7 +357,7 @@ function FeaturedCard({
             {p.highlights[0]}
           </span>
           <span className="wk-link-arrow mt-2">
-            Case note <ArrowIcon className="h-4 w-4" />
+            Preview <ArrowIcon className="h-4 w-4" />
           </span>
         </span>
       </a>

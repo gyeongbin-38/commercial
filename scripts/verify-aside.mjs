@@ -18,7 +18,16 @@ console.log("aside open:", await dialog.count());
 console.log("aria-label:", await dialog.getAttribute("aria-label"));
 console.log("focus on close:", await p.evaluate(() => document.activeElement?.getAttribute("aria-label")));
 console.log("body overflow:", await p.evaluate(() => document.body.style.overflow));
-console.log("has note text:", (await dialog.textContent()).includes("Goal:"));
+const [mediaH, panelH] = await p.evaluate(() => {
+  const d = document.querySelector('[role="dialog"]');
+  const media = d.querySelector("video") ?? d.querySelector("img");
+  return [media.getBoundingClientRect().height, d.getBoundingClientRect().height];
+});
+console.log("media share of panel:", Math.round((mediaH / panelH) * 100) + "%");
+console.log("video playing:", await p.evaluate(() => {
+  const v = document.querySelector('[role="dialog"] video');
+  return v ? !v.paused && v.readyState >= 2 : "no video";
+}));
 console.log("has Open live site:", await dialog.locator('a[target="_blank"]').count());
 await p.screenshot({ path: "shots-after/aside-orbit-1440.png", timeout: 60000 });
 
