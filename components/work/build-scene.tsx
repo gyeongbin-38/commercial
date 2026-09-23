@@ -5,18 +5,20 @@ import { motion, useReducedMotion } from "motion/react";
 
 /* The hero's key scene: the claim "design and build, one pair of hands"
    is shown, not stated. One stage cycles concept sketch → shipped build
-   (the real /orbit route in a scaled iframe) → the same build reflowing
-   at a phone width. Visitors drive it with the step rail. */
+   (the real /orbit route in a scaled iframe). Visitors drive it with
+   the step rail. */
 
-type Step = "sketch" | "build" | "mobile";
+type Step = "sketch" | "build";
 
 const STEPS: { id: Step; label: string; meta: string }[] = [
   { id: "sketch", label: "Concept", meta: "Day 1–3 · direction" },
   { id: "build", label: "Build", meta: "Day 7 · shipped" },
-  { id: "mobile", label: "Mobile", meta: "390px · same build" },
 ];
 
-const STAGE_W = { sketch: 1280, build: 1280, mobile: 390 } as const;
+/* The live route always renders at desktop width and scales to the
+   shell, so the real layout is preserved instead of a cramped or
+   narrow-column render. */
+const CONTENT_W = 1280;
 
 /* Abstract wireframe of a landing hero — layout blocks in pencil-gray,
    matching the real page's rhythm so the sketch→build swap reads as the
@@ -90,10 +92,7 @@ export function BuildScene() {
     return () => ro.disconnect();
   }, []);
 
-  // Frame keeps its layout width; only the transform changes between
-  // desktop and phone, so toggling is a live reflow, not a reload.
-  const contentW = STAGE_W[step];
-  const scale = size.w ? Math.min(1, size.w / contentW) : 1;
+  const scale = size.w ? Math.min(1, size.w / CONTENT_W) : 1;
   const frameH = size.h && scale ? size.h / scale : 0;
   const active = STEPS.find((s) => s.id === step)!;
 
@@ -142,7 +141,7 @@ export function BuildScene() {
                 opacity: { duration: reduce ? 0 : 0.35 },
               }}
               style={{
-                width: contentW,
+                width: CONTENT_W,
                 height: frameH,
                 transformOrigin: "top center",
                 x: "-50%",

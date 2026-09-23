@@ -13,7 +13,7 @@ export function WorkProjects() {
             <p className="wk-lead max-w-[26rem] text-[0.9375rem]">
               Plugview is a real product build; the other four are
               self-directed concept systems with fictional brands, disclosed
-              on each site. Click a card — the live site opens right here.
+              on each site. Click a card to open the live site.
             </p>
           </div>
         </Reveal>
