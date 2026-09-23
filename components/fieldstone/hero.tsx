@@ -27,7 +27,7 @@ export function FsHero() {
           className="fs-fade-in relative"
           style={{ animationDelay: "140ms" }}
         >
-          <div className="overflow-hidden rounded-[var(--fs-r-lg)]">
+          <div className="relative overflow-hidden rounded-[var(--fs-r-lg)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://picsum.photos/id/48/960/1120"
@@ -37,6 +37,9 @@ export function FsHero() {
               className="aspect-[6/7] w-full object-cover"
               loading="eager"
             />
+            <p className="absolute bottom-3 left-3 rounded-[var(--fs-r-sm)] bg-white/92 px-3.5 py-2 text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-[var(--fs-ink)]">
+              Idea Studio · week-3 critique
+            </p>
           </div>
           <div className="fs-card absolute -bottom-6 -left-4 px-6 py-5 min-[640px]:-left-10">
             <p className="fs-stat-num text-[2rem] min-[640px]:text-[2.4rem]">

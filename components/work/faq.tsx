@@ -6,6 +6,10 @@ import { Reveal } from "@/components/ui/reveal";
 
 export function WorkFaq() {
   const [open, setOpen] = useState<number | null>(0);
+  const [showAll, setShowAll] = useState(false);
+  const CORE = 5;
+  const core = WORK_FAQS.slice(0, CORE);
+  const extra = WORK_FAQS.slice(CORE);
 
   return (
     <section id="faq" className="wk-cv scroll-mt-20 bg-[var(--wk-bg-deep)]">
@@ -22,7 +26,7 @@ export function WorkFaq() {
           </Reveal>
 
           <ul className="flex flex-col gap-3">
-            {WORK_FAQS.map((f, i) => {
+            {(showAll ? WORK_FAQS : core).map((f, i) => {
               const isOpen = open === i;
               return (
                 <li key={f.q} className="wk-card overflow-hidden">
@@ -69,6 +73,18 @@ export function WorkFaq() {
                 </li>
               );
             })}
+            <li>
+              <button
+                type="button"
+                onClick={() => setShowAll((v) => !v)}
+                aria-expanded={showAll}
+                className="flex min-h-11 w-full items-center justify-center gap-2 rounded-[var(--wk-r-lg)] border border-dashed border-[var(--wk-line)] px-5 py-3 text-[0.875rem] font-medium text-[var(--wk-muted)] transition-colors hover:border-[var(--wk-ink)] hover:text-[var(--wk-ink)]"
+              >
+                {showAll
+                  ? "Show fewer questions"
+                  : `${extra.length} more questions — payment, revisions, timezone`}
+              </button>
+            </li>
           </ul>
         </div>
       </div>

@@ -22,15 +22,15 @@ export function MoaHero() {
             쌓이고, 쌓인 포인트는 1포인트부터 1원처럼 쓸 수 있습니다.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#download" className="moa-btn moa-btn-primary">
-              무료로 시작하기
+            <a href="#earn" className="moa-btn moa-btn-primary">
+              적립 체험해보기
             </a>
             <a href="#partners" className="moa-btn moa-btn-ghost">
               제휴 매장 보기
             </a>
           </div>
           <p className="mt-6 text-[0.8125rem] font-medium text-[var(--moa-muted)]">
-            가입 무료 · 휴대폰 인증 1회 · 실물 카드 불필요
+            디자인 데모 · 옆의 폰 화면과 적립 체험은 브라우저에서 바로 작동합니다
           </p>
         </div>
 

@@ -6,7 +6,7 @@ import { TIMELINE_EVENTS } from "@/lib/demo-data";
 export function FeatureTimeline() {
   return (
     <section className="tile bg-tile-1">
-      <div className="mx-auto grid max-w-[1200px] items-center gap-12 px-5 lg:grid-cols-2 lg:gap-16">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-12 px-5 lg:grid-cols-2 lg:gap-16">
         <Reveal className="lg:order-2">
           <p className="text-caption-strong text-muted-dark">Client timeline</p>
           <h2 className="text-display-lg mt-2 text-on-dark">

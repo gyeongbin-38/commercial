@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { STUDIO } from "@/lib/work-data";
+import { STUDIO, WORK_PACKAGES } from "@/lib/work-data";
 
 /* Mini brief — three fields that compose a real email draft via mailto.
    No fake submission, no backend: it opens the visitor's mail client
@@ -58,8 +58,11 @@ export function BriefForm() {
             onChange={(e) => setBudget(e.target.value)}
           >
             <option className="text-black">Not sure yet</option>
-            <option className="text-black">Starter — $1.8k</option>
-            <option className="text-black">Launch — $3.5k</option>
+            {WORK_PACKAGES.map((p) => (
+              <option key={p.id} className="text-black">
+                {p.name} — {p.price}
+              </option>
+            ))}
             <option className="text-black">Something else</option>
           </select>
         </label>

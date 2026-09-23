@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { MoaWordmark } from "./wordmark";
 
 const LINKS = [
-  { href: "#earn", label: "적립" },
-  { href: "#partners", label: "제휴사" },
-  { href: "#use", label: "사용" },
-  { href: "#faq", label: "자주 묻는 질문" },
+  { href: "/moapoint#earn", label: "적립" },
+  { href: "/moapoint#partners", label: "제휴사" },
+  { href: "/moapoint#use", label: "사용" },
+  { href: "/moapoint#faq", label: "자주 묻는 질문" },
 ];
 
 export function MoaNavbar() {
@@ -34,7 +34,7 @@ export function MoaNavbar() {
         className="moa-container flex h-14 items-center justify-between"
         aria-label="주 메뉴"
       >
-        <a href="#top" className="shrink-0">
+        <a href="/moapoint#top" className="shrink-0">
           <MoaWordmark />
         </a>
 
@@ -53,10 +53,10 @@ export function MoaNavbar() {
 
         <div className="hidden items-center gap-2 min-[760px]:flex">
           <a
-            href="#download"
+            href="/moapoint#earn"
             className="moa-btn moa-btn-primary h-9 px-4 text-[0.8125rem]"
           >
-            앱 다운로드
+            앱 체험하기
           </a>
         </div>
 
@@ -108,11 +108,11 @@ export function MoaNavbar() {
             ))}
             <li className="py-3">
               <a
-                href="#download"
+                href="/moapoint#earn"
                 onClick={() => setOpen(false)}
                 className="moa-btn moa-btn-primary w-full"
               >
-                앱 다운로드
+                앱 체험하기
               </a>
             </li>
           </ul>

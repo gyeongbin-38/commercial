@@ -65,8 +65,8 @@ export function Pricing() {
             Priced like a tool, not a platform.
           </h2>
           <p className="text-lead mx-auto mt-4 max-w-[600px] text-ink-80">
-            Every plan starts with 14 days free. No card required, cancel
-            anytime, export everything.
+            All tiers are illustrative pricing for this concept demo.
+            Choosing a plan opens the access request, not a checkout.
           </p>
         </Reveal>
 

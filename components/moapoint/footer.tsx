@@ -4,16 +4,16 @@ const COLS = [
   {
     title: "서비스",
     links: [
-      { href: "#earn", label: "포인트 적립" },
-      { href: "#use", label: "포인트 사용" },
-      { href: "#partners", label: "제휴사" },
-      { href: "#faq", label: "자주 묻는 질문" },
+      { href: "/moapoint#earn", label: "포인트 적립" },
+      { href: "/moapoint#use", label: "포인트 사용" },
+      { href: "/moapoint#partners", label: "제휴사" },
+      { href: "/moapoint#faq", label: "자주 묻는 질문" },
     ],
   },
   {
     title: "고객지원",
     links: [
-      { href: "#faq", label: "고객센터" },
+      { href: "/moapoint#faq", label: "고객센터" },
       { href: "/moapoint/terms", label: "이용약관" },
       { href: "/moapoint/privacy", label: "개인정보처리방침" },
     ],

@@ -1,3 +1,5 @@
+import { FsApplyForm } from "./apply-form";
+
 export function FsFinalCta() {
   return (
     <section id="apply" className="scroll-mt-20 bg-white">
@@ -7,17 +9,10 @@ export function FsFinalCta() {
             Start building where you are.
           </h2>
           <p className="mx-auto mt-5 max-w-[28rem] text-[1rem] leading-relaxed text-white/70">
-            Applications for the spring accelerator close soon. Idea
-            Studio enrolls every quarter.
+            Spring cohort applications are open. Idea Studio enrolls every
+            quarter — pick a program and draft the application below.
           </p>
-          <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <a href="#top" className="fs-btn fs-btn-light">
-              Start your application
-            </a>
-            <a href="#programs" className="fs-btn fs-btn-outline-light">
-              Explore programs
-            </a>
-          </div>
+          <FsApplyForm />
           <p className="mt-7 text-[0.75rem] font-medium text-white/50">
             No tuition for founder-facing programs
           </p>

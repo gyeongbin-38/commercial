@@ -8,10 +8,10 @@ import { OrbitWordmark } from "@/components/ui/logo";
 import { SignInDialog } from "./signin-dialog";
 
 const NAV_LINKS = [
-  { label: "Product", href: "/#product" },
-  { label: "Solutions", href: "/#solutions" },
-  { label: "Pricing", href: "/#pricing" },
-  { label: "Resources", href: "/#faq" },
+  { label: "Product", href: "/orbit#product" },
+  { label: "Solutions", href: "/orbit#solutions" },
+  { label: "Pricing", href: "/orbit#pricing" },
+  { label: "Resources", href: "/orbit#faq" },
 ];
 
 export function Navbar() {
@@ -72,7 +72,7 @@ export function Navbar() {
               href="/orbit#get-started"
               className="btn hidden h-8 px-4 text-[13px] btn-primary nav:inline-flex"
             >
-              Get started
+              Request access
             </Link>
             <button
               type="button"
@@ -134,7 +134,7 @@ export function Navbar() {
                   onClick={() => setMenuOpen(false)}
                   className="btn btn-primary w-full"
                 >
-                  Get started
+                  Request access
                 </Link>
               </div>
             </motion.div>

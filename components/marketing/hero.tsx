@@ -14,6 +14,7 @@ import {
   Sidebar,
   StatusChip,
 } from "@/components/product/app-ui";
+import { OrbitField } from "@/components/ui/orbit-field";
 import { FOLLOWUPS_TODAY, PIPELINE_COUNTS } from "@/lib/demo-data";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -38,8 +39,9 @@ export function Hero() {
         };
 
   return (
-    <section id="top" className="tile bg-canvas">
-      <div className="mx-auto max-w-[980px] px-5 text-center">
+    <section id="top" className="tile relative overflow-hidden bg-canvas pt-24 md:pt-28">
+      <OrbitField className="pointer-events-none absolute left-1/2 top-[57%] w-[265vw] max-w-none -translate-x-1/2 -translate-y-1/2 min-[480px]:w-[210vw] sm:w-[165vw] lg:w-[128vw]" />
+      <div className="relative mx-auto max-w-[980px] px-5 text-center">
         <motion.p
           {...rise(0)}
           className="text-caption-strong text-ink-48"
@@ -48,7 +50,7 @@ export function Hero() {
         </motion.p>
         <motion.h1
           {...rise(0.08)}
-          className="text-display mt-3 text-ink"
+          className="text-display-xl mt-3 text-ink"
         >
           Keep every client moving forward.
         </motion.h1>
@@ -63,15 +65,17 @@ export function Hero() {
           {...rise(0.24)}
           className="mt-8 flex flex-wrap items-center justify-center gap-4"
         >
-          <a href="#get-started" className="btn btn-primary">
-            Start free trial
+          <a href="#demo" className="btn btn-primary btn-lg">
+            Explore the demo
           </a>
-          <a href="#demo" className="btn btn-ghost">
-            See it in action
+          <a href="#get-started" className="btn btn-ghost btn-lg">
+            Request access
           </a>
         </motion.div>
-        <motion.p {...rise(0.3)} className="text-fine mt-4 text-ink-48">
-          14 days free · No card required · Export anytime
+        <motion.p {...rise(0.3)} className="mt-6">
+          <span className="inline-flex items-center rounded-full border border-hairline bg-pearl px-3.5 py-1.5 text-fine text-ink-48">
+            Concept product · Self-directed design demo
+          </span>
         </motion.p>
       </div>
 
@@ -83,9 +87,9 @@ export function Hero() {
               animate: { opacity: 1, y: 0 },
               transition: { duration: 0.8, delay: 0.38, ease: EASE },
             })}
-        className="mx-auto mt-14 max-w-[1100px] px-5"
+        className="relative mx-auto mt-14 max-w-[1100px] px-5 md:mt-16"
       >
-        <AppWindow title="Orbit · Follow-ups">
+        <AppWindow title="Orbit · Follow-ups" className="relative">
           <div className="flex">
             <Sidebar items={SIDEBAR_ITEMS} active="Follow-ups" />
             <div className="min-w-0 flex-1">

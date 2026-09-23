@@ -1,4 +1,4 @@
-import { EARN_ROWS } from "@/lib/moapoint-data";
+import { MoaEarnDemo } from "./earn-demo";
 
 export function MoaEarn() {
   return (
@@ -14,30 +14,8 @@ export function MoaEarn() {
         </p>
 
         <div className="mt-10 grid gap-4 lg:grid-cols-3">
-          {/* receipt card */}
-          <div className="moa-card p-6 lg:col-span-1">
-            <p className="text-[0.8125rem] font-bold">오늘의 적립 예시</p>
-            <ul className="mt-4 flex flex-col divide-y divide-[var(--moa-line-soft)]">
-              {EARN_ROWS.map((r) => (
-                <li
-                  key={r.place}
-                  className="flex items-center justify-between py-3"
-                >
-                  <div>
-                    <p className="text-[0.875rem] font-semibold">{r.place}</p>
-                    <p className="text-[0.75rem] font-medium text-[var(--moa-muted)]">
-                      {r.spent}
-                    </p>
-                  </div>
-                  <span className="text-[0.875rem] font-bold">{r.earned}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 rounded-[var(--moa-r-md)] bg-[var(--moa-bg)] px-4 py-3 text-[0.75rem] font-medium leading-relaxed text-[var(--moa-muted)]">
-              위 적립 내역은 예시이며 실제 적립률은 매장 및 프로모션에 따라
-              달라집니다.
-            </p>
-          </div>
+          {/* interactive receipt → balance demo */}
+          <MoaEarnDemo />
 
           {/* navy card — partner card earn */}
           <div className="moa-navy-panel flex flex-col justify-between p-6 lg:col-span-1">

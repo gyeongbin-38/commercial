@@ -39,6 +39,10 @@
   --color-state-ok: #047857;
 
   /* Type scale */
+  --text-display-xl: clamp(2.5rem, 1.7rem + 3.9vw, 4.5rem);
+  --text-display-xl--line-height: 1.05;
+  --text-display-xl--letter-spacing: -0.02em;
+  --text-display-xl--font-weight: 600;
   --text-display: 3.5rem;
   --text-display--line-height: 1.07;
   --text-display--letter-spacing: -0.015em;
@@ -103,6 +107,16 @@
   /* Structural breakpoints from the reference system */
   --breakpoint-nav: 834px;
   --breakpoint-xs: 480px;
+}
+
+/* Responsive contract: display steps down below 640px (DESIGN.md §9) */
+@media (max-width: 639px) {
+  :root {
+    --text-display: 2rem;
+    --text-display-lg: 2rem;
+    --text-display-md: 1.75rem;
+    --text-lead: 1.375rem;
+  }
 }
 
 /* Base */
@@ -183,6 +197,12 @@ body {
   }
   .btn-ghost-dark:hover {
     background: rgba(41, 151, 255, 0.1);
+  }
+  .btn-lg {
+    font-size: var(--text-button-lg);
+    font-weight: var(--text-button-lg--font-weight);
+    letter-spacing: 0;
+    padding: 15px 28px;
   }
   .btn-dark-utility {
     display: inline-flex;

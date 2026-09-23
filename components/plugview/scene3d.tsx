@@ -303,19 +303,38 @@ function useIsDesktop() {
   );
 }
 
+/* Pause the render loop while the scene is off-screen so it doesn't
+   burn frames below the fold. */
+function useInView<T extends HTMLElement>(rootMargin = "120px") {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => setInView(entries[0].isIntersecting),
+      { rootMargin },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [rootMargin]);
+  return { ref, inView };
+}
+
 export function HeroScene() {
   const reduce = useReducedMotion();
   const enabled = useIsDesktop();
+  const { ref, inView } = useInView<HTMLDivElement>();
 
   if (!enabled) return null;
 
   return (
-    <div aria-hidden="true" className="absolute inset-0">
+    <div ref={ref} aria-hidden="true" className="absolute inset-0">
       <Canvas
         dpr={[1, 1.75]}
         camera={{ position: [0, 0, 9.5], fov: 34 }}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        frameloop={reduce ? "never" : "always"}
+        frameloop={reduce || !inView ? "never" : "always"}
       >
         <ParallaxRig>
           <GradientBackdrop />
@@ -335,14 +354,16 @@ export function HeroScene() {
 /* Small liquid-metal core used behind the contact section's glass form. */
 export function LiquidCore() {
   const reduce = useReducedMotion();
+  const { ref, inView } = useInView<HTMLDivElement>();
 
   return (
-    <Canvas
-      dpr={[1, 1.5]}
-      camera={{ position: [0, 0, 4.6], fov: 36 }}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      frameloop={reduce ? "never" : "always"}
-    >
+    <div ref={ref} aria-hidden="true" className="absolute inset-0">
+      <Canvas
+        dpr={[1, 1.5]}
+        camera={{ position: [0, 0, 4.6], fov: 36 }}
+        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        frameloop={reduce || !inView ? "never" : "always"}
+      >
       <ambientLight intensity={0.3} />
       <directionalLight position={[3, 4, 5]} intensity={1} color="#e6efff" />
       <Float speed={1.2} rotationIntensity={0.5} floatIntensity={1}>
@@ -379,7 +400,8 @@ export function LiquidCore() {
           color="#70a7ff"
         />
       </Environment>
-    </Canvas>
+      </Canvas>
+    </div>
   );
 }
 
@@ -483,16 +505,25 @@ export function ComponentField() {
   const reduce = useReducedMotion();
   const host = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const el = host.current;
     if (!el) return;
-    const io = new IntersectionObserver(
+    const mount = new IntersectionObserver(
       (entries) => entries[0].isIntersecting && setVisible(true),
       { rootMargin: "300px" }
     );
-    io.observe(el);
-    return () => io.disconnect();
+    const pause = new IntersectionObserver(
+      (entries) => setInView(entries[0].isIntersecting),
+      { rootMargin: "80px" }
+    );
+    mount.observe(el);
+    pause.observe(el);
+    return () => {
+      mount.disconnect();
+      pause.disconnect();
+    };
   }, []);
 
   return (
@@ -506,7 +537,7 @@ export function ComponentField() {
             alpha: true,
             powerPreference: "high-performance",
           }}
-          frameloop={reduce ? "never" : "always"}
+          frameloop={reduce || !inView ? "never" : "always"}
         >
           <GradientBackdrop />
           <ComponentObjects />

@@ -5,10 +5,10 @@ import { Menu, X } from "lucide-react";
 import { MarWordmark } from "./wordmark";
 
 const LINKS = [
-  { href: "#season", label: "Season" },
-  { href: "#drop", label: "Drop" },
-  { href: "#media", label: "Media" },
-  { href: "#team", label: "Team" },
+  { href: "/marlowe#season", label: "Season" },
+  { href: "/marlowe#drop", label: "Drop" },
+  { href: "/marlowe#media", label: "Media" },
+  { href: "/marlowe#team", label: "Team" },
 ];
 
 export function MarNavbar() {
@@ -26,7 +26,7 @@ export function MarNavbar() {
         className="mar-container flex h-16 items-center justify-between"
         aria-label="Main menu"
       >
-        <a href="#top" className="shrink-0" aria-label="Marlowe home">
+        <a href="/marlowe#top" className="shrink-0" aria-label="Marlowe home">
           <MarWordmark />
         </a>
 
@@ -44,7 +44,7 @@ export function MarNavbar() {
         </ul>
 
         <div className="hidden min-[992px]:flex">
-          <a href="#drop" className="mar-btn mar-btn-volt min-h-10 px-5">
+          <a href="/marlowe#drop" className="mar-btn mar-btn-volt min-h-10 px-5">
             Shop
           </a>
         </div>
@@ -84,7 +84,7 @@ export function MarNavbar() {
             ))}
             <li className="py-4">
               <a
-                href="#drop"
+                href="/marlowe#drop"
                 onClick={() => setOpen(false)}
                 className="mar-btn mar-btn-volt w-full"
               >

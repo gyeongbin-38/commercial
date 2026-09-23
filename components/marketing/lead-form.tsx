@@ -35,17 +35,17 @@ export function LeadForm() {
       <div className="mx-auto grid max-w-[1080px] items-start gap-12 px-5 lg:grid-cols-2 lg:gap-20">
         <Reveal>
           <h2 className="text-display-lg text-ink">
-            Start your 14-day trial.
+            Request early access.
           </h2>
           <p className="text-body mt-4 text-ink-80">
-            Tell us where to send your workspace. We&apos;ll set it up, load
-            your first clients and check in once. No drip campaign, no
-            sales call unless you ask for one.
+            Tell us where to reach you. We&apos;ll share the concept build,
+            load your first clients and check in once. No drip campaign,
+            no sales call unless you ask for one.
           </p>
           <ul className="text-body mt-6 flex flex-col gap-2.5 text-ink-80">
             <li className="flex gap-2.5">
               <CheckCircle2 size={19} strokeWidth={1.75} className="mt-0.5 shrink-0 text-ink" aria-hidden="true" />
-              Every Studio feature during the trial
+              Every feature in the concept build
             </li>
             <li className="flex gap-2.5">
               <CheckCircle2 size={19} strokeWidth={1.75} className="mt-0.5 shrink-0 text-ink" aria-hidden="true" />

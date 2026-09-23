@@ -9,18 +9,19 @@ import { Reveal } from "@/components/ui/reveal";
 export function WorkTryIt() {
   return (
     <PipelineDemo
+      compact
       header={
         <Reveal>
           <p className="text-caption-strong text-ink-48">
             Case study · Orbit
           </p>
           <h2 className="text-display-lg mt-2 text-ink">
-            The pipeline demo, running in your browser
+            One move shows you the mechanism
           </h2>
           <p className="text-lead mx-auto mt-4 max-w-[620px] text-ink-80">
-            I designed and built this board for Orbit&apos;s marketing
-            page — same component, same spring layout animation. Move one
-            card between stages. Demo data only; nothing is saved.
+            A compact cut of the pipeline demo I built for Orbit —
+            same component, same spring layout animation. Send a proposal
+            card to Active. Demo data only; nothing is saved.
           </p>
         </Reveal>
       }

@@ -17,8 +17,8 @@ export function MoaFinalCta() {
             가입은 무료, 발급은 1분. 내일 장보기부터 바로 적립됩니다.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="#top" className="moa-btn moa-btn-light">
-              모아포인트 앱 다운로드
+            <a href="#earn" className="moa-btn moa-btn-light">
+              앱 체험하기
             </a>
             <a
               href="#faq"
@@ -28,7 +28,7 @@ export function MoaFinalCta() {
             </a>
           </div>
           <p className="mt-6 text-[0.75rem] font-medium text-white/50">
-            Android 8.0+ · iOS 15+ 지원
+            가상의 브랜드 데모입니다 — 실제 앱 다운로드 링크는 없습니다
           </p>
         </div>
       </div>

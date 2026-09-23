@@ -11,6 +11,7 @@ export const WORK_PROJECTS = [
     name: "Orbit",
     href: "/orbit",
     kind: "B2B SaaS marketing site",
+    role: "Design + build",
     description:
       "A client-operations workspace concept where the pitch is the product — the hero is the app UI, and the pipeline demo below is working software. Kept deliberately quiet: one accent, hairline dividers, restrained type.",
     highlights: [
@@ -30,6 +31,7 @@ export const WORK_PROJECTS = [
     name: "MOA POINT",
     href: "/moapoint",
     kind: "Consumer membership landing",
+    role: "Design + build",
     description:
       "Goal: explain a points membership to Korean consumers without a sales call. The page leads with the app screen, and a restrained navy card system keeps tiers and partners scannable. Fully Korean copy and layout rhythm.",
     highlights: [
@@ -49,6 +51,7 @@ export const WORK_PROJECTS = [
     name: "Fieldstone Ventures",
     href: "/fieldstone",
     kind: "Editorial founder-ecosystem landing",
+    role: "Design + build",
     description:
       "Goal: make a founder ecosystem feel credible to founders and backers alike. Chose an editorial voice — long-form story sections over stat blocks — with program cards and founder figures carrying the detail.",
     highlights: [
@@ -67,6 +70,7 @@ export const WORK_PROJECTS = [
     name: "Marlowe Racing",
     href: "/marlowe",
     kind: "Motorsport driver hub",
+    role: "Design + build",
     description:
       "Goal: give a racing driver a hub that reads as race-poster energy, not a template. Condensed display type, flat blocks, and checker cues carry the identity; results, merch, and media sections sit underneath.",
     highlights: [
@@ -85,6 +89,7 @@ export const WORK_PROJECTS = [
     name: "Plugview",
     href: "/plugview",
     kind: "UI asset market landing",
+    role: "Design + build",
     description:
       "A dark, motion-led landing page for a live React UI asset market. The page lets product teams see the interface before it enters their codebase.",
     highlights: [
@@ -228,7 +233,7 @@ export const WORK_FAQS = [
   },
   {
     q: "What's not included?",
-    a: "Copywriting from a blank page (available as an add-on with a real brief), logo and brand identity, 3D or video production, and anything behind a login. Ongoing maintenance isn't bundled either. It's a small monthly retainer if you want me to keep the lights on.",
+    a: "Copywriting from a blank page (available as an add-on with a real brief), logo and brand identity, producing 3D models or video assets, and anything behind a login. Implementing 3D or motion from assets you already have — and CSS/2.5D interactive scenes like the ones on this page — is inside Custom scope. Ongoing maintenance isn't bundled either; it's a small monthly retainer if you want me to keep the lights on.",
   },
   {
     q: "What if the design direction misses?",

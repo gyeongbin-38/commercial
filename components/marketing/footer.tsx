@@ -5,36 +5,36 @@ const COLUMNS: { head: string; links: { label: string; href: string }[] }[] = [
   {
     head: "Product",
     links: [
-      { label: "Follow-up queue", href: "/#product" },
-      { label: "Pipeline demo", href: "/#demo" },
-      { label: "How it works", href: "/#how" },
-      { label: "Pricing", href: "/#pricing" },
+      { label: "Follow-up queue", href: "/orbit#product" },
+      { label: "Pipeline demo", href: "/orbit#demo" },
+      { label: "How it works", href: "/orbit#how" },
+      { label: "Pricing", href: "/orbit#pricing" },
     ],
   },
   {
     head: "Solutions",
     links: [
-      { label: "Freelancers", href: "/#solutions" },
-      { label: "Design studios", href: "/#solutions" },
-      { label: "Consultants", href: "/#solutions" },
-      { label: "Small agencies", href: "/#solutions" },
+      { label: "Freelancers", href: "/orbit#solutions" },
+      { label: "Design studios", href: "/orbit#solutions" },
+      { label: "Consultants", href: "/orbit#solutions" },
+      { label: "Small agencies", href: "/orbit#solutions" },
     ],
   },
   {
     head: "Resources",
     links: [
-      { label: "FAQ", href: "/#faq" },
-      { label: "Request access", href: "/#get-started" },
-      { label: "Interactive demo", href: "/#demo" },
-      { label: "About this demo", href: "/about" },
+      { label: "FAQ", href: "/orbit#faq" },
+      { label: "Request access", href: "/orbit#get-started" },
+      { label: "Interactive demo", href: "/orbit#demo" },
+      { label: "About this demo", href: "/orbit/about" },
     ],
   },
   {
     head: "Legal",
     links: [
-      { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
-      { label: "Security", href: "/security" },
+      { label: "Privacy", href: "/orbit/privacy" },
+      { label: "Terms", href: "/orbit/terms" },
+      { label: "Security", href: "/orbit/security" },
     ],
   },
 ];

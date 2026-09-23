@@ -35,7 +35,7 @@ One interactive accent. Everything else is neutral surface or ink.
 | `action-dark` | `#2997ff` | Links and accents **on dark tiles only** |
 | `ink` | `#1d1d1f` | All text on light surfaces |
 | `ink-80` | `#333333` | Softer ink — footer text, secondary fill |
-| `ink-48` | `#7a7a7a` | Disabled text, legal fine print |
+| `ink-48` | `#6e6e73` | Disabled text, legal fine print |
 | `on-dark` | `#ffffff` | Text on dark tiles |
 | `muted-dark` | `#cccccc` | Secondary copy on dark tiles |
 | `canvas` | `#ffffff` | Default tile surface |
@@ -70,7 +70,8 @@ nudge vs. SF metrics to reproduce the tight cadence.
 
 | Token | Size | Weight | Line | Tracking | Use |
 |---|---|---|---|---|---|
-| `text-display` | 56px | 600 | 1.07 | −0.015em | Hero headline only |
+| `text-display-xl` | fluid 40→72px | 600 | 1.05 | −0.02em | Hero headline only |
+| `text-display` | 56px | 600 | 1.07 | −0.015em | Reserved display |
 | `text-display-lg` | 40px | 600 | 1.10 | −0.01em | Tile headlines |
 | `text-display-md` | 34px | 600 | 1.47 | −0.015em | Section heads |
 | `text-lead` | 28px | 400 | 1.14 | +0.007em | Tile subcopy |
@@ -113,10 +114,23 @@ Rules:
 ## 5. Components (contract)
 
 - **global-nav** — `void` bar, 44px, `text-nav` links, edge-to-edge.
-  Right cluster: `Sign in` (utility text), `Get started` (blue pill, small).
+  Right cluster: `Sign in` (utility text), `Request access` (blue pill,
+  small).
   ≤834px: wordmark + hamburger; overlay menu slides under the bar.
 - **btn-primary** — `action` bg, white 17px text, pill, `11px 22px`.
   Press: `scale(.95)`. Focus: `2px action-focus` outline, offset 2px.
+- **btn-lg** — hero-only CTA size: `text-button-lg` (18px/300),
+  `15px 28px`. Applied as a `.btn` modifier; never below the fold.
+- **orbit-field** — the signature visual, hero only. The mark's
+  geometry scaled into a field spanning the whole hero tile: three
+  hairline elliptical rings tilted −24°, centered on the composition,
+  with `chip` satellite dots + one `action`-blue leader drifting along
+  them (SMIL, 44–68s orbits). Static under `prefers-reduced-motion`,
+  `aria-hidden`, never interactive.
+- **concept-label** — `pearl` pill, `hairline` border, `fine` ink-48
+  text: "Concept product · Self-directed design demo". Sits directly
+  under the hero CTAs: the fictional-product disclosure belongs at the
+  point of claim, not only in legal.
 - **btn-ghost** — transparent, `1px action` border, `action` text, pill.
   On dark tiles: `action-dark` border+text variant.
 - **btn-dark-utility** — `ink` bg, white 14px, `sm` radius, `8px 15px`.
@@ -142,6 +156,8 @@ Rules:
 - Sections: `whileInView` fade-up (once, 0.3 amount) on headers/mocks.
 - Pipeline demo: `layout` animations when cards change column.
 - Accordion/toggles: height or spring transitions.
+- Orbit field: satellites drift at 44–68s per revolution — ambient,
+  barely-perceived; frozen under reduced-motion.
 - Press states: `scale(.95)` on every button — system micro-interaction.
 - **Honor `prefers-reduced-motion`**: all reveals, layout anims, smooth
   scroll collapse to instant/static.
@@ -165,7 +181,8 @@ product shadow only on the app window.
 
 **Don't:** gradients · second accent · shadows on chrome · weight 500 ·
 rounded full-bleed tiles · `action-dark` on light · body < 1.4 line-height ·
-mixed radius grammar.
+mixed radius grammar · CTAs that promise real signup, trials or billing
+(the product is a concept — verbs stay honest: Explore, Request access).
 
 ## 9. Responsive contract
 
@@ -175,7 +192,7 @@ mixed radius grammar.
 | 1024–1439 | Mocks ~96% width, feature splits hold |
 | 834–1023 (`nav:`) | Nav hamburger; 2-col grids hold |
 | 640–833 | Feature splits stack (copy → mock); board scrolls x |
-| 419–639 | Display 40→32px; tiles pad 44px; 1-col everything |
+| 419–639 | `display`/`display-lg`→32px, `display-md`→28px, `lead`→22px (CSS var step-down); tiles pad 44px; 1-col everything |
 
 - `min-h-[100dvh]` never `h-screen`. Scroll margin on anchored sections.
 - Tap targets ≥44px. Pipeline board = horizontal scroll-snap on mobile.

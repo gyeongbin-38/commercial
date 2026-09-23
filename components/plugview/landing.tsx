@@ -445,116 +445,377 @@ function UiAtlas() {
   );
 }
 
-function PricingPreview() {
+function SegmentedControl<T extends string>({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: { value: T; label: string }[];
+  value: T;
+  onChange: (v: T) => void;
+}) {
+  return (
+    <div>
+      <p className="pv-mono mb-2 text-[9px] uppercase tracking-[0.16em] text-white/40">
+        {label}
+      </p>
+      <div className="flex gap-1.5" role="group" aria-label={label}>
+        {options.map((o) => (
+          <button
+            key={o.value}
+            type="button"
+            aria-pressed={value === o.value}
+            onClick={() => onChange(o.value)}
+            className={`min-h-9 rounded-[6px] border px-3.5 text-xs font-medium transition-colors ${
+              value === o.value
+                ? "border-[#145fe4] bg-[#145fe4]/15 text-white"
+                : "border-white/14 text-white/55 hover:border-white/30 hover:text-white"
+            }`}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const PV_TIERS = [
+  { name: "Starter", monthly: 12, annual: 9, featured: false },
+  { name: "Pro", monthly: 29, annual: 23, featured: true },
+  { name: "Team", monthly: 59, annual: 47, featured: false },
+] as const;
+
+function PricingPreview({
+  billing,
+  onBilling,
+}: {
+  billing: "monthly" | "annual";
+  onBilling: (b: "monthly" | "annual") => void;
+}) {
   return (
     <PreviewChrome>
-      <div className="min-h-[390px] bg-[#181b22] p-6 sm:p-10">
-        <div className="mx-auto max-w-[520px]">
-          <div className="mb-7 flex items-end justify-between">
+      <div className="min-h-[390px] bg-[#181b22] p-6 sm:p-9">
+        <div className="mx-auto max-w-[560px]">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
             <div>
-              <div className="h-3 w-24 rounded bg-white/16" />
-              <div className="mt-3 h-5 w-48 rounded bg-white/75" />
+              <p className="pv-mono text-[9px] uppercase tracking-[0.16em] text-[#70a7ff]">
+                Pricing
+              </p>
+              <p className="mt-1.5 text-lg font-medium tracking-[-0.02em] text-white">
+                Pick a tier
+              </p>
             </div>
-            <span className="pv-mono text-[9px] text-[#70a7ff]">responsive</span>
+            <div
+              className="flex rounded-full border border-white/14 p-0.5"
+              role="group"
+              aria-label="Billing period"
+            >
+              {(["monthly", "annual"] as const).map((b) => (
+                <button
+                  key={b}
+                  type="button"
+                  aria-pressed={billing === b}
+                  onClick={() => onBilling(b)}
+                  className={`min-h-8 rounded-full px-3.5 text-[11px] font-medium capitalize transition-colors ${
+                    billing === b
+                      ? "bg-[#145fe4] text-white"
+                      : "text-white/50 hover:text-white"
+                  }`}
+                >
+                  {b}
+                </button>
+              ))}
+            </div>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
-            {["Starter", "Pro", "Team"].map((item, index) => (
+            {PV_TIERS.map((t) => (
               <div
-                key={item}
-                className={`rounded-[10px] border p-4 ${index === 1 ? "border-[#145fe4] bg-[#145fe4]/12" : "border-white/10 bg-[#20242c]"}`}
+                key={t.name}
+                className={`rounded-[10px] border p-4 ${
+                  t.featured
+                    ? "border-[#145fe4] bg-[#145fe4]/12"
+                    : "border-white/10 bg-[#20242c]"
+                }`}
               >
-                <div className="h-2.5 w-14 rounded bg-white/55" />
-                <div className="mt-3 text-[11px] font-medium text-white/72">{item}</div>
-                <div className="mt-4 h-5 w-16 rounded bg-white/80" />
-                <div className="mt-5 space-y-2">
-                  <div className="h-2 w-full rounded bg-white/12" />
-                  <div className="h-2 w-4/5 rounded bg-white/12" />
-                  <div className="h-2 w-3/5 rounded bg-white/12" />
+                <p className="text-[12px] font-medium text-white/72">
+                  {t.name}
+                </p>
+                <p className="mt-3 text-[24px] font-light leading-none text-white">
+                  <span className="align-top text-[13px] text-white/50">$</span>
+                  <span className="tabular-nums">
+                    {billing === "monthly" ? t.monthly : t.annual}
+                  </span>
+                  <span className="ml-1 text-[10px] text-white/40">/mo</span>
+                </p>
+                <ul className="mt-4 space-y-1.5 text-[10px] text-white/50">
+                  {t.name === "Starter" && <li>5 assets / month</li>}
+                  {t.name === "Starter" && <li>Core components</li>}
+                  {t.name === "Pro" && <li>Unlimited assets</li>}
+                  {t.name === "Pro" && <li>Make Builder access</li>}
+                  {t.name === "Team" && <li>Shared workspace</li>}
+                  {t.name === "Team" && <li>Priority releases</li>}
+                </ul>
+                <div
+                  className={`mt-5 flex h-7 items-center justify-center rounded-[5px] text-[10px] font-semibold ${
+                    t.featured
+                      ? "bg-[#145fe4] text-white"
+                      : "bg-white/10 text-white/60"
+                  }`}
+                >
+                  {t.featured ? "Most picked" : "Choose"}
                 </div>
-                <div className={`mt-6 h-7 rounded-[5px] ${index === 1 ? "bg-[#145fe4]" : "bg-white/10"}`} />
               </div>
             ))}
           </div>
+          <p className="mt-4 text-center text-[9px] text-white/30">
+            Demo component — billing switch updates local state only.
+          </p>
         </div>
       </div>
     </PreviewChrome>
   );
 }
 
-function FormPreview() {
+function LoginPreview() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [state, setState] = useState<"idle" | "loading" | "done">("idle");
+
+  function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const next: typeof errors = {};
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
+      next.email = "Enter a valid email address.";
+    if (password.length < 6) next.password = "At least 6 characters.";
+    setErrors(next);
+    if (Object.keys(next).length) return;
+    setState("loading");
+    window.setTimeout(() => setState("done"), 650);
+  }
+
+  const inputCls = (bad: boolean) =>
+    `h-10 w-full rounded-[6px] border bg-white/[0.02] px-3 text-[12px] text-white outline-none transition-colors placeholder:text-white/25 focus:border-[#145fe4] ${
+      bad ? "border-[#ff6b6b]/70" : "border-white/12"
+    }`;
+
   return (
     <PreviewChrome>
-      <div className="flex min-h-[390px] items-center justify-center bg-[#181b22] p-6 sm:p-10">
-        <div className="w-full max-w-[340px] rounded-[11px] border border-white/10 bg-[#20242c] p-6 sm:p-8">
-          <div className="mb-7 flex items-center gap-2">
-            <LogoMark small />
-            <div>
-              <div className="h-2.5 w-20 rounded bg-white/65" />
-              <div className="mt-2 h-2 w-12 rounded bg-white/16" />
+      <div className="flex min-h-[390px] items-center justify-center bg-[#181b22] p-6 sm:p-9">
+        <div className="w-full max-w-[340px] rounded-[11px] border border-white/10 bg-[#20242c] p-6 sm:p-7">
+          {state === "done" ? (
+            <div className="py-4 text-center">
+              <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-[#145fe4] text-white">
+                <Check size={17} strokeWidth={2} />
+              </span>
+              <p className="mt-4 text-sm font-medium text-white">
+                Signed in — demo only.
+              </p>
+              <p className="mt-1.5 text-[11px] leading-5 text-white/45">
+                Nothing was sent or stored. The password never leaves this
+                field.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setState("idle");
+                  setEmail("");
+                  setPassword("");
+                  setErrors({});
+                }}
+                className="mt-5 min-h-9 rounded-[6px] border border-white/16 px-4 text-xs font-medium text-white/70 transition-colors hover:border-white/35 hover:text-white"
+              >
+                Try again
+              </button>
             </div>
-          </div>
-          <div className="h-4 w-28 rounded bg-white/70" />
-          <div className="mt-5 space-y-4">
-            <div>
-              <div className="mb-2 text-[10px] text-white/45">Email</div>
-              <div className="h-10 rounded-[6px] border border-white/12 bg-white/[0.02]" />
-            </div>
-            <div>
-              <div className="mb-2 text-[10px] text-white/45">Password</div>
-              <div className="h-10 rounded-[6px] border border-white/12 bg-white/[0.02]" />
-            </div>
-          </div>
-          <div className="mt-5 h-10 rounded-[6px] bg-[#145fe4]" />
-          <div className="mt-5 h-2 w-32 rounded bg-white/12" />
+          ) : (
+            <>
+              <div className="mb-5 flex items-center gap-2">
+                <LogoMark small />
+                <p className="text-[13px] font-semibold text-white">
+                  Sign in to Plugview
+                </p>
+              </div>
+              <form onSubmit={submit} noValidate>
+                <div>
+                  <label
+                    htmlFor="pv-login-email"
+                    className="mb-1.5 block text-[10px] font-medium text-white/55"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="pv-login-email"
+                    type="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (errors.email)
+                        setErrors((p) => ({ ...p, email: undefined }));
+                    }}
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? "pv-login-email-err" : undefined}
+                    placeholder="you@company.com"
+                    className={inputCls(!!errors.email)}
+                  />
+                  {errors.email && (
+                    <p id="pv-login-email-err" className="mt-1.5 text-[10px] text-[#ff9b9b]">
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+                <div className="mt-4">
+                  <label
+                    htmlFor="pv-login-pw"
+                    className="mb-1.5 block text-[10px] font-medium text-white/55"
+                  >
+                    Password
+                  </label>
+                  <input
+                    id="pv-login-pw"
+                    type="password"
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (errors.password)
+                        setErrors((p) => ({ ...p, password: undefined }));
+                    }}
+                    aria-invalid={!!errors.password}
+                    aria-describedby={errors.password ? "pv-login-pw-err" : undefined}
+                    placeholder="6+ characters"
+                    className={inputCls(!!errors.password)}
+                  />
+                  {errors.password && (
+                    <p id="pv-login-pw-err" className="mt-1.5 text-[10px] text-[#ff9b9b]">
+                      {errors.password}
+                    </p>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  disabled={state === "loading"}
+                  className="mt-5 h-10 w-full rounded-[6px] bg-[#145fe4] text-[12px] font-semibold text-white transition-colors hover:bg-[#2b70ed] disabled:opacity-60"
+                >
+                  {state === "loading" ? "Signing in..." : "Sign in"}
+                </button>
+              </form>
+              <p className="mt-4 text-center text-[9px] text-white/30">
+                Local demo — no account, no network.
+              </p>
+            </>
+          )}
         </div>
       </div>
     </PreviewChrome>
   );
 }
 
-function HeroSectionPreview() {
+function HeroSectionPreview({
+  theme,
+  align,
+}: {
+  theme: "dark" | "light";
+  align: "left" | "center";
+}) {
+  const dark = theme === "dark";
   return (
     <PreviewChrome>
-      <div className="flex min-h-[390px] items-center bg-[#181b22] p-6 sm:p-10">
-        <div className="mx-auto grid w-full max-w-[720px] items-center gap-8 sm:grid-cols-[1.1fr_1fr] sm:gap-10">
-          <div>
-            <div className="h-2.5 w-20 rounded bg-[#145fe4]/70" />
-            <div className="mt-5 space-y-3">
-              <div className="h-6 w-4/5 rounded bg-white/75" />
-              <div className="h-6 w-3/5 rounded bg-white/55" />
-            </div>
-            <div className="mt-5 space-y-2">
-              <div className="h-2 w-full rounded bg-white/14" />
-              <div className="h-2 w-4/5 rounded bg-white/14" />
-            </div>
-            <div className="mt-7 flex gap-2.5">
-              <div className="h-9 w-28 rounded-full bg-[#145fe4]" />
-              <div className="h-9 w-24 rounded-full border border-white/16" />
+      <div
+        className={`flex min-h-[390px] items-center p-6 transition-colors duration-300 sm:p-10 ${
+          dark ? "bg-[#181b22]" : "bg-[#f4f4f2]"
+        }`}
+      >
+        <div
+          className={`mx-auto grid w-full max-w-[720px] items-center gap-8 sm:grid-cols-[1.1fr_1fr] sm:gap-10 ${
+            align === "center" ? "text-center sm:grid-cols-1" : ""
+          }`}
+        >
+          <div className={align === "center" ? "mx-auto max-w-[420px]" : ""}>
+            <span
+              className={`inline-block rounded-full px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] ${
+                dark ? "bg-[#145fe4]/20 text-[#70a7ff]" : "bg-[#145fe4]/10 text-[#145fe4]"
+              }`}
+            >
+              New · Asset drop 12
+            </span>
+            <p
+              className={`mt-4 text-[26px] font-light leading-[1.12] tracking-[-0.04em] sm:text-[32px] ${
+                dark ? "text-white" : "text-[#17181c]"
+              }`}
+            >
+              Ship the next screen before lunch.
+            </p>
+            <p
+              className={`mt-3 text-[12px] leading-6 ${
+                dark ? "text-white/55" : "text-[#17181c]/60"
+              }`}
+            >
+              Production-ready hero section. Swap the copy, keep the rhythm.
+            </p>
+            <div
+              className={`mt-6 flex gap-2.5 ${
+                align === "center" ? "justify-center" : ""
+              }`}
+            >
+              <span className="flex h-9 items-center rounded-full bg-[#145fe4] px-5 text-[11px] font-semibold text-white">
+                Get the assets
+              </span>
+              <span
+                className={`flex h-9 items-center rounded-full border px-5 text-[11px] font-semibold ${
+                  dark ? "border-white/16 text-white/70" : "border-black/15 text-[#17181c]/70"
+                }`}
+              >
+                How it works
+              </span>
             </div>
           </div>
-          <div className="hidden rounded-[10px] border border-white/10 bg-[#20242c] p-4 sm:block">
-            <div className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-white/16" />
-              <span className="h-2 w-2 rounded-full bg-white/16" />
-              <span className="h-2 w-2 rounded-full bg-white/16" />
+          {align === "left" && (
+            <div
+              className={`hidden rounded-[10px] border p-4 sm:block ${
+                dark ? "border-white/10 bg-[#20242c]" : "border-black/10 bg-white"
+              }`}
+            >
+              <div className="flex items-center gap-1.5">
+                <span className={`h-2 w-2 rounded-full ${dark ? "bg-white/16" : "bg-black/15"}`} />
+                <span className={`h-2 w-2 rounded-full ${dark ? "bg-white/16" : "bg-black/15"}`} />
+                <span className={`h-2 w-2 rounded-full ${dark ? "bg-white/16" : "bg-black/15"}`} />
+              </div>
+              <div className="mt-4 space-y-2.5">
+                <div className={`h-8 rounded-[5px] ${dark ? "bg-white/8" : "bg-black/8"}`} />
+                <div className={`h-8 rounded-[5px] ${dark ? "bg-white/8" : "bg-black/8"}`} />
+                <div className={`h-8 rounded-[5px] border ${dark ? "border-[#145fe4]/50 bg-[#145fe4]/15" : "border-[#145fe4]/40 bg-[#145fe4]/10"}`} />
+                <div className={`h-8 rounded-[5px] ${dark ? "bg-white/8" : "bg-black/8"}`} />
+              </div>
             </div>
-            <div className="mt-4 space-y-2.5">
-              <div className="h-8 rounded-[5px] bg-white/8" />
-              <div className="h-8 rounded-[5px] bg-white/8" />
-              <div className="h-8 rounded-[5px] border border-[#145fe4]/50 bg-[#145fe4]/15" />
-              <div className="h-8 rounded-[5px] bg-white/8" />
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </PreviewChrome>
   );
 }
 
-function ComponentPreview({ kind }: { kind: PreviewKind }) {
-  if (kind === "pricing") return <PricingPreview />;
-  if (kind === "form") return <FormPreview />;
-  return <HeroSectionPreview />;
+function ComponentPreview({
+  kind,
+  heroTheme,
+  heroAlign,
+  billing,
+  onBilling,
+}: {
+  kind: PreviewKind;
+  heroTheme: "dark" | "light";
+  heroAlign: "left" | "center";
+  billing: "monthly" | "annual";
+  onBilling: (b: "monthly" | "annual") => void;
+}) {
+  if (kind === "pricing")
+    return <PricingPreview billing={billing} onBilling={onBilling} />;
+  if (kind === "form") return <LoginPreview />;
+  return <HeroSectionPreview theme={heroTheme} align={heroAlign} />;
 }
 
 /*
@@ -566,9 +827,17 @@ function ComponentPreview({ kind }: { kind: PreviewKind }) {
 function PreviewDeck({
   active,
   onSelect,
+  heroTheme,
+  heroAlign,
+  billing,
+  onBilling,
 }: {
   active: PreviewKind;
   onSelect: (kind: PreviewKind) => void;
+  heroTheme: "dark" | "light";
+  heroAlign: "left" | "center";
+  billing: "monthly" | "annual";
+  onBilling: (b: "monthly" | "annual") => void;
 }) {
   const order: PreviewKind[] = ["hero", "pricing", "form"];
   const activeIndex = order.indexOf(active);
@@ -607,11 +876,18 @@ function PreviewDeck({
                 isActive ? "" : "cursor-pointer"
               }`}
               aria-hidden={!isActive}
+              inert={!isActive}
               onClick={() => {
                 if (!isActive) onSelect(kind);
               }}
             >
-              <ComponentPreview kind={kind} />
+              <ComponentPreview
+                kind={kind}
+                heroTheme={heroTheme}
+                heroAlign={heroAlign}
+                billing={billing}
+                onBilling={onBilling}
+              />
             </motion.div>
           );
         })}
@@ -642,17 +918,32 @@ function FeatureRow({
   );
 }
 
-function CodeBlock() {
+function CodeBlock({ code, filename }: { code: string; filename: string }) {
   const [copied, setCopied] = useState(false);
-  const code = `import { HeroSection } from "@plugview/ui";\n\nexport default function Page() {\n  return <HeroSection variant="dark" />;\n}`;
 
   async function copyCode() {
+    let ok = false;
     try {
       await navigator.clipboard.writeText(code);
+      ok = true;
+    } catch {
+      // clipboard API can be unavailable (permissions, insecure context)
+      const ta = document.createElement("textarea");
+      ta.value = code;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        ok = document.execCommand("copy");
+      } catch {
+        ok = false;
+      }
+      ta.remove();
+    }
+    if (ok) {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1600);
-    } catch {
-      setCopied(false);
     }
   }
 
@@ -661,7 +952,7 @@ function CodeBlock() {
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
         <div className="flex items-center gap-2 text-xs text-white/46">
           <Code2 size={14} strokeWidth={1.7} />
-          <span className="pv-mono">HeroSection.tsx</span>
+          <span className="pv-mono">{filename}</span>
         </div>
         <button
           type="button"
@@ -671,6 +962,9 @@ function CodeBlock() {
           {copied ? <Check size={13} strokeWidth={1.8} /> : <Copy size={13} strokeWidth={1.8} />}
           {copied ? "Copied" : "Copy code"}
         </button>
+        <span className="sr-only" role="status" aria-live="polite">
+          {copied ? "Code copied to clipboard" : ""}
+        </span>
       </div>
       <pre className="overflow-x-auto p-5 text-[12px] leading-7 text-white/72 sm:p-7 sm:text-[13px]"><code>{code}</code></pre>
     </motion.div>
@@ -702,8 +996,8 @@ function InterestForm() {
         <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#145fe4] text-white">
           <Check size={18} strokeWidth={2} />
         </span>
-        <h3 className="mt-5 text-xl font-medium text-white">You&apos;re on the list.</h3>
-        <p className="mt-2 text-sm leading-6 text-white/58">We&apos;ll send the next update to {email}.</p>
+        <h3 className="mt-5 text-xl font-medium text-white">That&apos;s the success state.</h3>
+        <p className="mt-2 text-sm leading-6 text-white/58">Demo form — {email} wasn&apos;t sent or stored anywhere.</p>
       </div>
     );
   }
@@ -735,6 +1029,9 @@ function InterestForm() {
       <button type="submit" disabled={status === "loading"} className="pv-button pv-button-primary mt-4 w-full disabled:cursor-wait disabled:opacity-60">
         {status === "loading" ? "Sending..." : "Get early access"}
       </button>
+      <p className="pv-mono mt-3 text-center text-[9px] uppercase tracking-[0.16em] text-white/30">
+        Local demo — nothing is sent or stored
+      </p>
     </form>
   );
 }
@@ -753,6 +1050,10 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
 
 export function PlugviewLanding() {
   const [previewKind, setPreviewKind] = useState<PreviewKind>("hero");
+  const [heroTheme, setHeroTheme] = useState<"dark" | "light">("dark");
+  const [heroAlign, setHeroAlign] = useState<"left" | "center">("left");
+  const [billing, setBilling] = useState<"monthly" | "annual">("monthly");
+  const tablistRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
   const stepsRef = useRef<HTMLDivElement>(null);
@@ -891,18 +1192,42 @@ export function PlugviewLanding() {
         <section className="border-b border-white/10 bg-[#20242c]">
           <div className="mx-auto max-w-[1440px] px-5 py-24 sm:px-8 sm:py-32 lg:px-10">
             <Reveal>
-              <h2 className="max-w-[850px] text-4xl font-light leading-[1.08] tracking-[-0.055em] text-white sm:text-6xl">
+              <h2 className="max-w-[850px] text-3xl font-light leading-[1.12] tracking-[-0.045em] text-white sm:text-5xl">
                 The interface starts
                 <br />
                 at the moment you choose.
               </h2>
-              <div className="mt-10 flex flex-wrap gap-2" role="tablist" aria-label="Choose an asset type">
+              <div
+                ref={tablistRef}
+                className="mt-10 flex flex-wrap gap-2"
+                role="tablist"
+                aria-label="Choose an asset type"
+                onKeyDown={(e) => {
+                  const order = previewTabs.map((t) => t.kind);
+                  const i = order.indexOf(previewKind);
+                  let next = -1;
+                  if (e.key === "ArrowRight") next = (i + 1) % order.length;
+                  else if (e.key === "ArrowLeft")
+                    next = (i - 1 + order.length) % order.length;
+                  else if (e.key === "Home") next = 0;
+                  else if (e.key === "End") next = order.length - 1;
+                  if (next < 0) return;
+                  e.preventDefault();
+                  setPreviewKind(order[next]);
+                  tablistRef.current
+                    ?.querySelectorAll<HTMLButtonElement>('[role="tab"]')
+                    [next]?.focus();
+                }}
+              >
                 {previewTabs.map((tab) => (
                   <button
                     key={tab.kind}
                     type="button"
                     role="tab"
+                    id={`pv-tab-${tab.kind}`}
                     aria-selected={previewKind === tab.kind}
+                    aria-controls="pv-stage"
+                    tabIndex={previewKind === tab.kind ? 0 : -1}
                     onClick={() => setPreviewKind(tab.kind)}
                     className={`relative isolate min-h-11 overflow-hidden rounded-full border px-4 text-sm transition duration-200 active:scale-[0.98] ${previewKind === tab.kind ? "border-[#145fe4] text-white" : "border-white/14 bg-white/[0.04] text-white/52 backdrop-blur-md hover:border-white/30 hover:text-white"}`}
                   >
@@ -920,37 +1245,101 @@ export function PlugviewLanding() {
               </div>
             </Reveal>
             <Reveal delay={0.08} className="mt-10">
-              <PreviewDeck active={previewKind} onSelect={setPreviewKind} />
+              <div
+                role="tabpanel"
+                id="pv-stage"
+                aria-labelledby={`pv-tab-${previewKind}`}
+              >
+                <PreviewDeck
+                  active={previewKind}
+                  onSelect={setPreviewKind}
+                  heroTheme={heroTheme}
+                  heroAlign={heroAlign}
+                  billing={billing}
+                  onBilling={setBilling}
+                />
+              </div>
             </Reveal>
+
+            {/* Make bench — tune the selected asset, take the code */}
+            <div
+              id="make"
+              className="mt-14 grid scroll-mt-[72px] gap-5 lg:grid-cols-[0.85fr_1.15fr]"
+            >
+              <div className="pv-glass rounded-[12px] p-6 sm:p-7">
+                <p className="pv-eyebrow">MAKE — TUNE THE PICK</p>
+                <div className="mt-5 flex flex-col gap-5">
+                  {previewKind === "hero" && (
+                    <>
+                      <SegmentedControl
+                        label="Theme"
+                        options={[
+                          { value: "dark", label: "Dark" },
+                          { value: "light", label: "Light" },
+                        ]}
+                        value={heroTheme}
+                        onChange={setHeroTheme}
+                      />
+                      <SegmentedControl
+                        label="Alignment"
+                        options={[
+                          { value: "left", label: "Left" },
+                          { value: "center", label: "Center" },
+                        ]}
+                        value={heroAlign}
+                        onChange={setHeroAlign}
+                      />
+                    </>
+                  )}
+                  {previewKind === "pricing" && (
+                    <SegmentedControl
+                      label="Billing"
+                      options={[
+                        { value: "monthly", label: "Monthly" },
+                        { value: "annual", label: "Annual" },
+                      ]}
+                      value={billing}
+                      onChange={setBilling}
+                    />
+                  )}
+                  {previewKind === "form" && (
+                    <p className="text-xs leading-5 text-white/45">
+                      No options needed — labels, focus rings and inline
+                      validation are wired in. Try submitting it empty in
+                      the preview above.
+                    </p>
+                  )}
+                  <p className="pv-mono text-[9px] uppercase tracking-[0.16em] text-white/30">
+                    Local demo — nothing is sent or stored
+                  </p>
+                </div>
+              </div>
+              <CodeBlock
+                filename={
+                  previewKind === "pricing"
+                    ? "PricingCards.tsx"
+                    : previewKind === "form"
+                      ? "LoginForm.tsx"
+                      : "HeroSection.tsx"
+                }
+                code={
+                  previewKind === "pricing"
+                    ? `import { PricingCards } from "@plugview/ui";\n\nexport default function Page() {\n  return <PricingCards billing="${billing}" />;\n}`
+                    : previewKind === "form"
+                      ? `import { LoginForm } from "@plugview/ui";\n\nexport default function Page() {\n  return <LoginForm onSubmit={signIn} />;\n}`
+                      : `import { HeroSection } from "@plugview/ui";\n\nexport default function Page() {\n  return (\n    <HeroSection theme="${heroTheme}" align="${heroAlign}" />\n  );\n}`
+                }
+              />
+            </div>
           </div>
         </section>
 
-        <section id="make" className="scroll-mt-[72px] border-b border-white/10">
-          <div className="mx-auto grid max-w-[1440px] items-center gap-12 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 lg:px-10">
-            <Reveal>
-              <p className="pv-eyebrow">MAKE BUILDER</p>
-              <h2 className="mt-6 max-w-[540px] text-4xl font-light leading-[1.08] tracking-[-0.055em] text-white sm:text-6xl">
-                Turn a good choice
-                <br />
-                into the next build.
-              </h2>
-              <p className="mt-6 max-w-[30rem] text-base leading-7 text-white/52">
-                Pick an asset, tune it to your brand in Make, and take the code into your project.
-              </p>
-              <Link href="#how" className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-[#70a7ff] transition hover:text-white">
-                See how it works <ArrowRight size={15} strokeWidth={1.7} />
-              </Link>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <CodeBlock />
-            </Reveal>
-          </div>
-        </section>
+
 
         <section id="how" className="scroll-mt-[72px] border-b border-white/10 bg-[#20242c]">
           <div className="mx-auto grid max-w-[1440px] gap-14 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20 lg:px-10">
             <Reveal>
-              <h2 className="max-w-[460px] text-4xl font-light leading-[1.08] tracking-[-0.055em] text-white sm:text-6xl">
+              <h2 className="max-w-[460px] text-3xl font-light leading-[1.12] tracking-[-0.045em] text-white sm:text-5xl">
                 Three choices
                 <br />
                 to start the screen.
@@ -991,7 +1380,7 @@ export function PlugviewLanding() {
         <section className="border-b border-white/10">
           <div className="mx-auto grid max-w-[1440px] gap-14 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:px-10">
             <Reveal>
-              <h2 className="max-w-[510px] text-4xl font-light leading-[1.08] tracking-[-0.055em] text-white sm:text-6xl">Frequently asked questions</h2>
+              <h2 className="max-w-[510px] text-3xl font-light leading-[1.12] tracking-[-0.045em] text-white sm:text-5xl">Frequently asked questions</h2>
             </Reveal>
             <Reveal delay={0.08}>
               <FaqItem question="Who is Plugview for?" answer="It is an asset market for designers, developers, and small teams building products with React and Tailwind." />

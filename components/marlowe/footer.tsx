@@ -4,27 +4,27 @@ const COLS = [
   {
     title: "Shop",
     links: [
-      { href: "#drop", label: "Latest drop" },
-      { href: "#drop", label: "Team cap" },
-      { href: "#drop", label: "Hoodies" },
-      { href: "#drop", label: "Gift cards" },
+      { href: "/marlowe#drop", label: "Latest drop" },
+      { href: "/marlowe#drop", label: "Team cap" },
+      { href: "/marlowe#drop", label: "Hoodies" },
+      { href: "/marlowe#drop", label: "Gift cards" },
     ],
   },
   {
     title: "Team",
     links: [
-      { href: "#season", label: "2026 season" },
-      { href: "#team", label: "The driver" },
-      { href: "#media", label: "Media" },
-      { href: "#club", label: "The club" },
+      { href: "/marlowe#season", label: "2026 season" },
+      { href: "/marlowe#team", label: "The driver" },
+      { href: "/marlowe#media", label: "Media" },
+      { href: "/marlowe#club", label: "The club" },
     ],
   },
   {
     title: "Support",
     links: [
-      { href: "#club", label: "Contact" },
-      { href: "#drop", label: "Shipping" },
-      { href: "#top", label: "FAQ" },
+      { href: "/marlowe#club", label: "Contact" },
+      { href: "/marlowe#drop", label: "Shipping" },
+      { href: "/marlowe#season", label: "Race results" },
     ],
   },
 ];
@@ -51,19 +51,20 @@ export function MarFooter() {
               The official home of Jett Marlowe and the #71 car. Merch, race
               coverage and everything behind the visor.
             </p>
-            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2" aria-label="Social channels">
               {SOCIALS.map((s) => (
-                <li key={s}>
-                  <a
-                    href="#top"
-                    className="inline-flex items-center gap-1 text-[0.75rem] font-extrabold uppercase tracking-[0.14em] text-[var(--mar-text)] transition-colors hover:text-[var(--mar-volt)]"
-                  >
-                    {s}
-                    <ArrowUpRight size={13} aria-hidden="true" />
-                  </a>
+                <li
+                  key={s}
+                  className="inline-flex items-center gap-1 text-[0.75rem] font-extrabold uppercase tracking-[0.14em] text-[var(--mar-text-dim)]"
+                >
+                  {s}
+                  <ArrowUpRight size={13} aria-hidden="true" />
                 </li>
               ))}
             </ul>
+            <p className="mt-3 text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-[var(--mar-text-dim)]/70">
+              Fictional brand — no live social channels
+            </p>
           </div>
 
           {COLS.map((c) => (

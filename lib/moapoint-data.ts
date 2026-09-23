@@ -49,11 +49,30 @@ export const TRANSACTIONS = [
   { id: "t5", place: "버거하우스", kind: "적립", points: "+96P", date: "지난주" },
 ] as const;
 
-/* Earn-section receipt rows (illustrative rates) */
+/* Earn demo — a day of spending: market → café → online mall.
+   Rates are illustrative demo values, not real partner terms. */
 export const EARN_ROWS = [
-  { place: "모아마트", spent: "42,300원 결제", earned: "+423P" },
-  { place: "카페누리", spent: "4,500원 결제", earned: "+45P" },
-  { place: "365스토어", spent: "8,900원 결제", earned: "+89P" },
+  {
+    place: "모아마트",
+    moment: "오전 · 장보기",
+    spent: "42,300원 결제",
+    rate: "1% 적립",
+    points: 423,
+  },
+  {
+    place: "카페누리",
+    moment: "오후 · 카페",
+    spent: "4,500원 결제",
+    rate: "2% 적립",
+    points: 90,
+  },
+  {
+    place: "모아ON",
+    moment: "저녁 · 온라인 쇼핑",
+    spent: "32,000원 결제",
+    rate: "0.5% 적립",
+    points: 160,
+  },
 ] as const;
 
 export const MOA_FAQS = [

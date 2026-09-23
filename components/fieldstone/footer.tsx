@@ -4,19 +4,19 @@ const COLS = [
   {
     title: "Programs",
     links: [
-      { href: "#programs", label: "Launch Accelerator" },
-      { href: "#programs", label: "Idea Studio" },
-      { href: "#programs", label: "Capital Pathways" },
-      { href: "#programs", label: "Founder Community" },
+      { href: "/fieldstone#programs", label: "Launch Accelerator" },
+      { href: "/fieldstone#programs", label: "Idea Studio" },
+      { href: "/fieldstone#programs", label: "Capital Pathways" },
+      { href: "/fieldstone#programs", label: "Founder Community" },
     ],
   },
   {
     title: "Organization",
     links: [
-      { href: "#path", label: "The Path" },
-      { href: "#stories", label: "Founder Stories" },
-      { href: "#faq", label: "FAQ" },
-      { href: "#apply", label: "Apply" },
+      { href: "/fieldstone#path", label: "The Path" },
+      { href: "/fieldstone#stories", label: "Founder Stories" },
+      { href: "/fieldstone#faq", label: "FAQ" },
+      { href: "/fieldstone#apply", label: "Apply" },
     ],
   },
   {

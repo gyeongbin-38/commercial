@@ -8,27 +8,23 @@ import { WordReveal } from "./word-reveal";
 export function WorkHero() {
   return (
     <section id="top" className="overflow-hidden border-b border-[var(--wk-line-soft)]">
-      <div className="wk-container grid items-center gap-8 pb-12 pt-10 min-[900px]:grid-cols-[1.05fr_0.95fr] min-[900px]:gap-6 min-[900px]:pb-20 min-[900px]:pt-20">
+      <div className="wk-container grid items-center gap-8 pb-12 pt-10 min-[900px]:grid-cols-[0.9fr_1.1fr] min-[900px]:gap-6 min-[900px]:pb-20 min-[900px]:pt-16">
         <div>
-          <Reveal>
-            <p className="wk-eyebrow">Design + development, one pair of hands</p>
-          </Reveal>
-
           <WordReveal
             text="I design and build landing pages."
-            className="wk-h1 mt-5 max-w-[20ch]"
+            className="wk-h1 max-w-[20ch]"
             delay={0.08}
           />
 
           <Reveal delay={0.16}>
             <div className="mt-7 flex max-w-[38rem] flex-col gap-5">
               <p className="wk-lead">
-                For early-stage products that need a page up fast —
-                design and Next.js build by one person: responsive,
-                working forms, SEO, deployment. No handoff: the page that
-                ships is the page that was designed.
+                For early-stage products — one person designs the page and
+                ships it in Next.js: responsive, working forms, SEO.
+                Fixed-scope packages for the standard build, scoped work
+                for interactive pieces like the demos below.
               </p>
-              <p className="flex items-center gap-2.5 text-[0.875rem] font-medium text-[var(--wk-ink)]">
+              <p className="flex items-center gap-2.5 text-[0.8125rem] font-medium text-[var(--wk-muted)]">
                 <span className="wk-dot" aria-hidden="true" />
                 {STUDIO.availability}
               </p>
@@ -58,7 +54,7 @@ export function WorkHero() {
               </Magnetic>
               <Magnetic strength={0.25}>
                 <a href={`mailto:${STUDIO.email}`} className="wk-btn wk-btn-ghost">
-                  {STUDIO.email}
+                  Start a project
                 </a>
               </Magnetic>
               <CopyEmail variant="light" />

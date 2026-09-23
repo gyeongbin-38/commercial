@@ -99,7 +99,9 @@ function PayScreen({ usePoints }: { usePoints: boolean }) {
         <div>
           <p className="text-[0.8125rem] font-semibold">포인트로 결제</p>
           <p className="text-[0.6875rem] font-medium text-[var(--moa-muted)]">
-            보유 12,480P · 결제 시 자동 차감
+            {usePoints
+              ? "보유 12,480P · 결제 시 자동 차감"
+              : "포인트 결제 꺼짐 · 이번 결제는 적립만 됩니다"}
           </p>
         </div>
         <span
@@ -188,7 +190,7 @@ export function PhoneMock() {
           {tab === "history" && <HistoryScreen />}
 
           {/* tab bar */}
-          <div className="mt-auto grid grid-cols-3 border-t border-[var(--moa-line-soft)] bg-white pb-1 pt-1.5">
+          <div className="mt-auto grid grid-cols-3 border-t border-[var(--moa-line-soft)] bg-white pb-2 pt-1.5">
             {TABS.map((t) => (
               <button
                 key={t.id}

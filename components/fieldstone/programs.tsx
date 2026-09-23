@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { PROGRAMS } from "@/lib/fieldstone-data";
+import { FsStageMatch } from "./stage-match";
 
 export function FsPrograms() {
   return (
@@ -10,7 +11,9 @@ export function FsPrograms() {
           Pick your stage. We built the room.
         </h2>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1.05fr_1fr]">
+        <FsStageMatch />
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1.05fr_1fr]">
           <div className="fs-panel flex flex-col justify-between p-8 min-[700px]:p-10">
             <div>
               <p className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] text-white/60">

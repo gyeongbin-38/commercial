@@ -44,7 +44,8 @@ export function Scramble({
 
   return (
     <span className={className} onPointerEnter={run}>
-      {display}
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">{display}</span>
     </span>
   );
 }

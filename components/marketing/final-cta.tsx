@@ -11,11 +11,11 @@ export function FinalCta() {
             Your next client is already in your inbox.
           </h2>
           <p className="text-lead mx-auto mt-4 max-w-[560px] text-muted-dark">
-            Start the trial. Bring the spreadsheet. Orbit handles the rest.
+            Open the demo. Bring the spreadsheet. Orbit handles the rest.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <a href="#get-started" className="btn btn-primary">
-              Start free trial
+            <a href="#demo" className="btn btn-primary">
+              Explore the demo
             </a>
             <a href="#pricing" className="btn btn-ghost-dark">
               See pricing

@@ -20,10 +20,19 @@ const initialStages = Object.fromEntries(
 
 const spring = { type: "spring" as const, stiffness: 380, damping: 34 };
 
-export function PipelineDemo({ header }: { header?: React.ReactNode }) {
+export function PipelineDemo({
+  header,
+  compact = false,
+}: {
+  header?: React.ReactNode;
+  /** Compact shows only the last two stages — one move demonstrates the mechanism. */
+  compact?: boolean;
+}) {
   const [stages, setStages] = useState<Record<string, Stage>>(initialStages);
   const [moves, setMoves] = useState(0);
   const reduce = useReducedMotion();
+  const visibleStages = compact ? STAGES.slice(2) : STAGES;
+  const visibleIds = visibleStages.map((s) => s.id);
 
   const total = useMemo(
     () =>
@@ -38,7 +47,7 @@ export function PipelineDemo({ header }: { header?: React.ReactNode }) {
     setStages((s) => {
       const idx = STAGE_ORDER.indexOf(s[id]);
       const next = STAGE_ORDER[idx + dir];
-      if (!next) return s;
+      if (!next || (compact && !visibleIds.includes(next))) return s;
       return { ...s, [id]: next };
     });
     setMoves((m) => m + 1);
@@ -85,7 +94,7 @@ export function PipelineDemo({ header }: { header?: React.ReactNode }) {
 
           <LayoutGroup>
             <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto bg-pearl p-3 sm:p-4">
-              {STAGES.map((stage) => {
+              {visibleStages.map((stage) => {
                 const cards = CLIENTS.filter((c) => stages[c.id] === stage.id);
                 return (
                   <div
@@ -104,6 +113,9 @@ export function PipelineDemo({ header }: { header?: React.ReactNode }) {
                       <AnimatePresence mode="popLayout">
                         {cards.map((c) => {
                           const idx = STAGE_ORDER.indexOf(stages[c.id]);
+                          const firstVisible = compact
+                            ? STAGE_ORDER.indexOf(visibleIds[0])
+                            : 0;
                           return (
                             <motion.article
                               key={c.id}
@@ -137,7 +149,7 @@ export function PipelineDemo({ header }: { header?: React.ReactNode }) {
                                   <button
                                     type="button"
                                     onClick={() => move(c.id, -1)}
-                                    disabled={idx === 0}
+                                    disabled={idx <= firstVisible}
                                     aria-label={`Move ${c.company} back`}
                                     className="-m-1.5 p-1.5 text-ink-48 transition-colors hover:text-ink disabled:pointer-events-none disabled:opacity-25"
                                   >
@@ -176,8 +188,21 @@ export function PipelineDemo({ header }: { header?: React.ReactNode }) {
 
           <div className="border-t border-hairline bg-pearl px-5 py-3">
             <p className="text-fine text-ink-48">
-              Demo data. Moves aren&apos;t saved. In Orbit, each move updates
-              the follow-up queue automatically.
+              Demo data. Moves aren&apos;t saved.{" "}
+              {compact ? (
+                <>
+                  The full four-stage board runs on{" "}
+                  <a
+                    href="/orbit#demo"
+                    className="underline underline-offset-2 hover:text-ink"
+                  >
+                    Orbit
+                  </a>
+                  .
+                </>
+              ) : (
+                "In Orbit, each move updates the follow-up queue automatically."
+              )}
             </p>
           </div>
         </AppWindow>

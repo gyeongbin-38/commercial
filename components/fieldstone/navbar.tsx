@@ -5,10 +5,10 @@ import { Menu, X } from "lucide-react";
 import { FsWordmark } from "./wordmark";
 
 const LINKS = [
-  { href: "#programs", label: "Programs" },
-  { href: "#path", label: "The Path" },
-  { href: "#stories", label: "Stories" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/fieldstone#programs", label: "Programs" },
+  { href: "/fieldstone#path", label: "The Path" },
+  { href: "/fieldstone#stories", label: "Stories" },
+  { href: "/fieldstone#faq", label: "FAQ" },
 ];
 
 export function FsNavbar() {
@@ -36,7 +36,7 @@ export function FsNavbar() {
         className="fs-container flex h-16 items-center justify-between"
         aria-label="Main menu"
       >
-        <a href="#top" className="shrink-0">
+        <a href="/fieldstone#top" className="shrink-0">
           <FsWordmark />
         </a>
 
@@ -55,7 +55,7 @@ export function FsNavbar() {
 
         <div className="hidden items-center gap-2 min-[768px]:flex">
           <a
-            href="#apply"
+            href="/fieldstone#apply"
             className="fs-btn fs-btn-accent min-h-0 h-10 px-5 text-[0.8125rem]"
           >
             Apply
@@ -98,7 +98,7 @@ export function FsNavbar() {
             ))}
             <li className="py-3">
               <a
-                href="#apply"
+                href="/fieldstone#apply"
                 onClick={() => setOpen(false)}
                 className="fs-btn fs-btn-accent w-full"
               >

@@ -28,6 +28,8 @@ function GroupIcon({ name }: { name: string }) {
   );
 }
 
+const BRAND_COUNT = PARTNER_GROUPS.reduce((n, g) => n + g.brands.length, 0);
+
 export function MoaPartners() {
   return (
     <section id="partners" className="bg-white">
@@ -42,8 +44,8 @@ export function MoaPartners() {
             </h2>
           </div>
           <p className="moa-lead max-w-[24rem]">
-            5개 카테고리, 19개 브랜드. 모아 제휴 네트워크는 계속 늘어나고
-            있습니다.
+            {PARTNER_GROUPS.length}개 카테고리, {BRAND_COUNT}개 브랜드. 모아
+            제휴 네트워크는 계속 늘어나고 있습니다.
           </p>
         </div>
 

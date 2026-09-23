@@ -85,32 +85,34 @@ export const MAR_PRODUCTS = [
   },
 ] as const;
 
+/* Media rail — photo cards that open a lightbox. No video assets exist
+   for this fictional team, so cards present as photos, not fake players. */
 export const MAR_MEDIA = [
   {
     id: "m1",
     title: "Onboard: Valdorra quali lap",
-    length: "02:41",
+    meta: "Valdorra · Quali",
     img: img("photo-1449965408869-eaa3f722e40d", 800, 500),
     alt: "Driver point of view inside a car at dusk",
   },
   {
     id: "m2",
     title: "Night run: Meridian City",
-    length: "04:12",
+    meta: "Meridian · Practice",
     img: img("photo-1525609004556-c46c7d6cf023", 800, 500),
     alt: "Sports car front end under city lights",
   },
   {
     id: "m3",
     title: "72 hours in the garage",
-    length: "08:36",
+    meta: "Paddock · Build-up",
     img: img("photo-1492144534655-ae79c964c9d7", 800, 500),
     alt: "Sports cars lined up inside a garage",
   },
   {
     id: "m4",
     title: "Test days: Vulcan Pass",
-    length: "03:58",
+    meta: "Vulcan Pass · Testing",
     img: img("photo-1568605117036-5fe5e7bab0b7", 800, 500),
     alt: "Sports car on an open desert road",
   },
