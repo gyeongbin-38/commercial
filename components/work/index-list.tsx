@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Pause, Play, X } from "lucide-react";
+import { Monitor, Pause, Play, Smartphone, X } from "lucide-react";
 import { WORK_PROJECTS } from "@/lib/work-data";
 
 /* Work index — three featured projects with always-visible media
@@ -96,11 +96,134 @@ function PauseButton({
   );
 }
 
-/* Media-first aside — the recording is the content; text is a caption
-   strip and the only exit is "Open live site". Plain click opens it,
-   modifier clicks still go straight to the live demo. Dialog semantics:
-   focus enters on open, Tab is trapped, Escape/overlay close, focus
-   returns to the card that opened it. */
+/* Live-stage aside — instead of screenshots or recordings, the real
+   site runs inside a scaled iframe: every scroll animation, hover and
+   3D scene works in place. Plain click opens it, modifier clicks still
+   go straight to the live demo. Dialog semantics: focus enters on open,
+   Tab is trapped, Escape/overlay close, focus returns to the card. */
+const STAGE_WIDTHS = { desktop: 1280, mobile: 390 } as const;
+type Device = keyof typeof STAGE_WIDTHS;
+
+function DeviceToggle({
+  device,
+  onChange,
+}: {
+  device: Device;
+  onChange: (d: Device) => void;
+}) {
+  return (
+    <span className="flex items-center gap-0.5 rounded-full border border-white/20 bg-black/45 p-1 backdrop-blur-md">
+      {(["desktop", "mobile"] as const).map((d) => (
+        <button
+          key={d}
+          type="button"
+          aria-label={`${d} preview`}
+          aria-pressed={device === d}
+          onClick={() => onChange(d)}
+          className={`flex h-9 w-9 items-center justify-center rounded-full text-white/60 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-[var(--wk-accent)] ${
+            device === d ? "bg-white/15 text-white" : ""
+          }`}
+        >
+          {d === "desktop" ? (
+            <Monitor size={14} aria-hidden="true" />
+          ) : (
+            <Smartphone size={14} aria-hidden="true" />
+          )}
+        </button>
+      ))}
+    </span>
+  );
+}
+
+/* The stage renders the live route at a fixed device width and scales
+   it to the panel, so the desktop layout is preserved instead of
+   collapsing to a narrow-column mobile render. */
+function LiveStage({
+  p,
+  device,
+  onClose,
+}: {
+  p: Project;
+  device: Device;
+  onClose: () => void;
+}) {
+  const shellRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<HTMLIFrameElement>(null);
+  const [size, setSize] = useState({ w: 0, h: 0 });
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const el = shellRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) =>
+      setSize({
+        w: entry.contentRect.width,
+        h: entry.contentRect.height,
+      }),
+    );
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const contentW = STAGE_WIDTHS[device];
+  const scale = size.w ? Math.min(1, size.w / contentW) : 1;
+  const frameH = size.h && scale ? size.h / scale : 0;
+
+  return (
+    <div ref={shellRef} className="relative min-h-0 flex-1 overflow-hidden bg-[#141312]">
+      <Image
+        src={p.screenshot}
+        alt=""
+        fill
+        sizes="880px"
+        className={`object-cover transition-opacity duration-500 ${loaded ? "opacity-0" : "opacity-100"}`}
+        style={{
+          objectPosition: "mediaPos" in p ? p.mediaPos : "50% 0%",
+        }}
+      />
+      {!loaded ? (
+        <span className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/55 px-3 py-1.5 text-[0.625rem] font-bold uppercase tracking-[0.12em] text-white/80 backdrop-blur-md">
+          <span
+            className="h-1.5 w-1.5 animate-pulse rounded-full"
+            style={{ background: ACCENTS[p.id] }}
+            aria-hidden="true"
+          />
+          Loading live site
+        </span>
+      ) : null}
+      {size.w ? (
+        <iframe
+          ref={frameRef}
+          src={p.href}
+          title={`${p.name} — live site preview`}
+          onLoad={() => {
+            setLoaded(true);
+            try {
+              frameRef.current?.contentDocument?.addEventListener(
+                "keydown",
+                (e) => {
+                  if (e.key === "Escape") onClose();
+                },
+              );
+            } catch {}
+          }}
+          className="absolute left-1/2 top-0 border-0 transition-opacity duration-500"
+          style={{
+            width: contentW,
+            height: frameH,
+            transform: `translateX(-50%) scale(${scale})`,
+            transformOrigin: "top center",
+            opacity: loaded ? 1 : 0,
+          }}
+        />
+      ) : null}
+      <span className="pointer-events-none absolute bottom-3 left-4 z-10 font-mono text-[0.625rem] tracking-wide text-white/50">
+        gyeongbinbak.com{p.href} · {contentW}px
+      </span>
+    </div>
+  );
+}
+
 function ProjectAside({
   p,
   onClose,
@@ -112,8 +235,12 @@ function ProjectAside({
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const reduce = useReducedMotion();
+  const [device, setDevice] = useState<Device>(() =>
+    typeof window !== "undefined" && window.innerWidth < 768
+      ? "mobile"
+      : "desktop",
+  );
 
   useEffect(() => {
     closeRef.current?.focus();
@@ -127,7 +254,7 @@ function ProjectAside({
       }
       if (e.key !== "Tab" || !panel) return;
       const focusables = panel.querySelectorAll<HTMLElement>(
-        "a[href], button:not([disabled])",
+        "a[href], button:not([disabled]), iframe",
       );
       if (!focusables.length) return;
       const first = focusables[0];
@@ -155,7 +282,7 @@ function ProjectAside({
       <motion.div
         aria-hidden="true"
         onClick={onClose}
-        className="fixed inset-0 z-[90] bg-[rgba(27,25,23,0.4)]"
+        className="fixed inset-0 z-[90] bg-[rgba(27,25,23,0.45)] backdrop-blur-[2px]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -165,76 +292,60 @@ function ProjectAside({
         ref={panelRef}
         role="dialog"
         aria-modal="true"
-        aria-label={`${p.name} — project preview`}
-        className="fixed inset-y-0 right-0 z-[100] flex w-[min(560px,100vw)] flex-col overflow-hidden border-l border-[var(--wk-line)] bg-[var(--wk-bg)] shadow-[-24px_0_60px_-24px_rgba(27,25,23,0.35)]"
+        aria-label={`${p.name} — live preview`}
+        className="fixed inset-y-0 right-0 z-[100] flex w-[min(880px,96vw)] flex-col overflow-hidden border-l border-[var(--wk-line)] bg-[var(--wk-bg)] shadow-[-24px_0_60px_-24px_rgba(27,25,23,0.35)]"
         initial={{ x: reduce ? 0 : "100%" }}
         animate={{ x: 0 }}
         exit={{ x: reduce ? 0 : "100%" }}
         transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 34 }}
       >
-        <div className="absolute left-4 right-4 top-4 z-20 flex items-center justify-between gap-4">
-          <span className="flex items-center gap-2 rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-[0.625rem] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-md">
-            <span
-              className="h-1.5 w-1.5 rounded-full"
-              style={{ background: ACCENTS[p.id] }}
-              aria-hidden="true"
-            />
-            {p.id === "plugview" ? "Live build" : "Concept"} · {p.year}
+        <span
+          className="absolute inset-x-0 top-0 z-20 h-[2px]"
+          style={{ background: ACCENTS[p.id] }}
+          aria-hidden="true"
+        />
+        <motion.div
+          className="absolute left-4 right-4 top-4 z-20 flex items-center justify-between gap-3"
+          initial={reduce ? false : { y: -12, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.12, duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+        >
+          <span className="flex items-center gap-3">
+            <span className="flex items-center gap-2 rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-[0.625rem] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-md">
+              <span
+                className="h-1.5 w-1.5 animate-pulse rounded-full"
+                style={{ background: ACCENTS[p.id] }}
+                aria-hidden="true"
+              />
+              Live preview
+            </span>
+            <DeviceToggle device={device} onChange={setDevice} />
           </span>
           <button
             ref={closeRef}
             type="button"
             onClick={onClose}
             aria-label="Close project preview"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-md transition-colors hover:bg-black/60 focus-visible:outline-2 focus-visible:outline-[var(--wk-accent)]"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-md transition-colors hover:bg-black/60 focus-visible:outline-2 focus-visible:outline-[var(--wk-accent)]"
           >
             <X size={16} aria-hidden="true" />
           </button>
-        </div>
+        </motion.div>
 
-        <div className="relative min-h-0 flex-1 bg-[#141312]">
-          <Image
-            src={p.screenshot}
-            alt=""
-            fill
-            sizes="560px"
-            className="object-cover"
-            style={{
-              objectPosition: "mediaPos" in p ? p.mediaPos : "50% 0%",
-            }}
-          />
-          {p.video ? (
-            <video
-              ref={videoRef}
-              src={p.video}
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{
-                objectPosition: "mediaPos" in p ? p.mediaPos : "50% 0%",
-              }}
-              autoPlay={!reduce}
-              muted
-              loop
-              playsInline
-              aria-hidden="true"
-            />
-          ) : null}
-          {p.video ? (
-            <PauseButton
-              videoRef={videoRef}
-              label={p.name}
-              dark
-              className="bottom-3 right-3"
-            />
-          ) : null}
-        </div>
+        <LiveStage p={p} device={device} onClose={onClose} />
 
-        <div className="border-t border-[var(--wk-line)] px-6 py-5">
+        <motion.div
+          className="border-t border-[var(--wk-line)] px-6 py-5"
+          initial={reduce ? false : { y: 16, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
+        >
           <div className="flex items-baseline justify-between gap-4">
             <h3 className="text-[1.5rem] font-bold leading-none tracking-tight">
               {p.name}
             </h3>
             <p className="text-[0.8125rem] font-medium text-[var(--wk-muted)]">
-              {p.kind}
+              {p.kind} · {p.year}
             </p>
           </div>
           <a
@@ -249,7 +360,7 @@ function ProjectAside({
             Opens in a new tab
             {p.id === "plugview" ? " — live product build" : " — fictional concept brand"}
           </p>
-        </div>
+        </motion.div>
       </motion.div>
     </>
   );

@@ -18,17 +18,30 @@ console.log("aside open:", await dialog.count());
 console.log("aria-label:", await dialog.getAttribute("aria-label"));
 console.log("focus on close:", await p.evaluate(() => document.activeElement?.getAttribute("aria-label")));
 console.log("body overflow:", await p.evaluate(() => document.body.style.overflow));
-const [mediaH, panelH] = await p.evaluate(() => {
-  const d = document.querySelector('[role="dialog"]');
-  const media = d.querySelector("video") ?? d.querySelector("img");
-  return [media.getBoundingClientRect().height, d.getBoundingClientRect().height];
+
+// live iframe stage
+await p.waitForTimeout(2500);
+const stage = await p.evaluate(() => {
+  const f = document.querySelector('[role="dialog"] iframe');
+  if (!f) return null;
+  const r = f.getBoundingClientRect();
+  const t = new DOMMatrixReadOnly(getComputedStyle(f).transform);
+  return {
+    attrW: f.getAttribute("width") || f.style.width,
+    styleW: f.style.width,
+    scale: t.a.toFixed(3),
+    renderedW: Math.round(r.width),
+    insideDoc: (() => { try { return f.contentDocument?.title ? "same-origin ok" : "empty"; } catch (e) { return "blocked"; } })(),
+  };
 });
-console.log("media share of panel:", Math.round((mediaH / panelH) * 100) + "%");
-console.log("video playing:", await p.evaluate(() => {
-  const v = document.querySelector('[role="dialog"] video');
-  return v ? !v.paused && v.readyState >= 2 : "no video";
-}));
+console.log("iframe stage:", JSON.stringify(stage));
 console.log("has Open live site:", await dialog.locator('a[target="_blank"]').count());
+
+// device toggle -> mobile re-render at 390px
+await dialog.getByLabel("mobile preview").dispatchEvent("click");
+await p.waitForTimeout(800);
+const mobW = await p.evaluate(() => document.querySelector('[role="dialog"] iframe')?.style.width);
+console.log("mobile toggle frame width:", mobW);
 await p.screenshot({ path: "shots-after/aside-orbit-1440.png", timeout: 60000 });
 
 // Tab trap: cycle focus — should stay inside dialog
